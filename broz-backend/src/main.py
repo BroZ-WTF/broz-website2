@@ -8,8 +8,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-quotes_file = 'assets/quotes.json'
-gallery_metadata_file = 'assets/gallery/metadata.json'
+quotes_file = 'data/quotes.json'
+gallery_metadata_file = 'data/gallery/metadata.json'
 
 # debug - testing json-files
 with open(quotes_file) as json_quotes:
