@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import PictureMetadata from 'src/assets/gallery/gallery.json';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { API_URL } from '../../env';
 
 export interface Picture {
   name: string;
@@ -16,31 +16,32 @@ export interface Picture {
 
 export class GalleryComponent implements OnInit {
   numer_render_columns: number;
-  allPictures: Picture[] = [];
+  fullPicturesMetadata;
+  picturesMetadata;
 
-  constructor(private httpService: HttpClient) {
+
+  constructor(private http: HttpClient) {
+    this.getGalleryMetadata().subscribe(val => {
+      this.fullPicturesMetadata = val;
+      this.picturesMetadata = this.fullPicturesMetadata.pictures;
+      for (const picture of this.picturesMetadata) {
+        picture.file = `${API_URL}/gallery/picture/` + picture.file;
+      }
+      console.log('gallery: GalleryMetadata');
+      console.log(val);
+    })
   }
 
   ngOnInit(): void {
-    for (const picture of PictureMetadata.pictures) {
-      picture.file = 'assets/gallery/' + picture.file;
-      this.allPictures.push(picture);
-    }
-    console.log(this.allPictures)
     this.numer_render_columns = Math.ceil(window.innerWidth / 500);
-
-    this.httpService.get('./assets/gallery/gallery.json').subscribe(
-      data => {
-        console.log(data);
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.message);
-      }
-    );
   }
 
   onResize(event) {
     this.numer_render_columns = Math.ceil(window.innerWidth / 500);
+  }
+
+  getGalleryMetadata() {
+    return this.http.get(`${API_URL}/gallery/metadata`)
   }
 
 }

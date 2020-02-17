@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import QuoteMetadata from 'src/assets/quotes.json';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { API_URL } from '../../env';
 
 export interface Quote {
   name: string;
   quote: string,
-  date?: string;
+  date: string;
 }
 
 @Component({
@@ -14,23 +15,25 @@ export interface Quote {
 })
 
 export class QuotesComponent implements OnInit {
-  allQuotes: Quote[] = [];
-  dataSource = this.allQuotes;
+  fullQuotes;
+  dataSource;
 
   displayedColumns: string[] = ['name', 'quote', 'date'];
 
-  constructor() {
+  constructor(private http: HttpClient) {
+    this.getAllQuotes().subscribe(val => {
+      this.fullQuotes = val;
+      this.dataSource = this.fullQuotes.quotes_list;
+      console.log('quotes: AllQuotes');
+      console.log(val);
+    })
   }
 
   ngOnInit(): void {
-    for (const quote of QuoteMetadata.quotes) {
-      if ("date" in quote) {
-        this.allQuotes.push(quote);
-      } else {
-        this.allQuotes.push({ name: quote.name, quote: quote.quote, date: "-" });
-      }
-    }
-    console.log(this.allQuotes)
+  }
+
+  getAllQuotes() {
+    return this.http.get(`${API_URL}/quotes`)
   }
 
 }

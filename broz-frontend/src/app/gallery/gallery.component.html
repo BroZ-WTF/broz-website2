@@ -1,5 +1,5 @@
 <mat-grid-list [cols]="numer_render_columns" rowHeight="700px" (window:resize)="onResize($event)">
-  <mat-grid-tile *ngFor="let picture of allPictures">
+  <mat-grid-tile *ngFor="let picture of picturesMetadata">
     <mat-card>
       <mat-card-title>
         {{ picture.name }}
