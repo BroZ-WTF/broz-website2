@@ -1,0 +1,13 @@
+<mat-grid-list [cols]="numer_render_columns" rowHeight="700px" (window:resize)="onResize($event)">
+  <mat-grid-tile *ngFor="let picture of allPictures">
+    <mat-card>
+      <mat-card-title>
+        {{ picture.name }}
+      </mat-card-title>
+      <img mat-card-image [src]="picture.file">
+      <mat-card-content>
+        {{ picture.description }}
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
