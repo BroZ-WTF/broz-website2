@@ -1,21 +1,19 @@
 # coding=utf-8
 
 import json, os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
 # creating the Flask application
 app = Flask(__name__)
+# allow CORS
 CORS(app)
+# read config
+app.config.from_pyfile('config.cfg')
 
-quotes_file = 'data/quotes.json'
-gallery_metadata_file = 'data/gallery/metadata.json'
-
-# debug - testing json-files
-with open(quotes_file) as json_quotes:
-  quotes = json.load(json_quotes)
-  print(quotes["id"])
-  print(type(quotes["quotes_list"]))
+quotes_file = os.path.join(app.instance_path, app.config["DATA_QUOTES_PATH"])
+gallery_metadata_file = os.path.join(app.instance_path, app.config["DATA_PIC_METADATA_PATH"])
+picture_path = os.path.join(app.instance_path, app.config["DATA_GALLERY_PATH"])
 
 
 # GET quotes
@@ -37,11 +35,14 @@ def add_quote():
     print("Could not read file, starting from scratch")
     quotes = {"id": "broz-quotes", "quotes_list": []}
 
-  if not posted_quote.keys() >= {'name', 'quote'}:
+  if not posted_quote.keys() == {'name', 'quote', 'date'}:
     # raise value error if any key is not set
     raise ValueError
   else:
     quotes["quotes_list"].append(posted_quote)
+    # reenumerate
+    for quote in enumerate(quotes["quotes_list"]):
+      quote["id"] = ii + 1
     with open(quotes_file, 'wt') as json_quotes:
       json.dump(quotes, json_quotes)
       return jsonify(posted_quote), 201
@@ -66,11 +67,20 @@ def add_gallery_metadata():
     print("Could not read file, starting from scratch")
     metadata = {"id": "broz-gallery-metadata", "pictures": []}
 
-  if not posted_picture_metadata.keys() >= {'name', 'description', 'file'}:
+  if not posted_picture_metadata.keys() == {'name', 'description', 'file'}:
     # raise value error if any key is not set
     raise ValueError
   else:
     metadata["pictures"].append(posted_picture_metadata)
+    # reenumerate
+    for picturedata in enumerate(metadata["pictures"]):
+      picturedata["id"] = ii + 1
     with open(gallery_metadata_file, 'wt') as json_metadata:
       json.dump(metadata, json_metadata)
       return jsonify(posted_picture_metadata), 201
+
+
+# GET picture
+@app.route('/gallery/picture/<path:filename>')
+def get_picture(filename):
+  return send_from_directory(picture_path, filename)
