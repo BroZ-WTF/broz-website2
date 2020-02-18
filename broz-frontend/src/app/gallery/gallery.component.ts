@@ -21,6 +21,10 @@ export class GalleryComponent implements OnInit {
 
 
   constructor(private http: HttpClient) {
+  }
+
+  ngOnInit(): void {
+    this.numer_render_columns = Math.ceil(window.innerWidth / 500);
     this.getGalleryMetadata().subscribe(val => {
       this.fullPicturesMetadata = val;
       this.picturesMetadata = this.fullPicturesMetadata.pictures;
@@ -30,10 +34,6 @@ export class GalleryComponent implements OnInit {
       console.log('gallery: GalleryMetadata');
       console.log(val);
     })
-  }
-
-  ngOnInit(): void {
-    this.numer_render_columns = Math.ceil(window.innerWidth / 500);
   }
 
   onResize(event) {

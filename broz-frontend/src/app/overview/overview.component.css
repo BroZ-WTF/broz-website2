@@ -2,3 +2,6 @@ mat-card {
   background-color: rgba(0, 0, 0, 0.1);
   margin: 5px;
 }
+h4 {
+  width: 10em;
+}

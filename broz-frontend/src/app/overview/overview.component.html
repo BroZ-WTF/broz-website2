@@ -1,23 +1,54 @@
 <mat-card>
   <mat-card-title>
-    Teamspeak 3 Status
+    Die BroZ
   </mat-card-title>
-  <a href="https://ts3index.com/?page=server&id=262829" target="_blank"><img
-      src="https://ts3index.com/banner/s410_262829.png" alt="TS3index.com" style="border-style: none;" /></a>
+  <div>
+    <span style="margin: 1em;">Interessantes Zeug über uns.</span>
+  </div>
 </mat-card>
+
+<mat-divider></mat-divider>
 
 <mat-card>
   <mat-card-title>
-    Teamspeak 3 Viewer
+    Teamspeak 3
   </mat-card-title>
+  <a href="ts3server://broz.wtf?port=9987" target="_blank"><img src="https://ts3index.com/banner/s410_262829.png"
+      alt="TS3index.com" style="border-style: none;" /></a>
+</mat-card>
 
-  <div class="ts3index-viewer" data-serverid="262829" data-style="icons=mono"><a
-      href="https://ts3index.com/?page=server&id=262829">TS3index.com</a></div>
-  <script language="javascript">(function () {
-      var c = document.createElement("script"), s = document.getElementsByTagName("script")[0];
-      c.type = "text/javascript"; c.async = true;
-      c.src = "https://ts3index.com/viewer/script.js";
-      s.parentNode.insertBefore(c, s);
-    })()
-  </script>
+<mat-divider>
+</mat-divider>
+
+<mat-card>
+  <mat-card-title>
+    Minecraft Server
+  </mat-card-title>
+  <div>
+    <mat-list>
+      <mat-list-item style="height: 2em;">
+        <h4>Addresse:</h4>
+        <p>broz.wtf</p>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+      <mat-list-item style="height: auto;">
+        <h4>Description:</h4>
+        <p>{{ fullMCServerStatus.description }}</p>
+      </mat-list-item>
+      <mat-list-item style="height: 1.5em;">
+        <h4>Version:</h4>
+        <p>{{ fullMCServerStatus.version }}</p>
+      </mat-list-item>
+      <mat-list-item style="height: 1.5em;">
+        <h4>Status:</h4>
+        <p>
+          {{ (fullMCServerStatus.status == "success") ? (fullMCServerStatus.online ? "online" : "offline") : "unable to query" }}
+        </p>
+      </mat-list-item>
+      <mat-list-item style="height: 1.5em;">
+        <h4>Player:</h4>
+        <p>{{ fullMCServerStatus.players.now }}/{{ fullMCServerStatus.players.max }}</p>
+      </mat-list-item>
+    </mat-list>
+  </div>
 </mat-card>
