@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Neues Zitat</h2>
+
+<form [formGroup]="quoteForm" class="form">
+  <mat-form-field color="primary" class="form-element">
+    <input matInput placeholder="Autor" formControlName="name">
+    <mat-error *ngIf="!quoteForm.controls['name'].valid && quoteForm.controls['name'].touched">
+      Name ist nötig und muss unter 12 Zeichen sein.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field color="primary" class="form-element">
+    <textarea matInput placeholder="Zitat" formControlName="quote"></textarea>
+    <mat-error *ngIf="!quoteForm.controls['quote'].valid && quoteForm.controls['quote'].touched">
+      Zitat ist nötig und muss zwischen 3 und 120 Zeichen sein.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="form-element">
+    <input matInput placeholder="Datum" formControlName="date" [matDatepicker]="picker" color="primary">
+    <mat-error *ngIf="!quoteForm.controls['date'].valid && quoteForm.controls['date'].touched">
+      Datum ist nötig.
+    </mat-error>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <div class="form-element">
+    <button mat-stroked-button color="primary" (click)="submit()" class="button"
+      [disabled]="!quoteForm.valid">Speichern</button>
+    <button mat-flat-button color="primary" (click)="close()" class="button">Abbrechen</button>
+  </div>
+</form>

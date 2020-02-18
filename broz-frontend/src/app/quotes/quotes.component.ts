@@ -1,22 +1,25 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
 import { API_URL } from '../../env';
+import { QuotesAddQuoteDialogComponent } from '../quotes-add-quote-dialog/quotes-add-quote-dialog.component';
+import { QuotesEditQuoteDialogComponent } from '../quotes-edit-quote-dialog/quotes-edit-quote-dialog.component';
+import { QuotesDeleteQuoteDialogComponent } from '../quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
 
 export interface Quote {
-  id: number;
-  name: string;
+  id: number,
+  name: string,
   quote: string,
-  date: string;
+  date: Date,
 }
 
-export interface DialogData {
-  quote_name: string;
-  quote_quote: string;
-  quote_date: string;
+export interface QuoteData {
+  name: string,
+  quote: string,
+  date: string,
 }
 
 @Component({
@@ -40,12 +43,8 @@ export class QuotesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllQuotes().subscribe(val => {
-      this.fullQuotes = val;
-      this.dataSourceQuotes.data = this.fullQuotes.quotes_list;
-      for (let ii = 0; ii < this.dataSourceQuotes.data.length; ii++) {
-        this.dataSourceQuotes.data[ii].id = ii + 1;
-      }
+    this.getAllQuotesAPI().subscribe(val => {
+      this.refreshTable(val);
       this.dataSourceQuotes.sort = this.sort;
       this.dataSourceQuotes.paginator = this.paginator;
       console.log('quotes: AllQuotes');
@@ -53,25 +52,23 @@ export class QuotesComponent implements OnInit {
     })
   }
 
-  getAllQuotes() {
-    return this.http.get(`${API_URL}/quotes`)
-  }
-
   addQuote() {
-    const addDialogRef = this.dialog.open(QuotesAddQuoteDialog, {
-      width: '250px',
-      data: { quote_name: null, quote_quote: null, quote_date: null }
+    const addDialogRef = this.dialog.open(QuotesAddQuoteDialogComponent, {
+      width: '500px',
     });
     addDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // TODO Send new quote and refresh table
+        this.postQuoteAPI(result);
+        console.log('quotes: add quote');
+        console.log(result);
       }
     });
   }
+
   editQuote(element) {
-    const editDialogRef = this.dialog.open(QuotesEditQuoteDialog, {
-      width: '250px',
-      data: { quote_name: element.name, quote_quote: element.quote, quote_date: element.date }
+    const editDialogRef = this.dialog.open(QuotesEditQuoteDialogComponent, {
+      width: '500px',
+      data: { id: element.id, name: element.name, quote: element.quote, date: element.date }
     });
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -79,80 +76,62 @@ export class QuotesComponent implements OnInit {
       }
     });
   }
+
   deleteQuote(element) {
-    const deleteDialogRef = this.dialog.open(QuotesDeleteQuoteDialog, {
-      width: '250px',
-      data: { quote_name: element.name, quote_quote: element.quote, quote_date: element.date }
+    const deleteDialogRef = this.dialog.open(QuotesDeleteQuoteDialogComponent, {
+      width: '300px',
+      data: { id: element.id, name: element.name, quote: element.quote, date: element.date }
     });
     deleteDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // TODO Send DELETE for given quote and refresh table
+        this.deleteQuoteAPI(result);
+        console.log('quotes: delete quote');
+        console.log(result);
       }
     });
   }
 
-  /*
-  sortData(sort: Sort) {
-    const data = this.dataSourceQuotes.data;
-    if (!sort.active || sort.direction === '') {
-      this.dataSourceQuotes.data = data;
-      return;
+  getAllQuotesAPI() {
+    return this.http.get(`${API_URL}/quotes`)
+  }
+
+  postQuoteAPI(quote: QuoteData) {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = quote;
+    this.http.post(`${API_URL}/quotes`, body, { headers }).subscribe(
+      (val) => {
+        console.log('POST call successful value returned in body', val);
+        this.refreshTable(val);
+      },
+      response => {
+        console.log('POST call in error', response);
+      },
+      () => {
+        console.log('The POST observable is now completed.');
+      }
+    );
+  }
+
+  deleteQuoteAPI(quote: Quote) {
+    this.http.delete(`${API_URL}/quotes/${quote.id - 1}`).subscribe(
+      (val) => {
+        console.log('DELETE call successful value returned in body', val);
+        this.refreshTable(val);
+      },
+      response => {
+        console.log('DELETE call in error', response);
+      },
+      () => {
+        console.log('The DELETE observable is now completed.');
+      }
+    );
+  }
+
+  refreshTable(val: any) {
+    this.fullQuotes = val;
+    this.dataSourceQuotes.data = this.fullQuotes.quotes_list;
+    for (let ii = 0; ii < this.dataSourceQuotes.data.length; ii++) {
+      this.dataSourceQuotes.data[ii].id = ii + 1;
     }
-
-    this.dataSourceQuotes.data = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'date': return compare(a.date, b.date, isAsc);
-        default: return 0;
-      }
-    });
   }
-  */
-}
-
-@Component({
-  selector: 'quotes-add-quote-dialog',
-  templateUrl: 'quotes-add-quote-dialog.html',
-})
-export class QuotesAddQuoteDialog {
-  constructor(
-    public addDialogRef: MatDialogRef<QuotesAddQuoteDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
-
-  onNoClick(): void {
-    this.addDialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'quotes-edit-quote-dialog',
-  templateUrl: 'quotes-edit-quote-dialog.html',
-})
-export class QuotesEditQuoteDialog {
-  constructor(
-    public editDialogRef: MatDialogRef<QuotesEditQuoteDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
-
-  onNoClick(): void {
-    this.editDialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'quotes-delete-quote-dialog',
-  templateUrl: 'quotes-delete-quote-dialog.html',
-})
-export class QuotesDeleteQuoteDialog {
-  constructor(
-    public deleteDialogRef: MatDialogRef<QuotesDeleteQuoteDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
-
-  onNoClick(): void {
-    this.deleteDialogRef.close();
-  }
-}
-
-function compare(a: number | string, b: number | string, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
