@@ -6,12 +6,15 @@
 * Add endpoint to delete pictues
 
 ## Frontend
+* Center layout
 * Full CRUD for quotes
   * Edit quote
+  * Info snackbars
 * Full CRUD for gallery
   * Add picture
   * Edit picture
   * Delete picture
+  * Info snackbars
 
 ## Overall ideas
 * Add authentification mechanism
