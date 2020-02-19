@@ -40,7 +40,7 @@ def del_quote(quote_id):
       return jsonify(quotes)
   except IndexError:
     print("Given id is not present, not doing anything")
-    return jsonify(quotes)
+    return 0
 
 
 # POST quote
@@ -59,6 +59,28 @@ def add_quote():
     raise ValueError
   else:
     quotes["quotes_list"].append(posted_quote)
+    with open(quotes_file, 'wt') as json_quotes:
+      json.dump(quotes, json_quotes)
+      return jsonify(quotes), 201
+
+
+# PUT quote
+@app.route('/quotes', methods=['PUT'])
+def edit_quote():
+  posted_quote = request.get_json()
+  try:
+    with open(quotes_file, 'rt') as json_quotes:
+      quotes = json.load(json_quotes)
+  except IOError:
+    print("Could not read file, not doing anything")
+    return 0
+  if not posted_quote.keys() == {'id', 'name', 'quote', 'date'}:
+    # raise value error if any key is not set
+    raise ValueError
+  else:
+    id = posted_quote["id"]
+    del posted_quote["id"]
+    quotes["quotes_list"][id] = posted_quote
     with open(quotes_file, 'wt') as json_quotes:
       json.dump(quotes, json_quotes)
       return jsonify(quotes), 201
@@ -88,7 +110,7 @@ def del_gallery_metadata(picture_id):
       return jsonify(metadata)
   except IndexError:
     print("Given id is not present, not doing anything")
-    return jsonify(metadata)
+    return 0
 
 
 # POST gallery metadata

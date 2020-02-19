@@ -1,13 +1,16 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { API_URL } from '../../env';
+
 import { QuotesAddQuoteDialogComponent } from '../quotes/quotes-add-quote-dialog/quotes-add-quote-dialog.component';
 import { QuotesEditQuoteDialogComponent } from '../quotes/quotes-edit-quote-dialog/quotes-edit-quote-dialog.component';
 import { QuotesDeleteQuoteDialogComponent } from '../quotes/quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
+
 
 export interface Quote {
   id: number,
@@ -73,6 +76,9 @@ export class QuotesComponent implements OnInit {
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {
         // TODO Send edited quote and refresh table
+        this.putQuoteAPI(element.id, result);
+        console.log('quotes: edit quote');
+        console.log(result);
       }
     });
   }
@@ -112,6 +118,23 @@ export class QuotesComponent implements OnInit {
     );
   }
 
+  putQuoteAPI(id: number, quote: QuoteData) {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { id: id - 1, name: quote.name, quote: quote.quote, date: quote.date };
+    this.http.put(`${API_URL}/quotes`, body, { headers }).subscribe(
+      (val) => {
+        console.log('PUT call successful value returned in body', val);
+        this.refreshTable(val);
+      },
+      response => {
+        console.log('PUT call in error', response);
+      },
+      () => {
+        console.log('The PUT observable is now completed.');
+      }
+    );
+  }
+
   deleteQuoteAPI(quote: Quote) {
     this.http.delete(`${API_URL}/quotes/${quote.id - 1}`).subscribe(
       (val) => {
@@ -133,5 +156,9 @@ export class QuotesComponent implements OnInit {
     for (let ii = 0; ii < this.dataSourceQuotes.data.length; ii++) {
       this.dataSourceQuotes.data[ii].id = ii + 1;
     }
+  }
+
+  parseISO8601toGer(iso8601: string) {
+
   }
 }
