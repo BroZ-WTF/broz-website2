@@ -3,9 +3,8 @@
     <mat-card-title>
       Die BroZ
     </mat-card-title>
-    <div>
-      <span style="margin: 1em;">Interessantes Zeug über uns.</span>
-    </div>
+    <mat-divider [inset]="true"></mat-divider>
+    <p>Interessantes Zeug über uns.</p>
   </mat-card>
 
   <mat-divider></mat-divider>
@@ -14,6 +13,8 @@
     <mat-card-title>
       Teamspeak 3
     </mat-card-title>
+    <mat-divider [inset]="true"></mat-divider>
+    <p></p>
     <a href="ts3server://broz.wtf?port=9987" target="_blank"><img src="https://ts3index.com/banner/s410_262829.png"
         alt="TS3index.com" style="border-style: none;" /></a>
   </mat-card>
@@ -25,32 +26,28 @@
     <mat-card-title>
       Minecraft Server
     </mat-card-title>
-    <div>
-      <mat-list>
-        <mat-list-item style="height: 2em;">
-          <h4 class="server-info-title">Adresse:</h4>
-          <p>broz.wtf</p>
-        </mat-list-item>
-        <mat-divider [inset]="true"></mat-divider>
-        <mat-list-item style="height: auto;">
-          <h4 class="server-info-title">Beschreibung:</h4>
-          <p>{{ fullMCServerStatus.description }}</p>
-        </mat-list-item>
-        <mat-list-item style="height: 1.5em;">
-          <h4 class="server-info-title">Version:</h4>
-          <p>{{ fullMCServerStatus.version }}</p>
-        </mat-list-item>
-        <mat-list-item style="height: 1.5em;">
-          <h4 class="server-info-title">Status:</h4>
-          <p>
-            {{ (fullMCServerStatus.status == "success") ? (fullMCServerStatus.online ? "online" : "offline") : "unable to query" }}
-          </p>
-        </mat-list-item>
-        <mat-list-item style="height: 1.5em;">
-          <h4 class="server-info-title">Spieler:</h4>
-          <p>{{ fullMCServerStatus.players.now }}/{{ fullMCServerStatus.players.max }}</p>
-        </mat-list-item>
-      </mat-list>
-    </div>
+    <mat-divider [inset]="true"></mat-divider>
+    <mat-list>
+      <h3 mat-subheader>BroZ.wtf</h3>
+      <mat-list-item class="server-info-item">
+        <mat-icon mat-list-icon>description</mat-icon>
+        {{ fullMCServerStatus.description }}
+      </mat-list-item>
+      <mat-list-item class="server-info-item">
+        <mat-icon mat-list-icon>info</mat-icon>
+        {{ (fullMCServerStatus.status == "success") ? (fullMCServerStatus.online ? "online" : "offline") : "unable to query" }}
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+      <h3 mat-subheader>Spieler</h3>
+      <mat-list-item class="server-info-item">
+        <mat-icon mat-list-icon>perm_identity</mat-icon>
+        {{ fullMCServerStatus.players.now }}/{{ fullMCServerStatus.players.max }}
+      </mat-list-item>
+      <mat-list-item class="server-info-item">
+        <mat-icon mat-list-icon>toc</mat-icon>
+        {{ fullMCServerStatus.players.names }}
+      </mat-list-item>
+    </mat-list>
+
   </mat-card>
 </div>

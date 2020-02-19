@@ -4,14 +4,32 @@
   <span style="margin: 15px;">BroZ Website</span>
 </mat-toolbar>
 
-<mat-tab-group color="accent" dynamicHeight="false">
-  <mat-tab label="Überblick">
+<mat-tab-group style="width: fit-content;" color="accent" dynamicHeight="false">
+  <mat-tab class="tab-content">
+    <ng-template mat-tab-label>
+      <div class="tab-label">
+        <mat-icon class="tab-icon">home</mat-icon>
+        Überblick
+      </div>
+    </ng-template>
     <app-overview></app-overview>
   </mat-tab>
-  <mat-tab label="Gallerie">
+  <mat-tab class="tab-content">
+    <ng-template mat-tab-label>
+      <div class="tab-label">
+        <mat-icon class="tab-icon">collections</mat-icon>
+        Gallerie
+      </div>
+    </ng-template>
     <app-gallery></app-gallery>
   </mat-tab>
-  <mat-tab label="Zitate">
+  <mat-tab class="tab-content">
+    <ng-template mat-tab-label>
+      <div class="tab-label">
+        <mat-icon class="tab-icon">sms</mat-icon>
+        Zitate
+      </div>
+    </ng-template>
     <app-quotes></app-quotes>
   </mat-tab>
 </mat-tab-group>

@@ -27,9 +27,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverviewComponent } from './overview/overview.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { QuotesComponent, } from './quotes/quotes.component';
-import { QuotesAddQuoteDialogComponent } from './quotes-add-quote-dialog/quotes-add-quote-dialog.component';
-import { QuotesEditQuoteDialogComponent } from './quotes-edit-quote-dialog/quotes-edit-quote-dialog.component';
-import { QuotesDeleteQuoteDialogComponent } from './quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
+import { QuotesAddQuoteDialogComponent } from './quotes/quotes-add-quote-dialog/quotes-add-quote-dialog.component';
+import { QuotesEditQuoteDialogComponent } from './quotes/quotes-edit-quote-dialog/quotes-edit-quote-dialog.component';
+import { QuotesDeleteQuoteDialogComponent } from './quotes/quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
 
 @NgModule({
   declarations: [

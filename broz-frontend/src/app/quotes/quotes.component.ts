@@ -5,9 +5,9 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { API_URL } from '../../env';
-import { QuotesAddQuoteDialogComponent } from '../quotes-add-quote-dialog/quotes-add-quote-dialog.component';
-import { QuotesEditQuoteDialogComponent } from '../quotes-edit-quote-dialog/quotes-edit-quote-dialog.component';
-import { QuotesDeleteQuoteDialogComponent } from '../quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
+import { QuotesAddQuoteDialogComponent } from '../quotes/quotes-add-quote-dialog/quotes-add-quote-dialog.component';
+import { QuotesEditQuoteDialogComponent } from '../quotes/quotes-edit-quote-dialog/quotes-edit-quote-dialog.component';
+import { QuotesDeleteQuoteDialogComponent } from '../quotes/quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
 
 export interface Quote {
   id: number,
@@ -29,15 +29,15 @@ export interface QuoteData {
 })
 
 export class QuotesComponent implements OnInit {
-  fullQuotes;
-  dataSourceQuotes = new MatTableDataSource<Quote>();
   maxall: number = 20;
+  displayedColumns: string[] = ['id', 'name', 'quote', 'date', 'editActions'];
+
+  fullQuotes: any;
+  dataSourceQuotes = new MatTableDataSource<Quote>();
 
   @ViewChild(MatTable) table: MatTable<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  displayedColumns: string[] = ['id', 'name', 'quote', 'date', 'editActions'];
 
   constructor(public dialog: MatDialog, private http: HttpClient) {
   }

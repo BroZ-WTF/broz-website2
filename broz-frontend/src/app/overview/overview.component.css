@@ -1,10 +1,11 @@
 .overview-container {
-  text-align: center;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
 }
 .card {
+  text-align: center;
   background-color: rgba(0, 0, 0, 0.1);
   margin: 5px;
-}
-.server-info-title {
-  width: 10em;
 }
