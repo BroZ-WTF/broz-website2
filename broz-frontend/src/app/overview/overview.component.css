@@ -1,7 +1,10 @@
-mat-card {
+.overview-container {
+  text-align: center;
+}
+.card {
   background-color: rgba(0, 0, 0, 0.1);
   margin: 5px;
 }
-h4 {
+.server-info-title {
   width: 10em;
 }
