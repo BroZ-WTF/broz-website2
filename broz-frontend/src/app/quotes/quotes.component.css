@@ -5,3 +5,18 @@ table {
 th.mat-sort-header-sorted {
   color: black;
 }
+
+.card {
+  background-color: rgba(0, 0, 0, 0.1);
+  margin: 5px;
+}
+
+.container-header{
+  margin: auto;
+  display: flex;
+}
+
+.container-top-scorer{
+  align-self: center;
+  margin: 2em;
+}

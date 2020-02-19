@@ -35,6 +35,9 @@ export class QuotesComponent implements OnInit {
   maxall: number = 20;
   displayedColumns: string[] = ['id', 'name', 'quote', 'date', 'editActions'];
 
+  topScorer = Object();
+  topScorerArray = [];
+
   fullQuotes: any;
   dataSourceQuotes = new MatTableDataSource<Quote>();
 
@@ -42,8 +45,7 @@ export class QuotesComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public dialog: MatDialog, private http: HttpClient) {
-  }
+  constructor(public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.getAllQuotesAPI().subscribe(val => {
@@ -155,10 +157,24 @@ export class QuotesComponent implements OnInit {
     this.dataSourceQuotes.data = this.fullQuotes.quotes_list;
     for (let ii = 0; ii < this.dataSourceQuotes.data.length; ii++) {
       this.dataSourceQuotes.data[ii].id = ii + 1;
+      if (this.dataSourceQuotes.data[ii].name in this.topScorer) {
+        this.topScorer[this.dataSourceQuotes.data[ii].name]++;
+      } else {
+        this.topScorer[this.dataSourceQuotes.data[ii].name] = 1;
+      }
     }
-  }
 
-  parseISO8601toGer(iso8601: string) {
+    // Wierd sorting thing from stackoverflow
+    let to_sort = this.topScorer;
+    this.topScorerArray = Object.keys(to_sort).map(function (key) {
+      return [key, to_sort[key]];
+    });
+    this.topScorerArray.sort(function (first, second) {
+      return second[1] - first[1];
+    });
 
+    console.log('quotes: top scorer');
+    console.log(this.topScorer);
+    console.log(this.topScorerArray);
   }
 }
