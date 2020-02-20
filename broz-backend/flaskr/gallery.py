@@ -1,11 +1,13 @@
 import json, os
 from flask import Blueprint, current_app, jsonify, request, send_from_directory
+from flask_cors import CORS
 
 gallery_component = Blueprint('gallery_component', __name__)
+CORS(gallery_component)
 
 
 # GET gallery metadata
-@gallery_component.route('/metadata')
+@gallery_component.route('/gallery/metadata')
 def get_gallery_metadata():
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
   try:
@@ -18,7 +20,7 @@ def get_gallery_metadata():
 
 
 # DELETE gallery metadata
-@gallery_component.route('/metadata/<int:picture_id>', methods=['DELETE'])
+@gallery_component.route('/gallery/metadata/<int:picture_id>', methods=['DELETE'])
 def del_gallery_metadata(picture_id):
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
   try:
@@ -38,7 +40,7 @@ def del_gallery_metadata(picture_id):
 
 
 # POST gallery metadata
-@gallery_component.route('/metadata', methods=['POST'])
+@gallery_component.route('/gallery/metadata', methods=['POST'])
 def add_gallery_metadata():
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
   posted_picture_metadata = request.get_json()
@@ -60,7 +62,7 @@ def add_gallery_metadata():
 
 
 # PUT gallery metadata
-@gallery_component.route('/metadata', methods=['PUT'])
+@gallery_component.route('/gallery/metadata', methods=['PUT'])
 def edit_gallery_metadata():
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
   posted_picture_metadata = request.get_json()
@@ -87,7 +89,7 @@ def edit_gallery_metadata():
 
 
 # GET picture
-@gallery_component.route('/picture/<path:filename>')
+@gallery_component.route('/gallery/picture/<path:filename>')
 def get_picture(filename):
   picture_path = os.path.join(current_app.instance_path, current_app.config["DATA_GALLERY_PATH"])
   return send_from_directory(picture_path, filename)

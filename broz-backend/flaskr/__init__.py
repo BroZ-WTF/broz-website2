@@ -3,15 +3,14 @@ import os
 from flask import Flask
 from flask_cors import CORS
 
-from flaskr.quotes import quotes_component
-from flaskr.gallery import gallery_component
+cors = CORS()
 
 
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__, instance_relative_config=True)
 
-  CORS(app)
+  cors.init_app(app, resources={r"*": {"origins": "*"}})
 
   app.config.from_mapping(SECRET_KEY='dev',)
 
@@ -28,13 +27,11 @@ def create_app(test_config=None):
   except OSError:
     pass
 
-  # register components
-  app.register_blueprint(quotes_component, url_prefix='/quotes')
-  app.register_blueprint(gallery_component, url_prefix='/gallery')
+  from flaskr.quotes import quotes_component
+  from flaskr.gallery import gallery_component
 
-  # a simple page that says hello
-  @app.route('/hello')
-  def hello():
-    return app.config['DATA_QUOTES_PATH']
+  # register components
+  app.register_blueprint(quotes_component, url_prefix='/api')
+  app.register_blueprint(gallery_component, url_prefix='/api')
 
   return app
