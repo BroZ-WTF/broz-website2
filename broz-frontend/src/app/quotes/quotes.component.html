@@ -1,17 +1,21 @@
 <mat-card class="card">
   <!-- Header -->
-  <div class="container-header">
-    <div>
-      <mat-card-title>
-        Angeblich lustige Zitate
-      </mat-card-title>
+  <mat-card-title>
+    Angeblich lustige Zitate
+  </mat-card-title>
+  <div class="container-button-scores">
+    <button mat-raised-button color="primary" (click)="addQuote()">
+      Neues Zitat
+    </button>
+    <span class="spacer"></span>
+    <mat-card class="container-all-scores" backgroundColor="accent">
       <div>
-        <button mat-stroked-button color="primary" style="margin: 5px;" (click)="addQuote()">Neues Zitat</button>
+        <b>Top Score:</b>
       </div>
-    </div>
-    <div class="container-top-scorer" *ngFor="let scorer of topScorerArray">
-      {{scorer[0]}}: {{scorer[1]}}
-    </div>
+      <div class="container-top-scorer" *ngFor="let scorer of topScorerArray">
+        {{scorer[0]}} - {{scorer[1]}}
+      </div>
+    </mat-card>
   </div>
   <div style="margin: 10px;"></div>
   <!-- Table -->

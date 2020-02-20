@@ -1,22 +1,25 @@
 table {
   width: 100%;
 }
-
-th.mat-sort-header-sorted {
-  color: black;
-}
-
 .card {
-  background-color: rgba(0, 0, 0, 0.1);
-  margin: 5px;
+  margin-top: 5px;
 }
 
-.container-header{
+.container-button-scores{
   margin: auto;
+  display: flex;
+}
+
+.spacer{
+  flex: 1 1 auto;
+}
+
+.container-all-scores{
+  margin-left: 5px;
   display: flex;
 }
 
 .container-top-scorer{
   align-self: center;
-  margin: 2em;
+  margin-left: 1em;
 }
