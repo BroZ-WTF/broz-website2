@@ -67,7 +67,7 @@ export class GalleryComponent implements OnInit {
     });
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.putPictureAPI(element.id);
+        this.putPictureAPI(result);
         console.log('gallery: edit picture');
         console.log(result);
       }
@@ -96,15 +96,52 @@ export class GalleryComponent implements OnInit {
   }
 
   postPictureAPI(picture: PictureData) {
-
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = picture;
+    this.http.post(`${API_URL}/gallery/metadata`, body, { headers }).subscribe(
+      (val) => {
+        console.log('POST call successful value returned in body', val);
+        this.refreshPictureGrid(val);
+      },
+      response => {
+        console.log('POST call in error', response);
+      },
+      () => {
+        console.log('The POST observable is now completed.');
+      }
+    );
   }
 
   putPictureAPI(picture: Picture) {
-
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = picture;
+    this.http.put(`${API_URL}/gallery/metadata`, body, { headers }).subscribe(
+      (val) => {
+        console.log('PUT call successful value returned in body', val);
+        this.refreshPictureGrid(val);
+      },
+      response => {
+        console.log('PUT call in error', response);
+      },
+      () => {
+        console.log('The PUT observable is now completed.');
+      }
+    );
   }
 
   deletePictureAPI(picture: Picture) {
-
+    this.http.delete(`${API_URL}/gallery/metadata/${picture.id}`).subscribe(
+      (val) => {
+        console.log('DELETE call successful value returned in body', val);
+        this.refreshPictureGrid(val);
+      },
+      response => {
+        console.log('DELETE call in error', response);
+      },
+      () => {
+        console.log('The DELETE observable is now completed.');
+      }
+    );
   }
 
   refreshPictureGrid(val: any) {
@@ -112,8 +149,6 @@ export class GalleryComponent implements OnInit {
     this.picturesMetadata = this.fullPicturesMetadata.pictures;
     for (let ii = 0; ii < this.picturesMetadata.length; ii++) {
       this.picturesMetadata[ii].id = ii;
-      // TODO Check whether online resource or own server resource
-      this.picturesMetadata[ii].file = `${API_URL}/gallery/picture/` + this.picturesMetadata[ii].file;
     }
   }
 }

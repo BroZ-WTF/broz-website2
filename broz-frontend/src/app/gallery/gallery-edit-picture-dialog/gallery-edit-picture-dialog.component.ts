@@ -27,7 +27,9 @@ export class GalleryEditPictureDialogComponent implements OnInit {
   ngOnInit(): void { }
 
   submit() {
-    this.editDialogRef.close(this.pictureForm.value);
+    let returnval = this.pictureForm.value;
+    returnval['id'] = this.data.id;
+    this.editDialogRef.close(returnval);
   }
 
   close() {
