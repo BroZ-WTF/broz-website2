@@ -19,9 +19,13 @@ picture_path = os.path.join(app.instance_path, app.config["DATA_GALLERY_PATH"])
 # GET quotes
 @app.route('/quotes')
 def get_quotes():
-  with open(quotes_file) as json_quotes:
-    quotes = json.load(json_quotes)
-    return jsonify(quotes)
+  try:
+    with open(quotes_file) as json_quotes:
+      quotes = json.load(json_quotes)
+      return jsonify(quotes), 200
+  except IOError:
+    print("Count not read file, not doing anything")
+    return 500
 
 
 # DELETE quote
@@ -32,15 +36,15 @@ def del_quote(quote_id):
       quotes = json.load(json_quotes)
   except IOError:
     print("Could not read file, not doing anything")
-    return jsonify(quotes)
+    return 500
   try:
     del quotes["quotes_list"][quote_id]
     with open(quotes_file, 'wt') as json_quotes:
       json.dump(quotes, json_quotes)
-      return jsonify(quotes)
+      return jsonify(quotes), 200
   except IndexError:
     print("Given id is not present, not doing anything")
-    return 0
+    return jsonify(quotes), 416
 
 
 # POST quote
@@ -73,25 +77,33 @@ def edit_quote():
       quotes = json.load(json_quotes)
   except IOError:
     print("Could not read file, not doing anything")
-    return 0
+    return 500
   if not posted_quote.keys() == {'id', 'name', 'quote', 'date'}:
     # raise value error if any key is not set
     raise ValueError
   else:
     id = posted_quote["id"]
     del posted_quote["id"]
-    quotes["quotes_list"][id] = posted_quote
-    with open(quotes_file, 'wt') as json_quotes:
-      json.dump(quotes, json_quotes)
-      return jsonify(quotes), 201
+    try:
+      quotes["quotes_list"][id] = posted_quote
+      with open(quotes_file, 'wt') as json_quotes:
+        json.dump(quotes, json_quotes)
+        return jsonify(quotes), 200
+    except IndexError:
+      print("Given id is not present, not doing anything")
+      return jsonify(quotes), 416
 
 
 # GET gallery metadata
 @app.route('/gallery/metadata')
 def get_gallery_metadata():
-  with open(gallery_metadata_file) as json_metadata:
-    metadata = json.load(json_metadata)
-    return jsonify(metadata)
+  try:
+    with open(gallery_metadata_file) as json_metadata:
+      metadata = json.load(json_metadata)
+      return jsonify(metadata)
+  except IOError:
+    print("Count not read file, not doing anything")
+    return 500
 
 
 # DELETE gallery metadata
@@ -102,15 +114,15 @@ def del_gallery_metadata(picture_id):
       metadata = json.load(json_metadata)
   except IOError:
     print("Could not read file, not doing anything")
-    return jsonify(metadata)
+    return 500
   try:
     del metadata["pictures"][picture_id]
     with open(gallery_metadata_file, 'wt') as json_metadata:
       json.dump(metadata, json_metadata)
-      return jsonify(metadata)
+      return jsonify(metadata), 200
   except IndexError:
     print("Given id is not present, not doing anything")
-    return 0
+    return 416
 
 
 # POST gallery metadata
@@ -143,17 +155,21 @@ def edit_gallery_metadata():
       metadata = json.load(json_metadata)
   except IOError:
     print("Could not read file, not doing anything")
-    return 0
+    return 500
   if not posted_picture_metadata.keys() == {'id', 'name', 'description', 'file'}:
     # raise value error if any key is not set
     raise ValueError
   else:
     id = posted_picture_metadata["id"]
     del posted_picture_metadata["id"]
-    metadata["pictures"][id] = posted_picture_metadata
-    with open(gallery_metadata_file, 'wt') as json_metadata:
-      json.dump(metadata, json_metadata)
-      return jsonify(metadata), 201
+    try:
+      metadata["pictures"][id] = posted_picture_metadata
+      with open(gallery_metadata_file, 'wt') as json_metadata:
+        json.dump(metadata, json_metadata)
+        return jsonify(metadata), 201
+    except IndexError:
+      print("Given id is not present, not doing anything")
+      return jsonify(quotes), 416
 
 
 # GET picture
