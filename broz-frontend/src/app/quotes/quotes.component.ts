@@ -14,6 +14,7 @@ import { QuotesDeleteQuoteDialogComponent } from '../quotes/quotes-delete-quote-
 
 export interface Quote {
   id: number,
+  id_pretty: number,
   name: string,
   quote: string,
   date: Date,
@@ -77,7 +78,8 @@ export class QuotesComponent implements OnInit {
     });
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // TODO Send edited quote and refresh table
+        // Pass ID to indentify quote in backend by index in list
+        // -1 to change from counting 1up to 0up
         this.putQuoteAPI(element.id, result);
         console.log('quotes: edit quote');
         console.log(result);
@@ -122,7 +124,7 @@ export class QuotesComponent implements OnInit {
 
   putQuoteAPI(id: number, quote: QuoteData) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const body = { id: id - 1, name: quote.name, quote: quote.quote, date: quote.date };
+    const body = { id: id, name: quote.name, quote: quote.quote, date: quote.date };
     this.http.put(`${API_URL}/quotes`, body, { headers }).subscribe(
       (val) => {
         console.log('PUT call successful value returned in body', val);
@@ -138,7 +140,7 @@ export class QuotesComponent implements OnInit {
   }
 
   deleteQuoteAPI(quote: Quote) {
-    this.http.delete(`${API_URL}/quotes/${quote.id - 1}`).subscribe(
+    this.http.delete(`${API_URL}/quotes/${quote.id}`).subscribe(
       (val) => {
         console.log('DELETE call successful value returned in body', val);
         this.refreshTable(val);
@@ -155,9 +157,13 @@ export class QuotesComponent implements OnInit {
   refreshTable(val: any) {
     this.fullQuotes = val;
     this.dataSourceQuotes.data = this.fullQuotes.quotes_list;
+    // Reset top scorer to start counting from 0 again
     this.topScorer = Object();
     for (let ii = 0; ii < this.dataSourceQuotes.data.length; ii++) {
-      this.dataSourceQuotes.data[ii].id = ii + 1;
+      this.dataSourceQuotes.data[ii].id = ii;
+      // Pretty ID + 1 to be better readable
+      this.dataSourceQuotes.data[ii].id_pretty = ii + 1;
+      // Calculate top scorers
       if (this.dataSourceQuotes.data[ii].name in this.topScorer) {
         this.topScorer[this.dataSourceQuotes.data[ii].name]++;
       } else {
@@ -165,7 +171,7 @@ export class QuotesComponent implements OnInit {
       }
     }
 
-    // Wierd sorting thing from stackoverflow
+    // Wierd sorting thing from stackoverflow to sort top scorers
     let to_sort = this.topScorer;
     this.topScorerArray = Object.keys(to_sort).map(function (key) {
       return [key, to_sort[key]];

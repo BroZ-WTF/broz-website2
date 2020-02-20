@@ -27,10 +27,12 @@ export class OverviewComponent implements OnInit {
   ngOnInit(): void {
     this.getMCServerStatus().subscribe(val => {
       this.mcapiAnswer = val;
+      // Parse data from API call into own datastructure
       this.fullMCServerStatus.status = this.mcapiAnswer.status;
       this.fullMCServerStatus.online = this.mcapiAnswer.online;
       this.fullMCServerStatus.description = this.mcapiAnswer.motd;
       this.fullMCServerStatus.version = this.mcapiAnswer.version;
+      // Create placeholder if player-list is empty
       this.fullMCServerStatus.players = { max: this.mcapiAnswer.players.max, now: this.mcapiAnswer.players.now, names: "niemand hier :(" };
       if (!this.mcapiAnswer.players.list === null) {
         this.fullMCServerStatus.players.names = this.mcapiAnswer.players.list.join(', ');
