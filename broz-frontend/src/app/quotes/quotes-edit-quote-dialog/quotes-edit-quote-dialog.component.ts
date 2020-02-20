@@ -18,16 +18,18 @@ export class QuotesEditQuoteDialogComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     public editDialogRef: MatDialogRef<QuotesEditQuoteDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { id: number, name: string, quote: string, date: string }
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     // Preset dialog fields on old values
-    this.quoteForm.setValue({ name: this.data.name, quote: this.data.quote, date: new Date(this.data.date) });
+    this.quoteForm.setValue({ name: this.data.name, quote: this.data.quote, date: this.data.date });
   }
 
   ngOnInit(): void { }
 
   submit() {
-    this.editDialogRef.close(this.quoteForm.value);
+    let returnval = this.quoteForm.value;
+    returnval['id'] = this.data.id;
+    this.editDialogRef.close(returnval);
   }
 
   close() {

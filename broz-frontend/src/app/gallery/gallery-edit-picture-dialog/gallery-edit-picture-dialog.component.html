@@ -3,21 +3,21 @@
 <form [formGroup]="pictureForm" class="form">
   <mat-form-field color="primary" class="form-element">
     <input matInput placeholder="Überschrift" formControlName="name">
-    <mat-error *ngIf="!pictureForm.controls['name'].valid && pictureForm.controls['name'].touched">
+    <mat-error *ngIf="!pictureForm.controls['name'].valid">
       Name ist nötig und muss unter 12 Zeichen sein.
     </mat-error>
   </mat-form-field>
 
   <mat-form-field color="primary" class="form-element">
     <textarea matInput placeholder="Beschreibung" formControlName="description"></textarea>
-    <mat-error *ngIf="!pictureForm.controls['description'].valid && pictureForm.controls['description'].touched">
+    <mat-error *ngIf="!pictureForm.controls['description'].valid">
       Zitat ist nötig und muss zwischen 3 und 120 Zeichen sein.
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-element">
     <input matInput placeholder="Dateiname" formControlName="file">
-    <mat-error *ngIf="!pictureForm.controls['file'].valid && pictureForm.controls['file'].touched">
+    <mat-error *ngIf="!pictureForm.controls['file'].valid">
       Dateinname ist nötig.
     </mat-error>
   </mat-form-field>

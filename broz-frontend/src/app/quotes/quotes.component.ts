@@ -14,7 +14,6 @@ import { QuotesDeleteQuoteDialogComponent } from '../quotes/quotes-delete-quote-
 
 export interface Quote {
   id: number,
-  id_pretty: number,
   name: string,
   quote: string,
   date: Date,
@@ -23,7 +22,7 @@ export interface Quote {
 export interface QuoteData {
   name: string,
   quote: string,
-  date: string,
+  date: Date,
 }
 
 @Component({

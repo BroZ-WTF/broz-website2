@@ -12,7 +12,9 @@ export class GalleryEditPictureDialogComponent implements OnInit {
   pictureForm = this.formBuilder.group({
     'name': [null, [Validators.required, Validators.maxLength(12)]],
     'description': [null, [Validators.required, Validators.minLength(3), Validators.maxLength(120)]],
-    'file': [null, Validators.required],
+    'file': [null, [Validators.required, Validators.pattern(
+      /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+\/+[-a-zA-Z0-9]+((\.jpg)|(\.png)|(\.gif))$/
+    )]],
   });
 
   constructor(
