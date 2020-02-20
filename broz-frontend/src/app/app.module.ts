@@ -1,8 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import localeDe from '@angular/common/locales/de';
+registerLocaleData(localeDe, 'de-DE');
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -68,8 +71,8 @@ import { QuotesDeleteQuoteDialogComponent } from './quotes/quotes-delete-quote-d
     ReactiveFormsModule
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'de-DE' },
-    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' },
+    { provide: LOCALE_ID, useValue: 'de_DE' },
+    { provide: MAT_DATE_LOCALE, useValue: 'de_DE' },
   ],
   bootstrap: [AppComponent]
 })

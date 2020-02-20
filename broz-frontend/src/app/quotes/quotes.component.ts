@@ -161,8 +161,6 @@ export class QuotesComponent implements OnInit {
     this.topScorer = Object();
     for (let ii = 0; ii < this.dataSourceQuotes.data.length; ii++) {
       this.dataSourceQuotes.data[ii].id = ii;
-      // Pretty ID + 1 to be better readable
-      this.dataSourceQuotes.data[ii].id_pretty = ii + 1;
       // Calculate top scorers
       if (this.dataSourceQuotes.data[ii].name in this.topScorer) {
         this.topScorer[this.dataSourceQuotes.data[ii].name]++;
