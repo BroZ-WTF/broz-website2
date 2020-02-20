@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -32,6 +33,7 @@ export interface QuoteData {
 })
 
 export class QuotesComponent implements OnInit {
+  snackbarDuration = 3 * 1000; // ms
   maxall: number = 20;
   displayedColumns: string[] = ['id', 'name', 'quote', 'date', 'editActions'];
 
@@ -45,7 +47,7 @@ export class QuotesComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public dialog: MatDialog, private http: HttpClient) { }
+  constructor(public dialog: MatDialog, private _http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getAllQuotesAPI().subscribe(val => {
@@ -98,19 +100,21 @@ export class QuotesComponent implements OnInit {
   }
 
   getAllQuotesAPI() {
-    return this.http.get(`${API_URL}/quotes`)
+    return this._http.get(`${API_URL}/quotes`)
   }
 
   postQuoteAPI(quote: QuoteData) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = quote;
-    this.http.post(`${API_URL}/quotes`, body, { headers }).subscribe(
+    this._http.post(`${API_URL}/quotes`, body, { headers }).subscribe(
       (val) => {
         console.log('POST call successful value returned in body', val);
         this.refreshTable(val);
+        this._snackBar.open('Neues Zitat angelegt', 'OK', { duration: this.snackbarDuration });
       },
       response => {
         console.log('POST call in error', response);
+        this._snackBar.open('ERROR - POST call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
         console.log('The POST observable is now completed.');
@@ -121,13 +125,15 @@ export class QuotesComponent implements OnInit {
   putQuoteAPI(quote: Quote) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = quote;
-    this.http.put(`${API_URL}/quotes`, body, { headers }).subscribe(
+    this._http.put(`${API_URL}/quotes`, body, { headers }).subscribe(
       (val) => {
         console.log('PUT call successful value returned in body', val);
         this.refreshTable(val);
+        this._snackBar.open('Zitat erfolgreich editiert', 'OK', { duration: this.snackbarDuration });
       },
       response => {
         console.log('PUT call in error', response);
+        this._snackBar.open('ERROR - PUT call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
         console.log('The PUT observable is now completed.');
@@ -136,13 +142,15 @@ export class QuotesComponent implements OnInit {
   }
 
   deleteQuoteAPI(quote: Quote) {
-    this.http.delete(`${API_URL}/quotes/${quote.id}`).subscribe(
+    this._http.delete(`${API_URL}/quotes/${quote.id}`).subscribe(
       (val) => {
         console.log('DELETE call successful value returned in body', val);
         this.refreshTable(val);
+        this._snackBar.open('Zitat erfolgreich gelöscht', 'OK', { duration: this.snackbarDuration });
       },
       response => {
         console.log('DELETE call in error', response);
+        this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
         console.log('The DELETE observable is now completed.');

@@ -25,6 +25,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -74,7 +75,8 @@ import { GalleryEditPictureDialogComponent } from './gallery/gallery-edit-pictur
     MatDatepickerModule,
     MatMomentDateModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSnackBarModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de_DE' },

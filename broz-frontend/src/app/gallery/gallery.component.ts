@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { API_URL } from '../../env';
 
 import { GalleryAddPictureDialogComponent } from '../gallery/gallery-add-picture-dialog/gallery-add-picture-dialog.component';
@@ -31,12 +29,14 @@ export interface PictureData {
 })
 
 export class GalleryComponent implements OnInit {
+  snackbarDuration = 3 * 1000; // ms
+
   numer_render_columns: number;
   fullPicturesMetadata;
   picturesMetadata;
 
 
-  constructor(public dialog: MatDialog, private http: HttpClient) { }
+  constructor(public dialog: MatDialog, private _http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.numer_render_columns = Math.ceil(window.innerWidth / 500);
@@ -92,19 +92,21 @@ export class GalleryComponent implements OnInit {
   }
 
   getGalleryMetadataAPI() {
-    return this.http.get(`${API_URL}/gallery/metadata`)
+    return this._http.get(`${API_URL}/gallery/metadata`)
   }
 
   postPictureAPI(picture: PictureData) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = picture;
-    this.http.post(`${API_URL}/gallery/metadata`, body, { headers }).subscribe(
+    this._http.post(`${API_URL}/gallery/metadata`, body, { headers }).subscribe(
       (val) => {
         console.log('POST call successful value returned in body', val);
         this.refreshPictureGrid(val);
+        this._snackBar.open('Neues Bild angelegt', 'OK', { duration: this.snackbarDuration });
       },
       response => {
         console.log('POST call in error', response);
+        this._snackBar.open('ERROR - POST call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
         console.log('The POST observable is now completed.');
@@ -115,13 +117,15 @@ export class GalleryComponent implements OnInit {
   putPictureAPI(picture: Picture) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = picture;
-    this.http.put(`${API_URL}/gallery/metadata`, body, { headers }).subscribe(
+    this._http.put(`${API_URL}/gallery/metadata`, body, { headers }).subscribe(
       (val) => {
         console.log('PUT call successful value returned in body', val);
         this.refreshPictureGrid(val);
+        this._snackBar.open('Bild erfolgreich editiert', 'OK', { duration: this.snackbarDuration });
       },
       response => {
         console.log('PUT call in error', response);
+        this._snackBar.open('ERROR - PUT call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
         console.log('The PUT observable is now completed.');
@@ -130,13 +134,15 @@ export class GalleryComponent implements OnInit {
   }
 
   deletePictureAPI(picture: Picture) {
-    this.http.delete(`${API_URL}/gallery/metadata/${picture.id}`).subscribe(
+    this._http.delete(`${API_URL}/gallery/metadata/${picture.id}`).subscribe(
       (val) => {
         console.log('DELETE call successful value returned in body', val);
         this.refreshPictureGrid(val);
+        this._snackBar.open('Bild erfolgreich gelöscht', 'OK', { duration: this.snackbarDuration });
       },
       response => {
         console.log('DELETE call in error', response);
+        this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
         console.log('The DELETE observable is now completed.');
