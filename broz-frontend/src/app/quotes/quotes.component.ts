@@ -35,7 +35,7 @@ export class QuotesComponent implements OnInit {
   maxall: number = 20;
   displayedColumns: string[] = ['id', 'name', 'quote', 'date', 'editActions'];
 
-  topScorer = Object();
+  topScorer;
   topScorerArray = [];
 
   fullQuotes: any;
@@ -155,6 +155,7 @@ export class QuotesComponent implements OnInit {
   refreshTable(val: any) {
     this.fullQuotes = val;
     this.dataSourceQuotes.data = this.fullQuotes.quotes_list;
+    this.topScorer = Object();
     for (let ii = 0; ii < this.dataSourceQuotes.data.length; ii++) {
       this.dataSourceQuotes.data[ii].id = ii + 1;
       if (this.dataSourceQuotes.data[ii].name in this.topScorer) {

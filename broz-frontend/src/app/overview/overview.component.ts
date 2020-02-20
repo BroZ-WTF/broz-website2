@@ -8,7 +8,7 @@ export interface MCServerStatus {
   players?: {
     max?: number;
     now?: number;
-    names?: string[];
+    names: string;
   };
   version?: number;
 }
@@ -19,7 +19,7 @@ export interface MCServerStatus {
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
-  fullMCServerStatus: MCServerStatus = { status: "unknown", online: false, players: { max: 0, now: 0 } };
+  fullMCServerStatus: MCServerStatus = { status: "unknown", online: false, players: { max: 0, now: 0, names: "" } };
   mcapiAnswer: any;
 
   constructor(private http: HttpClient) { }
@@ -31,8 +31,10 @@ export class OverviewComponent implements OnInit {
       this.fullMCServerStatus.online = this.mcapiAnswer.online;
       this.fullMCServerStatus.description = this.mcapiAnswer.motd;
       this.fullMCServerStatus.version = this.mcapiAnswer.version;
-      this.fullMCServerStatus.players = { max: this.mcapiAnswer.players.max, now: this.mcapiAnswer.players.now, names: [] };
-      this.fullMCServerStatus.players.names = this.mcapiAnswer.players.list.join(', ');
+      this.fullMCServerStatus.players = { max: this.mcapiAnswer.players.max, now: this.mcapiAnswer.players.now, names: "niemand hier :(" };
+      if (!this.mcapiAnswer.players.list === null) {
+        this.fullMCServerStatus.players.names = this.mcapiAnswer.players.list.join(', ');
+      }
       console.log('overview: MCServerStatus');
       console.log(val);
     })
