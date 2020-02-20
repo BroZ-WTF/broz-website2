@@ -1,15 +1,12 @@
 .page-div{
   margin-top: 5px;
 }
-.tile {
-  max-height: fit-content;
-}
 .picture-card {
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 5px;
-  height: calc(100% - 50px);
   max-width: 400px;
+  height: 725px;
   display: flex;
   flex-direction: column;
 }
