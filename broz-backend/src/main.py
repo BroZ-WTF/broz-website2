@@ -134,6 +134,28 @@ def add_gallery_metadata():
       return jsonify(metadata), 201
 
 
+# PUT gallery metadata
+@app.route('/gallery/metadata', methods=['PUT'])
+def edit_gallery_metadata():
+  posted_picture_metadata = request.get_json()
+  try:
+    with open(gallery_metadata_file, 'rt') as json_metadata:
+      metadata = json.load(json_metadata)
+  except IOError:
+    print("Could not read file, not doing anything")
+    return 0
+  if not posted_picture_metadata.keys() == {'id', 'name', 'description', 'file'}:
+    # raise value error if any key is not set
+    raise ValueError
+  else:
+    id = posted_picture_metadata["id"]
+    del posted_picture_metadata["id"]
+    metadata["pictures"][id] = posted_picture_metadata
+    with open(gallery_metadata_file, 'wt') as json_metadata:
+      json.dump(metadata, json_metadata)
+      return jsonify(metadata), 201
+
+
 # GET picture
 @app.route('/gallery/picture/<path:filename>')
 def get_picture(filename):

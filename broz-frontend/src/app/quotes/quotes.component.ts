@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -78,9 +78,7 @@ export class QuotesComponent implements OnInit {
     });
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Pass ID to indentify quote in backend by index in list
-        // -1 to change from counting 1up to 0up
-        this.putQuoteAPI(element.id, result);
+        this.putQuoteAPI(result);
         console.log('quotes: edit quote');
         console.log(result);
       }
@@ -89,7 +87,6 @@ export class QuotesComponent implements OnInit {
 
   deleteQuote(element) {
     const deleteDialogRef = this.dialog.open(QuotesDeleteQuoteDialogComponent, {
-      width: '300px',
       data: { id: element.id, name: element.name, quote: element.quote, date: element.date }
     });
     deleteDialogRef.afterClosed().subscribe(result => {
@@ -122,9 +119,9 @@ export class QuotesComponent implements OnInit {
     );
   }
 
-  putQuoteAPI(id: number, quote: QuoteData) {
+  putQuoteAPI(quote: Quote) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const body = { id: id, name: quote.name, quote: quote.quote, date: quote.date };
+    const body = quote;
     this.http.put(`${API_URL}/quotes`, body, { headers }).subscribe(
       (val) => {
         console.log('PUT call successful value returned in body', val);

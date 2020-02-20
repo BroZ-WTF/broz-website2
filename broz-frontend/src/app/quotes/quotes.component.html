@@ -1,8 +1,9 @@
-<mat-card class="card">
+<mat-card class="page-card">
   <!-- Header -->
   <mat-card-title>
     Angeblich lustige Zitate
   </mat-card-title>
+  <mat-divider [inset]="true"></mat-divider>
   <div class="container-button-scores">
     <button mat-raised-button color="primary" (click)="addQuote()">
       Neues Zitat
@@ -51,10 +52,10 @@
       <ng-container matColumnDef="editActions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-          <button mat-icon-button color="accent" (click)="editQuote(element)">
+          <button mat-mini-fab style="margin-right: 5px;" color="accent" (click)="editQuote(element)">
             <mat-icon> edit </mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="deleteQuote(element)">
+          <button mat-mini-fab style="margin-right: 5px;" color="warn" (click)="deleteQuote(element)">
             <mat-icon> delete </mat-icon>
           </button>
         </td>

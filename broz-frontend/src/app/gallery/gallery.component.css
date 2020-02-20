@@ -1,6 +1,25 @@
-mat-card {
-  height: 650px;
-  max-width: 400px;
+.page-div{
   margin-top: 5px;
+}
+.tile {
+  max-height: fit-content;
+}
+.picture-card {
   margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  height: calc(100% - 50px);
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+.spacer{
+  flex: 1 1 auto;
+}
+.description-card{
+  align-self: center;
+  width: calc(100% - 5px);
+}
+.buttons-card{
+  align-self: center;
 }

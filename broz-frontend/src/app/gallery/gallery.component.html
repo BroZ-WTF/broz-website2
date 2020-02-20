@@ -1,13 +1,35 @@
-<mat-grid-list [cols]="numer_render_columns" rowHeight="700px" (window:resize)="onResize($event)">
-  <mat-grid-tile *ngFor="let picture of picturesMetadata">
-    <mat-card>
-      <mat-card-title>
-        {{ picture.name }}
-      </mat-card-title>
-      <img mat-card-image [src]="picture.file">
-      <mat-card-content>
-        {{ picture.description }}
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
+<div class="page-div">
+  <mat-card>
+    <mat-card-title>
+      Lustige Bildchen
+    </mat-card-title>
+    <mat-divider [inset]="true"></mat-divider>
+    <button mat-raised-button color="primary" (click)="addPicture()">
+      Neues Bild
+    </button>
+  </mat-card>
+  <mat-grid-list [cols]="numer_render_columns" rowHeight="700px" (window:resize)="onResize($event)">
+    <mat-grid-tile class="tile" *ngFor="let picture of picturesMetadata">
+      <mat-card class="picture-card">
+        <mat-card-title>
+          {{ picture.name }}
+        </mat-card-title>
+        <img mat-card-image [src]="picture.file">
+        <mat-card-content class="description-card">
+          <mat-card>
+            {{ picture.description }}
+          </mat-card>
+        </mat-card-content>
+        <span class="spacer"></span>
+        <mat-card-actions class="buttons-card">
+          <button mat-mini-fab style="margin-right: 5px;" color="accent" (click)="editPicture(picture)">
+            <mat-icon> edit </mat-icon>
+          </button>
+          <button mat-mini-fab style="margin-right: 5px;" color="warn" (click)="deletePicture(picture)">
+            <mat-icon> delete </mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

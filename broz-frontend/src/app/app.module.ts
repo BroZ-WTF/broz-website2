@@ -34,6 +34,9 @@ import { QuotesComponent, } from './quotes/quotes.component';
 import { QuotesAddQuoteDialogComponent } from './quotes/quotes-add-quote-dialog/quotes-add-quote-dialog.component';
 import { QuotesEditQuoteDialogComponent } from './quotes/quotes-edit-quote-dialog/quotes-edit-quote-dialog.component';
 import { QuotesDeleteQuoteDialogComponent } from './quotes/quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
+import { GalleryAddPictureDialogComponent } from './gallery/gallery-add-picture-dialog/gallery-add-picture-dialog.component';
+import { GalleryDeletePictureDialogComponent } from './gallery/gallery-delete-picture-dialog/gallery-delete-picture-dialog.component';
+import { GalleryEditPictureDialogComponent } from './gallery/gallery-edit-picture-dialog/gallery-edit-picture-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,10 @@ import { QuotesDeleteQuoteDialogComponent } from './quotes/quotes-delete-quote-d
     QuotesComponent,
     QuotesAddQuoteDialogComponent,
     QuotesEditQuoteDialogComponent,
-    QuotesDeleteQuoteDialogComponent
+    QuotesDeleteQuoteDialogComponent,
+    GalleryAddPictureDialogComponent,
+    GalleryDeletePictureDialogComponent,
+    GalleryEditPictureDialogComponent
   ],
   imports: [
     BrowserModule,
