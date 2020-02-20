@@ -10,7 +10,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class GalleryAddPictureDialogComponent implements OnInit {
   pictureForm = this.formBuilder.group({
-    'name': [null, [Validators.required, Validators.maxLength(12)]],
+    'name': [null, [Validators.required, Validators.maxLength(25)]],
     'description': [null, [Validators.required, Validators.minLength(3), Validators.maxLength(120)]],
     'file': [null, [Validators.required, Validators.pattern(
       /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+\/+[-_a-zA-Z0-9]+((\.jpg)|(\.png)|(\.gif))$/
