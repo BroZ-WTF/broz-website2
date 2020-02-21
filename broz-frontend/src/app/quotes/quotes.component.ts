@@ -6,11 +6,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { API_URL } from '../../env';
 
 import { QuotesAddQuoteDialogComponent } from '../quotes/quotes-add-quote-dialog/quotes-add-quote-dialog.component';
 import { QuotesEditQuoteDialogComponent } from '../quotes/quotes-edit-quote-dialog/quotes-edit-quote-dialog.component';
 import { QuotesDeleteQuoteDialogComponent } from '../quotes/quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
+
+import { environment } from 'src/environments/environment'
 
 
 export interface Quote {
@@ -34,6 +35,7 @@ export interface QuoteData {
 
 export class QuotesComponent implements OnInit {
   snackbarDuration = 3 * 1000; // ms
+  baseUrl = environment.baseUrl + '/quotes';
   maxall: number = 20;
   displayedColumns: string[] = ['id', 'name', 'quote', 'date', 'editActions'];
 
@@ -100,13 +102,14 @@ export class QuotesComponent implements OnInit {
   }
 
   getAllQuotesAPI() {
-    return this._http.get(`${API_URL}/quotes`)
+    return this._http.get(this.baseUrl)
   }
 
   postQuoteAPI(quote: QuoteData) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = quote;
-    this._http.post(`${API_URL}/quotes`, body, { headers }).subscribe(
+    console.log(this.baseUrl);
+    this._http.post(this.baseUrl, body, { headers }).subscribe(
       (val) => {
         console.log('POST call successful value returned in body', val);
         this.refreshTable(val);
@@ -125,7 +128,7 @@ export class QuotesComponent implements OnInit {
   putQuoteAPI(quote: Quote) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = quote;
-    this._http.put(`${API_URL}/quotes`, body, { headers }).subscribe(
+    this._http.put(this.baseUrl, body, { headers }).subscribe(
       (val) => {
         console.log('PUT call successful value returned in body', val);
         this.refreshTable(val);
@@ -142,7 +145,8 @@ export class QuotesComponent implements OnInit {
   }
 
   deleteQuoteAPI(quote: Quote) {
-    this._http.delete(`${API_URL}/quotes/${quote.id}`).subscribe(
+    const delUrl = this.baseUrl + `/${quote.id}`;
+    this._http.delete(delUrl).subscribe(
       (val) => {
         console.log('DELETE call successful value returned in body', val);
         this.refreshTable(val);

@@ -6,26 +6,15 @@ text = '09.02.2020'
 #date = parser.parse(text, dayfirst=True)
 #print(date.replace(day=date.day - 1).isoformat()
 
-import json
+if u"hi" == "hi":
+  print("is gleich")
 
-quotes_path = '/home/thomas/Projects/1_workspace_webdev/broz-website2/broz-backend/instance/data/quotes.json'
+keys = ('date', 'name', 'quote')
+mydict = {u'date': u'2020-02-20T23:00:00.000Z', u'quote': u'Thomas testet dinge', u'name': u'Thomas'}
 
-try:
-  with open(quotes_path, 'rt') as json_quotes:
-    quotes = json.load(json_quotes)
-except IOError:
-  print("Could not read file")
+if not mydict.keys() == set({'name', 'quote', 'date'}):
+  # raise value error if any key is not set
+  raise ValueError
 
-for quote in quotes["quotes_list"]:
-  if quote["date"] == "-":
-    quote["date"] = "2000-01-01T23:00:00.000Z"
-  else:
-    date = parser.parse(quote["date"], dayfirst=True)
-    if (date.day == 1):
-      print(quote["quote"])
-    else:
-      quote["date"] = date.replace(day=date.day - 1).isoformat() + ".000Z"
-
-print(quotes)
-with open(quotes_path, 'wt') as json_quotes:
-  json.dump(quotes, json_quotes)
+if all(key in mydict for key in ('date', 'name', 'quote')):
+  print("is drinne")

@@ -3,11 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { API_URL } from '../../env';
 
 import { GalleryAddPictureDialogComponent } from '../gallery/gallery-add-picture-dialog/gallery-add-picture-dialog.component';
 import { GalleryDeletePictureDialogComponent } from '../gallery/gallery-delete-picture-dialog/gallery-delete-picture-dialog.component';
 import { GalleryEditPictureDialogComponent } from '../gallery/gallery-edit-picture-dialog/gallery-edit-picture-dialog.component';
+
+import { environment } from 'src/environments/environment';
+
 
 export interface Picture {
   id: number,
@@ -30,6 +32,7 @@ export interface PictureData {
 
 export class GalleryComponent implements OnInit {
   snackbarDuration = 3 * 1000; // ms
+  baseUrl = environment.baseUrl + '/gallery';
 
   numer_render_columns: number;
   fullPicturesMetadata;
@@ -92,13 +95,13 @@ export class GalleryComponent implements OnInit {
   }
 
   getGalleryMetadataAPI() {
-    return this._http.get(`${API_URL}/gallery/metadata`)
+    return this._http.get(this.baseUrl + '/metadata')
   }
 
   postPictureAPI(picture: PictureData) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = picture;
-    this._http.post(`${API_URL}/gallery/metadata`, body, { headers }).subscribe(
+    this._http.post(this.baseUrl + '/metadata', body, { headers }).subscribe(
       (val) => {
         console.log('POST call successful value returned in body', val);
         this.refreshPictureGrid(val);
@@ -117,7 +120,7 @@ export class GalleryComponent implements OnInit {
   putPictureAPI(picture: Picture) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = picture;
-    this._http.put(`${API_URL}/gallery/metadata`, body, { headers }).subscribe(
+    this._http.put(this.baseUrl + '/metadata', body, { headers }).subscribe(
       (val) => {
         console.log('PUT call successful value returned in body', val);
         this.refreshPictureGrid(val);
@@ -134,7 +137,8 @@ export class GalleryComponent implements OnInit {
   }
 
   deletePictureAPI(picture: Picture) {
-    this._http.delete(`${API_URL}/gallery/metadata/${picture.id}`).subscribe(
+    const delUrl = this.baseUrl + `/metadata/${picture.id}`;
+    this._http.delete(delUrl).subscribe(
       (val) => {
         console.log('DELETE call successful value returned in body', val);
         this.refreshPictureGrid(val);

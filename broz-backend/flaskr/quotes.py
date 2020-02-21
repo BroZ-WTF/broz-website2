@@ -7,7 +7,7 @@ CORS(quotes_component)
 
 
 # GET quotes
-@quotes_component.route('/quotes/')
+@quotes_component.route('')
 def get_quotes():
   quotes_file = os.path.join(current_app.instance_path, current_app.config["DATA_QUOTES_PATH"])
   try:
@@ -20,7 +20,7 @@ def get_quotes():
 
 
 # DELETE quote
-@quotes_component.route('/quotes/<int:quote_id>', methods=['DELETE'])
+@quotes_component.route('/<int:quote_id>', methods=['DELETE'])
 def del_quote(quote_id):
   quotes_file = os.path.join(current_app.instance_path, current_app.config["DATA_QUOTES_PATH"])
   try:
@@ -40,20 +40,17 @@ def del_quote(quote_id):
 
 
 # POST quote
-@quotes_component.route('/quotes/', methods=['POST'])
+@quotes_component.route('', methods=['POST'])
 def add_quote():
   quotes_file = os.path.join(current_app.instance_path, current_app.config["DATA_QUOTES_PATH"])
   posted_quote = request.get_json()
-  print('Post quote incoming:')
-  print(posted_quote)
   try:
     with open(quotes_file, 'rt') as json_quotes:
       quotes = json.load(json_quotes)
   except IOError:
     print('Could not read file, starting from scratch')
     quotes = {'id': 'broz-quotes', 'quotes_list': []}
-
-  if not posted_quote.keys() == {'name', 'quote', 'date'}:
+  if not all(key in posted_quote for key in ('date', 'name', 'quote')):
     # raise value error if any key is not set
     raise ValueError
   else:
@@ -64,7 +61,7 @@ def add_quote():
 
 
 # PUT quote
-@quotes_component.route('/quotes/', methods=['PUT'])
+@quotes_component.route('', methods=['PUT'])
 def edit_quote():
   quotes_file = os.path.join(current_app.instance_path, current_app.config["DATA_QUOTES_PATH"])
   posted_quote = request.get_json()
@@ -74,7 +71,7 @@ def edit_quote():
   except IOError:
     print('Could not read file, not doing anything')
     return 500
-  if not posted_quote.keys() == {'id', 'name', 'quote', 'date'}:
+  if not all(key in posted_quote for key in ('id', 'date', 'name', 'quote')):
     # raise value error if any key is not set
     raise ValueError
   else:

@@ -34,7 +34,7 @@ export class OverviewComponent implements OnInit {
       this.fullMCServerStatus.version = this.mcapiAnswer.version;
       // Create placeholder if player-list is empty
       this.fullMCServerStatus.players = { max: this.mcapiAnswer.players.max, now: this.mcapiAnswer.players.now, names: "niemand hier :(" };
-      if (!this.mcapiAnswer.players.list === null) {
+      if (this.mcapiAnswer.players.list !== null) {
         this.fullMCServerStatus.players.names = this.mcapiAnswer.players.list.join(', ');
       }
       console.log('overview: MCServerStatus');

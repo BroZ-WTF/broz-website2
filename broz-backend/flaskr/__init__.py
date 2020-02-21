@@ -31,7 +31,7 @@ def create_app(test_config=None):
   from flaskr.gallery import gallery_component
 
   # register components
-  app.register_blueprint(quotes_component, url_prefix='/api')
-  app.register_blueprint(gallery_component, url_prefix='/api')
+  app.register_blueprint(quotes_component, url_prefix='/api/quotes')
+  app.register_blueprint(gallery_component, url_prefix='/api/gallery')
 
   return app

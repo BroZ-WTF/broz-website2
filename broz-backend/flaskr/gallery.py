@@ -7,7 +7,7 @@ CORS(gallery_component)
 
 
 # GET gallery metadata
-@gallery_component.route('/gallery/metadata')
+@gallery_component.route('/metadata')
 def get_gallery_metadata():
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
   try:
@@ -20,7 +20,7 @@ def get_gallery_metadata():
 
 
 # DELETE gallery metadata
-@gallery_component.route('/gallery/metadata/<int:picture_id>', methods=['DELETE'])
+@gallery_component.route('/metadata/<int:picture_id>', methods=['DELETE'])
 def del_gallery_metadata(picture_id):
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
   try:
@@ -40,7 +40,7 @@ def del_gallery_metadata(picture_id):
 
 
 # POST gallery metadata
-@gallery_component.route('/gallery/metadata', methods=['POST'])
+@gallery_component.route('/metadata', methods=['POST'])
 def add_gallery_metadata():
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
   posted_picture_metadata = request.get_json()
@@ -51,7 +51,7 @@ def add_gallery_metadata():
     print('Could not read file, starting from scratch')
     metadata = {'id': 'broz-gallery-metadata', 'pictures': []}
 
-  if not posted_picture_metadata.keys() == {'name', 'description', 'file'}:
+  if not all(key in posted_picture_metadata for key in ('name', 'description', 'file')):
     # raise value error if any key is not set
     raise ValueError
   else:
@@ -62,7 +62,7 @@ def add_gallery_metadata():
 
 
 # PUT gallery metadata
-@gallery_component.route('/gallery/metadata', methods=['PUT'])
+@gallery_component.route('/metadata', methods=['PUT'])
 def edit_gallery_metadata():
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
   posted_picture_metadata = request.get_json()
@@ -72,7 +72,7 @@ def edit_gallery_metadata():
   except IOError:
     print('Could not read file, not doing anything')
     return 500
-  if not posted_picture_metadata.keys() == {'id', 'name', 'description', 'file'}:
+  if not all(key in posted_picture_metadata for key in ('id', 'name', 'description', 'file')):
     # raise value error if any key is not set
     raise ValueError
   else:
@@ -89,7 +89,7 @@ def edit_gallery_metadata():
 
 
 # GET picture
-@gallery_component.route('/gallery/picture/<path:filename>')
+@gallery_component.route('/picture/<path:filename>')
 def get_picture(filename):
   picture_path = os.path.join(current_app.instance_path, current_app.config["DATA_GALLERY_PATH"])
   return send_from_directory(picture_path, filename)
