@@ -2,7 +2,7 @@
 
 <form [formGroup]="quoteForm" class="form">
   <mat-form-field color="primary" class="form-element">
-    <input matInput placeholder="Autor" formControlName="name">
+    <input matInput placeholder="Poet" formControlName="name">
     <mat-error *ngIf="!quoteForm.controls['name'].valid && quoteForm.controls['name'].touched">
       Name ist nötig und muss unter 12 Zeichen sein.
     </mat-error>
