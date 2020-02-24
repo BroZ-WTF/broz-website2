@@ -88,7 +88,11 @@ export class QuotesComponent implements OnInit {
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {
         this._logger.debug('quotes.component: edit form result:', result);
-        this.putQuoteAPI(result);
+        if (result.name === 'Krümmelmonster') {
+          this.monster();
+        } else {
+          this.putQuoteAPI(result);
+        }
       }
     });
   }
@@ -100,7 +104,11 @@ export class QuotesComponent implements OnInit {
     deleteDialogRef.afterClosed().subscribe(result => {
       if (result) {
         this._logger.debug('quotes.component: delete form result:', result);
-        this.deleteQuoteAPI(result);
+        if (result.name === 'Krümmelmonster') {
+          this.monster();
+        } else {
+          this.deleteQuoteAPI(result);
+        }
       }
     });
   }
@@ -159,43 +167,21 @@ export class QuotesComponent implements OnInit {
   }
 
   deleteQuoteAPI(quote: Quote) {
-    if (quote.name === 'Krümmelmonster') {
-      this._logger.debug('quotes.component: PIEP');
-      alert(`
-              .---. .---.
-             :     : o   :    me want cookie!
-         _..-:   o :     :-.._    /
-     .-''  '  \`---' \`---' "   \`\`-.
-   .'   "   '  "  .    "  . '  "  \`.
-  :   '.---.,,.,...,.,.,.,..---.  ' ;
-  \`. " \`.                     .' " .'
-   \`.  '\`.                   .' ' .'
-    \`.    \`-._           _.-' "  .'  .----.
-      \`. "    '"--...--"'  . ' .'  .'  o   \`.
-      .'\`-._'    " .     " _.-'\`. :       o  :
-    .'      \`\`\`--.....--'''    ' \`:_ o       :
-  .'    "     '         "     "   ; \`.;";";";'
- ;         '       "       '     . ; .' ; ; ;
-;     '         '       '   "    .'      .-'
-'  "     "   '      "           "    _.-'
-`);
-    } else {
-      const delUrl = this.baseUrl + `/${quote.id}`;
-      this._http.delete(delUrl).subscribe(
-        (val) => {
-          this._logger.log('quotes.component: DELETE request: all quotes val:', val);
-          this.refreshTable(val);
-          this._snackBar.open('Zitat erfolgreich gelöscht', 'OK', { duration: this.snackbarDuration });
-        },
-        response => {
-          this._logger.error('quotes.component: DELETE request error: response:', response);
-          this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
-        },
-        () => {
-          this._logger.debug('quotes.component: DELETE observable completed.');
-        }
-      );
-    }
+    const delUrl = this.baseUrl + `/${quote.id}`;
+    this._http.delete(delUrl).subscribe(
+      (val) => {
+        this._logger.log('quotes.component: DELETE request: all quotes val:', val);
+        this.refreshTable(val);
+        this._snackBar.open('Zitat erfolgreich gelöscht', 'OK', { duration: this.snackbarDuration });
+      },
+      response => {
+        this._logger.error('quotes.component: DELETE request error: response:', response);
+        this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
+      },
+      () => {
+        this._logger.debug('quotes.component: DELETE observable completed.');
+      }
+    );
   }
 
   refreshTable(val: any) {
@@ -225,5 +211,27 @@ export class QuotesComponent implements OnInit {
     this._logger.debug('quotes.component: sorted top scorer:', this.topScorerArray);
 
     this.dataSourceQuotes.paginator = this.paginator;
+  }
+
+  monster() {
+    this._logger.debug('quotes.component: PIEP');
+    alert(`
+                  .---. .---.
+                 :     : o   :    me want cookie!
+             _..-:   o :     :-.._    /
+         .-''  '  \`---' \`---' "   \`\`-.
+       .'   "   '  "  .    "  . '  "  \`.
+      :   '.---.,,.,...,.,.,.,..---.  ' ;
+      \`. " \`.                     .' " .'
+       \`.  '\`.                   .' ' .'
+        \`.    \`-._           _.-' "  .'  .----.
+          \`. "    '"--...--"'  . ' .'  .'  o   \`.
+          .'\`-._'    " .     " _.-'\`. :       o  :
+        .'      \`\`\`--.....--'''    ' \`:_ o       :
+      .'    "     '         "     "   ; \`.;";";";'
+     ;         '       "       '     . ; .' ; ; ;
+    ;     '         '       '   "    .'      .-'
+    '  "     "   '      "           "    _.-'
+    `);
   }
 }
