@@ -155,21 +155,43 @@ export class QuotesComponent implements OnInit {
   }
 
   deleteQuoteAPI(quote: Quote) {
-    const delUrl = this.baseUrl + `/${quote.id}`;
-    this._http.delete(delUrl).subscribe(
-      (val) => {
-        this.logger.log('quotes.component: DELETE request: all quotes val:', val);
-        this.refreshTable(val);
-        this._snackBar.open('Zitat erfolgreich gelöscht', 'OK', { duration: this.snackbarDuration });
-      },
-      response => {
-        this.logger.error('quotes.component: DELETE request error: response:', response);
-        this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
-      },
-      () => {
-        this.logger.debug('quotes.component: DELETE observable completed.');
-      }
-    );
+    if (quote.name === 'Krümmelmonster') {
+      this.logger.debug('quotes.component: PIEP');
+      alert(`
+              .---. .---.
+             :     : o   :    me want cookie!
+         _..-:   o :     :-.._    /
+     .-''  '  \`---' \`---' "   \`\`-.
+   .'   "   '  "  .    "  . '  "  \`.
+  :   '.---.,,.,...,.,.,.,..---.  ' ;
+  \`. " \`.                     .' " .'
+   \`.  '\`.                   .' ' .'
+    \`.    \`-._           _.-' "  .'  .----.
+      \`. "    '"--...--"'  . ' .'  .'  o   \`.
+      .'\`-._'    " .     " _.-'\`. :       o  :
+    .'      \`\`\`--.....--'''    ' \`:_ o       :
+  .'    "     '         "     "   ; \`.;";";";'
+ ;         '       "       '     . ; .' ; ; ;
+;     '         '       '   "    .'      .-'
+'  "     "   '      "           "    _.-'
+`);
+    } else {
+      const delUrl = this.baseUrl + `/${quote.id}`;
+      this._http.delete(delUrl).subscribe(
+        (val) => {
+          this.logger.log('quotes.component: DELETE request: all quotes val:', val);
+          this.refreshTable(val);
+          this._snackBar.open('Zitat erfolgreich gelöscht', 'OK', { duration: this.snackbarDuration });
+        },
+        response => {
+          this.logger.error('quotes.component: DELETE request error: response:', response);
+          this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
+        },
+        () => {
+          this.logger.debug('quotes.component: DELETE observable completed.');
+        }
+      );
+    }
   }
 
   refreshTable(val: any) {

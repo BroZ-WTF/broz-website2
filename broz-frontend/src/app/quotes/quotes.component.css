@@ -4,18 +4,17 @@ table {
 .page-card {
   margin-top: 5px;
 }
-.container-button-scores{
+.container-button-scores {
   margin: auto;
   display: flex;
 }
-.spacer{
+.spacer {
   flex: 1 1 auto;
 }
-.container-all-scores{
-  margin-left: 5px;
-  display: flex;
-}
-.container-top-scorer{
-  align-self: center;
+.container-top-scorer {
   margin-left: 1em;
+}
+
+.container-exp-scorer {
+  text-align: right;
 }

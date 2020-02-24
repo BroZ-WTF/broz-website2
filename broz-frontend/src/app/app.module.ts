@@ -30,6 +30,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -81,6 +82,7 @@ import { GalleryEditPictureDialogComponent } from './gallery/gallery-edit-pictur
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    MatExpansionModule,
     LoggerModule.forRoot({
       level: !environment.production ? NgxLoggerLevel.DEBUG : NgxLoggerLevel.ERROR,// serverLogLevel
       serverLogLevel: NgxLoggerLevel.OFF

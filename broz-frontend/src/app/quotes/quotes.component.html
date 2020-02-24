@@ -5,20 +5,28 @@
   </mat-card-title>
   <mat-divider [inset]="true"></mat-divider>
   <div class="container-button-scores">
-    <button mat-raised-button color="primary" (click)="addQuote()">
+    <button mat-raised-button style="max-height: 3em;" color="primary" (click)="addQuote()">
       Neues Zitat
     </button>
     <span class="spacer"></span>
-    <mat-card class="container-all-scores" backgroundColor="accent">
-      <div>
-        <b>Top Score:</b>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Top Score:
+        </mat-panel-title>
+        <mat-panel-description>
+          <div class="container-top-scorer" *ngFor="let scorer of topScorerArray.slice(0, 3)">
+            {{scorer[0]}} - {{scorer[1]}}
+          </div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="container-exp-scorer" *ngFor="let scorer of topScorerArray.slice(3)">
+        <div>
+          {{scorer[0]}} - {{scorer[1]}}
+        </div>
       </div>
-      <div class="container-top-scorer" *ngFor="let scorer of topScorerArray">
-        {{scorer[0]}} - {{scorer[1]}}
-      </div>
-    </mat-card>
+    </mat-expansion-panel>
   </div>
-  <div style="margin: 10px;"></div>
   <mat-form-field>
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)">
