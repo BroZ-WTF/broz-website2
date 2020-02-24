@@ -9,6 +9,7 @@
       Neues Zitat
     </button>
     <span class="spacer"></span>
+    <!-- Score Display -->
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -31,6 +32,8 @@
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)">
   </mat-form-field>
+
+
   <!-- Table -->
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSourceQuotes" matSort matSortActive="date" matSortDirection="desc">

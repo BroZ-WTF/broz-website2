@@ -1,6 +1,7 @@
-.page-div{
+.page-div {
   margin-top: 5px;
 }
+
 .picture-card {
   margin-left: 5px;
   margin-right: 5px;
@@ -10,13 +11,16 @@
   display: flex;
   flex-direction: column;
 }
-.spacer{
+
+.spacer {
   flex: 1 1 auto;
 }
-.description-card{
+
+.description-card {
   align-self: center;
   width: calc(100% - 5px);
 }
-.buttons-card{
+
+.buttons-card {
   align-self: center;
 }

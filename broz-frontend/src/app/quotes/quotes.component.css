@@ -1,16 +1,20 @@
 table {
   width: 100%;
 }
+
 .page-card {
   margin-top: 5px;
 }
+
 .container-button-scores {
   margin: auto;
   display: flex;
 }
+
 .spacer {
   flex: 1 1 auto;
 }
+
 .container-top-scorer {
   margin-left: 1em;
 }

@@ -1,7 +1,8 @@
-.tab-label{
+.tab-label {
   display: flex;
   align-items: center;
 }
+
 .tab-icon {
   margin-right: 10px;
 }

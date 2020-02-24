@@ -1,4 +1,5 @@
 <div class="page-div">
+  <!-- Header -->
   <mat-card>
     <mat-card-title>
       Lustige Bildchen
@@ -8,19 +9,26 @@
       Neues Bild
     </button>
   </mat-card>
+
+  <!-- Picture Grid -->
   <mat-grid-list [cols]="numer_render_columns" rowHeight="780px" (window:resize)="onResize($event)">
     <mat-grid-tile class="tile" *ngFor="let picture of picturesMetadata">
       <mat-card class="picture-card">
+        <!-- Title -->
         <mat-card-title>
           {{ picture.name }}
         </mat-card-title>
         <img mat-card-image [src]="picture.file" style="height: 500px;">
+
+        <!-- Content -->
         <mat-card-content class="description-card">
           <mat-card>
             {{ picture.description }}
           </mat-card>
         </mat-card-content>
         <span class="spacer"></span>
+
+        <!-- Action Buttons -->
         <mat-card-actions class="buttons-card">
           <button mat-mini-fab style="margin-right: 5px;" color="accent" (click)="editPicture(picture)">
             <mat-icon> edit </mat-icon>
