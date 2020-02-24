@@ -3,6 +3,20 @@
 <body class="content-page">
   <mat-toolbar color="primary">
     <span style="margin: 15px;">BroZ Website</span>
+    <span class="spacer"></span>
+    <div *ngIf="getLoginState()">
+      <mat-form-field style="margin-right: 15px;">
+        <input matInput type="password" [formControl]="password">
+      </mat-form-field>
+      <button mat-raised-button color="accent" (click)="login()">
+        Login
+      </button>
+    </div>
+    <div *ngIf="!getLoginState()">
+      <button mat-raised-button color="accent" (click)="logout()">
+        Logout
+      </button>
+    </div>
   </mat-toolbar>
 
   <mat-tab-group style="width: fit-content;" color="primary" backgroundColor="accent" dynamicHeight="false">

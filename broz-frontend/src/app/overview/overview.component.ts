@@ -24,17 +24,17 @@ export class OverviewComponent implements OnInit {
   fullMCServerStatus: MCServerStatus = { status: "unknown", online: false, players: { max: 0, now: 0, names: "" } };
   mcapiAnswer: any;
 
-  constructor(private logger: NGXLogger, private http: HttpClient) { }
+  constructor(private _logger: NGXLogger, private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.logger.debug('overview.component: query MCServerStatus.');
+    this._logger.debug('overview.component: query MCServerStatus.');
     this.getMCServerStatus();
   }
 
   getMCServerStatus() {
     return this.http.get('https://mcapi.us/server/query?ip=broz.wtf').subscribe(
       (val) => {
-        this.logger.log('overview.component: GET request: MCServerStatus val:', val);
+        this._logger.log('overview.component: GET request: MCServerStatus val:', val);
         this.mcapiAnswer = val;
         // Parse data from API call into own datastructure
         this.fullMCServerStatus.status = this.mcapiAnswer.status;
@@ -48,10 +48,10 @@ export class OverviewComponent implements OnInit {
         }
       },
       response => {
-        this.logger.error('overview.component: GET request error: response:', response);
+        this._logger.error('overview.component: GET request error: response:', response);
       },
       () => {
-        this.logger.debug('overview.component: GET observable completed.');
+        this._logger.debug('overview.component: GET observable completed.');
       }
     );
   }

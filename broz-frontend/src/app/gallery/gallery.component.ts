@@ -11,6 +11,7 @@ import { GalleryDeletePictureDialogComponent } from '../gallery/gallery-delete-p
 import { GalleryEditPictureDialogComponent } from '../gallery/gallery-edit-picture-dialog/gallery-edit-picture-dialog.component';
 
 import { environment } from 'src/environments/environment';
+import { noLogin } from '../app.component';
 
 
 export interface Picture {
@@ -31,7 +32,6 @@ export interface PictureData {
   templateUrl: './gallery.component.html',
   styleUrls: ['./gallery.component.css']
 })
-
 export class GalleryComponent implements OnInit {
   snackbarDuration = 3 * 1000; // ms
   baseUrl = environment.baseUrl + '/gallery';
@@ -41,12 +41,16 @@ export class GalleryComponent implements OnInit {
   picturesMetadata;
 
 
-  constructor(private logger: NGXLogger, public dialog: MatDialog, private _http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(private _logger: NGXLogger, public dialog: MatDialog, private _http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.numer_render_columns = Math.ceil(window.innerWidth / 500);
-    this.logger.debug('gallery.component: query gallery metadata.');
+    this._logger.debug('gallery.component: query gallery metadata.');
     this.getGalleryMetadataAPI();
+  }
+
+  getLoginState() {
+    return noLogin;
   }
 
   addPicture() {
@@ -55,7 +59,7 @@ export class GalleryComponent implements OnInit {
     });
     addDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.logger.debug('gallery.component: add form result:', result);
+        this._logger.debug('gallery.component: add form result:', result);
         this.postPictureAPI(result);
       }
     });
@@ -68,7 +72,7 @@ export class GalleryComponent implements OnInit {
     });
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.logger.debug('gallery.component: edit form result:', result);
+        this._logger.debug('gallery.component: edit form result:', result);
         this.putPictureAPI(result);
       }
     });
@@ -80,7 +84,7 @@ export class GalleryComponent implements OnInit {
     });
     deleteDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.logger.debug('gallery.component: delete form result:', result);
+        this._logger.debug('gallery.component: delete form result:', result);
         this.deletePictureAPI(result);
       }
     });
@@ -93,14 +97,14 @@ export class GalleryComponent implements OnInit {
   getGalleryMetadataAPI() {
     return this._http.get(this.baseUrl + '/metadata').subscribe(
       (val) => {
-        this.logger.log('gallery.component: GET request: all gallery metadata val:', val);
+        this._logger.log('gallery.component: GET request: all gallery metadata val:', val);
         this.refreshPictureGrid(val);
       },
       response => {
-        this.logger.error('gallery.component: GET request error: response:', response);
+        this._logger.error('gallery.component: GET request error: response:', response);
       },
       () => {
-        this.logger.debug('gallery.component: GET observable completed.');
+        this._logger.debug('gallery.component: GET observable completed.');
       }
     );
   }
@@ -110,16 +114,16 @@ export class GalleryComponent implements OnInit {
     const body = picture;
     this._http.post(this.baseUrl + '/metadata', body, { headers }).subscribe(
       (val) => {
-        this.logger.log('gallery.component: POST request: all gallery metadata val:', val);
+        this._logger.log('gallery.component: POST request: all gallery metadata val:', val);
         this.refreshPictureGrid(val);
         this._snackBar.open('Neues Bild angelegt', 'OK', { duration: this.snackbarDuration });
       },
       response => {
-        this.logger.error('gallery.component: POST request error: response:', response);
+        this._logger.error('gallery.component: POST request error: response:', response);
         this._snackBar.open('ERROR - POST call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
-        this.logger.debug('gallery.component: POST observable completed.');
+        this._logger.debug('gallery.component: POST observable completed.');
       }
     );
   }
@@ -129,16 +133,16 @@ export class GalleryComponent implements OnInit {
     const body = picture;
     this._http.put(this.baseUrl + '/metadata', body, { headers }).subscribe(
       (val) => {
-        this.logger.log('gallery.component: PUT request: all gallery metadata val:', val);
+        this._logger.log('gallery.component: PUT request: all gallery metadata val:', val);
         this.refreshPictureGrid(val);
         this._snackBar.open('Bild erfolgreich editiert', 'OK', { duration: this.snackbarDuration });
       },
       response => {
-        this.logger.error('gallery.component: PUT request error: response:', response);
+        this._logger.error('gallery.component: PUT request error: response:', response);
         this._snackBar.open('ERROR - PUT call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
-        this.logger.debug('gallery.component: PUT observable completed.');
+        this._logger.debug('gallery.component: PUT observable completed.');
       }
     );
   }
@@ -147,16 +151,16 @@ export class GalleryComponent implements OnInit {
     const delUrl = this.baseUrl + `/metadata/${picture.id}`;
     this._http.delete(delUrl).subscribe(
       (val) => {
-        this.logger.log('gallery.component: DELETE request: all gallery metadata val:', val);
+        this._logger.log('gallery.component: DELETE request: all gallery metadata val:', val);
         this.refreshPictureGrid(val);
         this._snackBar.open('Bild erfolgreich gelöscht', 'OK', { duration: this.snackbarDuration });
       },
       response => {
-        this.logger.error('gallery.component: DELETE request error: response:', response);
+        this._logger.error('gallery.component: DELETE request error: response:', response);
         this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
-        this.logger.debug('gallery.component: DELETE observable completed.');
+        this._logger.debug('gallery.component: DELETE observable completed.');
       }
     );
   }

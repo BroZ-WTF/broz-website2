@@ -5,7 +5,7 @@
       Lustige Bildchen
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
-    <button mat-raised-button color="primary" (click)="addPicture()">
+    <button mat-raised-button color="primary" (click)="addPicture()" [disabled]="getLoginState()">
       Neues Bild
     </button>
   </mat-card>
@@ -30,10 +30,12 @@
 
         <!-- Action Buttons -->
         <mat-card-actions class="buttons-card">
-          <button mat-mini-fab style="margin-right: 5px;" color="accent" (click)="editPicture(picture)">
+          <button mat-mini-fab style="margin-right: 5px;" color="accent" (click)="editPicture(picture)"
+            [disabled]="getLoginState()">
             <mat-icon> edit </mat-icon>
           </button>
-          <button mat-mini-fab style="margin-right: 5px;" color="warn" (click)="deletePicture(picture)">
+          <button mat-mini-fab style="margin-right: 5px;" color="warn" (click)="deletePicture(picture)"
+            [disabled]="getLoginState()">
             <mat-icon> delete </mat-icon>
           </button>
         </mat-card-actions>

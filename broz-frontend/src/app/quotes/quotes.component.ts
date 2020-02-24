@@ -14,6 +14,7 @@ import { QuotesEditQuoteDialogComponent } from '../quotes/quotes-edit-quote-dial
 import { QuotesDeleteQuoteDialogComponent } from '../quotes/quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
 
 import { environment } from 'src/environments/environment'
+import { noLogin } from '../app.component'
 
 
 export interface Quote {
@@ -34,7 +35,6 @@ export interface QuoteData {
   templateUrl: './quotes.component.html',
   styleUrls: ['./quotes.component.css']
 })
-
 export class QuotesComponent implements OnInit {
   snackbarDuration = 3 * 1000; // ms
   baseUrl = environment.baseUrl + '/quotes';
@@ -51,12 +51,16 @@ export class QuotesComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private logger: NGXLogger, public dialog: MatDialog, private _http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(private _logger: NGXLogger, public dialog: MatDialog, private _http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.logger.debug('quotes.component: query quotes.');
+    this._logger.debug('quotes.component: query quotes.');
     this.getAllQuotesAPI();
     this.dataSourceQuotes.sort = this.sort;
+  }
+
+  getLoginState() {
+    return noLogin;
   }
 
   applyFilter(event: Event) {
@@ -70,7 +74,7 @@ export class QuotesComponent implements OnInit {
     });
     addDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.logger.debug('quotes.component: add form result:', result);
+        this._logger.debug('quotes.component: add form result:', result);
         this.postQuoteAPI(result);
       }
     });
@@ -83,7 +87,7 @@ export class QuotesComponent implements OnInit {
     });
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.logger.debug('quotes.component: edit form result:', result);
+        this._logger.debug('quotes.component: edit form result:', result);
         this.putQuoteAPI(result);
       }
     });
@@ -95,7 +99,7 @@ export class QuotesComponent implements OnInit {
     });
     deleteDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.logger.debug('quotes.component: delete form result:', result);
+        this._logger.debug('quotes.component: delete form result:', result);
         this.deleteQuoteAPI(result);
       }
     });
@@ -104,14 +108,14 @@ export class QuotesComponent implements OnInit {
   getAllQuotesAPI() {
     return this._http.get(this.baseUrl).subscribe(
       (val) => {
-        this.logger.log('quotes.component: GET request: all quotes val:', val);
+        this._logger.log('quotes.component: GET request: all quotes val:', val);
         this.refreshTable(val);
       },
       response => {
-        this.logger.error('quotes.component: GET request error: response:', response);
+        this._logger.error('quotes.component: GET request error: response:', response);
       },
       () => {
-        this.logger.debug('quotes.component: GET observable completed.');
+        this._logger.debug('quotes.component: GET observable completed.');
       }
     );
   }
@@ -121,16 +125,16 @@ export class QuotesComponent implements OnInit {
     const body = quote;
     this._http.post(this.baseUrl, body, { headers }).subscribe(
       (val) => {
-        this.logger.log('quotes.component: POST request: all quotes val:', val);
+        this._logger.log('quotes.component: POST request: all quotes val:', val);
         this.refreshTable(val);
         this._snackBar.open('Neues Zitat angelegt', 'OK', { duration: this.snackbarDuration });
       },
       response => {
-        this.logger.error('quotes.component: POST request error: response:', response);
+        this._logger.error('quotes.component: POST request error: response:', response);
         this._snackBar.open('ERROR - POST call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
-        this.logger.debug('quotes.component: POST observable completed.');
+        this._logger.debug('quotes.component: POST observable completed.');
       }
     );
   }
@@ -140,23 +144,23 @@ export class QuotesComponent implements OnInit {
     const body = quote;
     this._http.put(this.baseUrl, body, { headers }).subscribe(
       (val) => {
-        this.logger.log('quotes.component: PUT request: all quotes val:', val);
+        this._logger.log('quotes.component: PUT request: all quotes val:', val);
         this.refreshTable(val);
         this._snackBar.open('Zitat erfolgreich editiert', 'OK', { duration: this.snackbarDuration });
       },
       response => {
-        this.logger.error('quotes.component: PUT request error: response:', response);
+        this._logger.error('quotes.component: PUT request error: response:', response);
         this._snackBar.open('ERROR - PUT call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
-        this.logger.debug('quotes.component: PUT observable completed.');
+        this._logger.debug('quotes.component: PUT observable completed.');
       }
     );
   }
 
   deleteQuoteAPI(quote: Quote) {
     if (quote.name === 'Krümmelmonster') {
-      this.logger.debug('quotes.component: PIEP');
+      this._logger.debug('quotes.component: PIEP');
       alert(`
               .---. .---.
              :     : o   :    me want cookie!
@@ -179,16 +183,16 @@ export class QuotesComponent implements OnInit {
       const delUrl = this.baseUrl + `/${quote.id}`;
       this._http.delete(delUrl).subscribe(
         (val) => {
-          this.logger.log('quotes.component: DELETE request: all quotes val:', val);
+          this._logger.log('quotes.component: DELETE request: all quotes val:', val);
           this.refreshTable(val);
           this._snackBar.open('Zitat erfolgreich gelöscht', 'OK', { duration: this.snackbarDuration });
         },
         response => {
-          this.logger.error('quotes.component: DELETE request error: response:', response);
+          this._logger.error('quotes.component: DELETE request error: response:', response);
           this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
         },
         () => {
-          this.logger.debug('quotes.component: DELETE observable completed.');
+          this._logger.debug('quotes.component: DELETE observable completed.');
         }
       );
     }
@@ -217,8 +221,8 @@ export class QuotesComponent implements OnInit {
     this.topScorerArray.sort(function (first, second) {
       return second[1] - first[1];
     });
-    this.logger.debug('quotes.component: calculated top scorer:', this.topScorer);
-    this.logger.debug('quotes.component: sorted top scorer:', this.topScorerArray);
+    this._logger.debug('quotes.component: calculated top scorer:', this.topScorer);
+    this._logger.debug('quotes.component: sorted top scorer:', this.topScorerArray);
 
     this.dataSourceQuotes.paginator = this.paginator;
   }
