@@ -216,8 +216,8 @@ export class QuotesComponent implements OnInit {
   monster() {
     this._logger.debug('quotes.component: PIEP');
     alert(`
-                  .---. .---.
-                 :     : o   :    me want cookie!
+                  .---. .---.     Mich nicht löschen du kannst!
+                 :     : o   :    Kekse haben ich will!
              _..-:   o :     :-.._    /
          .-''  '  \`---' \`---' "   \`\`-.
        .'   "   '  "  .    "  . '  "  \`.
