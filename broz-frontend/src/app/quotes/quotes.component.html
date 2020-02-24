@@ -19,6 +19,10 @@
     </mat-card>
   </div>
   <div style="margin: 10px;"></div>
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+  </mat-form-field>
   <!-- Table -->
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSourceQuotes" matSort matSortActive="date" matSortDirection="desc">

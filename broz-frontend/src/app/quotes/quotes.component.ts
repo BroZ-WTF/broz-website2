@@ -60,6 +60,11 @@ export class QuotesComponent implements OnInit {
     this.dataSourceQuotes.paginator = this.paginator;
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourceQuotes.filter = filterValue.trim().toLowerCase();
+  }
+
   addQuote() {
     const addDialogRef = this.dialog.open(QuotesAddQuoteDialogComponent, {
       width: '500px',
