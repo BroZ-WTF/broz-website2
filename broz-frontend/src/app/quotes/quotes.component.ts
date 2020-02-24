@@ -57,7 +57,6 @@ export class QuotesComponent implements OnInit {
     this.logger.debug('quotes.component: query quotes.');
     this.getAllQuotesAPI();
     this.dataSourceQuotes.sort = this.sort;
-    this.dataSourceQuotes.paginator = this.paginator;
   }
 
   applyFilter(event: Event) {
@@ -198,5 +197,7 @@ export class QuotesComponent implements OnInit {
     });
     this.logger.debug('quotes.component: calculated top scorer:', this.topScorer);
     this.logger.debug('quotes.component: sorted top scorer:', this.topScorerArray);
+
+    this.dataSourceQuotes.paginator = this.paginator;
   }
 }

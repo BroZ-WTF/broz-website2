@@ -10,7 +10,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class QuotesAddQuoteDialogComponent implements OnInit {
   quoteForm = this.formBuilder.group({
-    'name': [null, [Validators.required, Validators.maxLength(12)]],
+    'name': [null, [Validators.required, Validators.maxLength(25)]],
     'quote': [null, [Validators.required, Validators.minLength(3), Validators.maxLength(120)]],
     'date': [null, Validators.required],
   });
