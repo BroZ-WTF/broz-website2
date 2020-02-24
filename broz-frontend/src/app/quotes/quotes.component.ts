@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { NGXLogger } from 'ngx-logger';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -49,16 +51,13 @@ export class QuotesComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public dialog: MatDialog, private _http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(private logger: NGXLogger, public dialog: MatDialog, private _http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.getAllQuotesAPI().subscribe(val => {
-      this.refreshTable(val);
-      this.dataSourceQuotes.sort = this.sort;
-      this.dataSourceQuotes.paginator = this.paginator;
-      console.log('quotes: AllQuotes');
-      console.log(val);
-    })
+    this.logger.debug('quotes.component: query quotes.');
+    this.getAllQuotesAPI();
+    this.dataSourceQuotes.sort = this.sort;
+    this.dataSourceQuotes.paginator = this.paginator;
   }
 
   addQuote() {
@@ -67,9 +66,8 @@ export class QuotesComponent implements OnInit {
     });
     addDialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.logger.debug('quotes.component: add form result:', result);
         this.postQuoteAPI(result);
-        console.log('quotes: add quote');
-        console.log(result);
       }
     });
   }
@@ -81,9 +79,8 @@ export class QuotesComponent implements OnInit {
     });
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.logger.debug('quotes.component: edit form result:', result);
         this.putQuoteAPI(result);
-        console.log('quotes: edit quote');
-        console.log(result);
       }
     });
   }
@@ -94,33 +91,42 @@ export class QuotesComponent implements OnInit {
     });
     deleteDialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.logger.debug('quotes.component: delete form result:', result);
         this.deleteQuoteAPI(result);
-        console.log('quotes: delete quote');
-        console.log(result);
       }
     });
   }
 
   getAllQuotesAPI() {
-    return this._http.get(this.baseUrl)
+    return this._http.get(this.baseUrl).subscribe(
+      (val) => {
+        this.logger.log('quotes.component: GET request: all quotes val:', val);
+        this.refreshTable(val);
+      },
+      response => {
+        this.logger.error('quotes.component: GET request error: response:', response);
+      },
+      () => {
+        this.logger.debug('quotes.component: GET observable completed.');
+      }
+    );
   }
 
   postQuoteAPI(quote: QuoteData) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = quote;
-    console.log(this.baseUrl);
     this._http.post(this.baseUrl, body, { headers }).subscribe(
       (val) => {
-        console.log('POST call successful value returned in body', val);
+        this.logger.log('quotes.component: POST request: all quotes val:', val);
         this.refreshTable(val);
         this._snackBar.open('Neues Zitat angelegt', 'OK', { duration: this.snackbarDuration });
       },
       response => {
-        console.log('POST call in error', response);
+        this.logger.error('quotes.component: POST request error: response:', response);
         this._snackBar.open('ERROR - POST call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
-        console.log('The POST observable is now completed.');
+        this.logger.debug('quotes.component: POST observable completed.');
       }
     );
   }
@@ -130,16 +136,16 @@ export class QuotesComponent implements OnInit {
     const body = quote;
     this._http.put(this.baseUrl, body, { headers }).subscribe(
       (val) => {
-        console.log('PUT call successful value returned in body', val);
+        this.logger.log('quotes.component: PUT request: all quotes val:', val);
         this.refreshTable(val);
         this._snackBar.open('Zitat erfolgreich editiert', 'OK', { duration: this.snackbarDuration });
       },
       response => {
-        console.log('PUT call in error', response);
+        this.logger.error('quotes.component: PUT request error: response:', response);
         this._snackBar.open('ERROR - PUT call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
-        console.log('The PUT observable is now completed.');
+        this.logger.debug('quotes.component: PUT observable completed.');
       }
     );
   }
@@ -148,16 +154,16 @@ export class QuotesComponent implements OnInit {
     const delUrl = this.baseUrl + `/${quote.id}`;
     this._http.delete(delUrl).subscribe(
       (val) => {
-        console.log('DELETE call successful value returned in body', val);
+        this.logger.log('quotes.component: DELETE request: all quotes val:', val);
         this.refreshTable(val);
         this._snackBar.open('Zitat erfolgreich gelöscht', 'OK', { duration: this.snackbarDuration });
       },
       response => {
-        console.log('DELETE call in error', response);
+        this.logger.error('quotes.component: DELETE request error: response:', response);
         this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
       },
       () => {
-        console.log('The DELETE observable is now completed.');
+        this.logger.debug('quotes.component: DELETE observable completed.');
       }
     );
   }
@@ -185,9 +191,7 @@ export class QuotesComponent implements OnInit {
     this.topScorerArray.sort(function (first, second) {
       return second[1] - first[1];
     });
-
-    console.log('quotes: top scorer');
-    console.log(this.topScorer);
-    console.log(this.topScorerArray);
+    this.logger.debug('quotes.component: calculated top scorer:', this.topScorer);
+    this.logger.debug('quotes.component: sorted top scorer:', this.topScorerArray);
   }
 }

@@ -4,8 +4,12 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { environment } from '../environments/environment';
+
 import localeDe from '@angular/common/locales/de';
 registerLocaleData(localeDe, 'de-DE');
+
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -76,7 +80,11 @@ import { GalleryEditPictureDialogComponent } from './gallery/gallery-edit-pictur
     MatMomentDateModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    LoggerModule.forRoot({
+      level: !environment.production ? NgxLoggerLevel.DEBUG : NgxLoggerLevel.ERROR,// serverLogLevel
+      serverLogLevel: NgxLoggerLevel.OFF
+    })
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de_DE' },
