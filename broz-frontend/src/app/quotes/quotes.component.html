@@ -31,7 +31,11 @@
   </div>
   <mat-form-field>
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)">
+    <input matInput (keyup)="applyFilter($event)" [(ngModel)]="filterString">
+    <button mat-button *ngIf="filterString" matSuffix mat-icon-button aria-label="Clear"
+      (click)="filterString=''; this.dataSourceQuotes.filter=''">
+      <mat-icon>close</mat-icon>
+    </button>
   </mat-form-field>
 
 

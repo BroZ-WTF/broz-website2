@@ -41,6 +41,8 @@ export class QuotesComponent implements OnInit {
   maxall: number = 20;
   displayedColumns: string[] = ['id', 'name', 'quote', 'date', 'editActions'];
 
+  filterString = '';
+
   topScorer;
   topScorerArray = [];
 
