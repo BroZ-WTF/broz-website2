@@ -11,6 +11,7 @@ def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__, instance_relative_config=True)
 
+  # CORS(app)
   cors.init_app(app, resources={r"*": {"origins": "*"}})
 
   app.config.from_mapping(SECRET_KEY='dev',)
@@ -37,9 +38,9 @@ def create_app(test_config=None):
 
   @app.route('/api/auth', methods=['GET'])
   def single_pw_auth():
-    if check_password_hash(app.config['PASSWORD_HASHED'], request.authorization.password):
-      return "True", 200
+    if request.authorization.username == 'test' and check_password_hash(app.config['PASSWORD_HASHED'], request.authorization.password):
+      return {'accepted': True}, 200
     else:
-      return "False", 401
+      return {'accepted': False}, 200
 
   return app
