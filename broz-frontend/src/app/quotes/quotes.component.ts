@@ -48,6 +48,7 @@ export class QuotesComponent implements OnInit {
 
   topScorer;
   topScorerArray = [];
+  numer_shown_scorer: number;
 
   fullQuotes: any;
   dataSourceQuotes = new MatTableDataSource<Quote>();
@@ -59,6 +60,7 @@ export class QuotesComponent implements OnInit {
   constructor(private _logger: NGXLogger, public dialog: MatDialog, private _http: HttpClient, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.onResize(null);
     this._logger.debug('quotes.component: query quotes.');
     this.getAllQuotesAPI();
     this.dataSourceQuotes.sort = this.sort;
@@ -132,6 +134,15 @@ export class QuotesComponent implements OnInit {
         }
       }
     });
+  }
+
+  onResize(event) {
+    this.numer_shown_scorer = Math.ceil(window.innerWidth / 400);
+    if (window.innerWidth < 500) {
+      this.displayedColumns = ['name', 'quote', 'date', 'editActions'];
+    } else {
+      this.displayedColumns = ['id', 'name', 'quote', 'date', 'editActions'];
+    }
   }
 
   getAllQuotesAPI() {

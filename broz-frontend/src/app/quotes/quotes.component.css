@@ -1,5 +1,6 @@
 table {
   width: 100%;
+  padding: 5px;
 }
 
 .page-card {
@@ -9,6 +10,7 @@ table {
 .container-button-scores {
   margin: auto;
   display: flex;
+  align-items: center;
 }
 
 .spacer {
@@ -16,6 +18,7 @@ table {
 }
 
 .container-top-scorer {
+  align-self: center;
   margin-left: 1em;
 }
 
@@ -23,24 +26,44 @@ table {
   text-align: right;
 }
 
+td.mat-cell:last-of-type {
+  padding-right: 5px;
+}
+td.mat-cell:first-of-type {
+  padding-left: 5px;
+}
+
 .mat-column-quote {
   word-wrap: break-word !important;
   white-space: unset !important;
-  padding-left: 2em;
-  padding-right: 2em;
+  padding-right: 5px;
   overflow-wrap: break-word;
   word-wrap: break-word;
-
   word-break: break-word;
-
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
 }
 
-.mat-column-editActions {
-  padding-left: 1em;
-  min-width: 90px;
+.mat-column-id {
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.mat-column-name {
+  text-align: left;
+  padding-right: 5px;
+  overflow-wrap: break-word;
+}
+
+.mat-column-date {
   text-align: right;
+  padding-right: 5px;
+}
+
+.mat-column-editActions {
+  text-align: right;
+  padding-right: 0.5em;
 }
