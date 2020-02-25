@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, Validators, FormGroup, FormBuilder, Form } from '@angular/forms';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -9,28 +9,25 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
   styleUrls: ['./gallery-edit-picture-dialog.component.css']
 })
 export class GalleryEditPictureDialogComponent implements OnInit {
-  pictureForm = this.formBuilder.group({
-    'name': [null, [Validators.required, Validators.maxLength(25)]],
-    'description': [null, [Validators.required, Validators.minLength(3), Validators.maxLength(120)]],
-    'file': [null, [Validators.required, Validators.pattern(
-      /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+\/+[-_a-zA-Z0-9]+((\.jpg)|(\.png)|(\.gif))$/
-    )]],
-  });
+  pictureForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     public editDialogRef: MatDialogRef<GalleryEditPictureDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { id: number, name: string, description: string, file: string }
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    // Preset dialog fields on old values
-    this.pictureForm.setValue({ name: this.data.name, description: this.data.description, file: this.data.file });
+    this.pictureForm = this.formBuilder.group({
+      'name': [this.data.initData.name, [Validators.required, Validators.minLength(this.data.configData.minLengthName), , Validators.maxLength(this.data.configData.maxLengthName)]],
+      'description': [this.data.initData.description, [Validators.required, Validators.maxLength(this.data.configData.maxLengthDescription)]],
+      'file': [this.data.initData.file, [Validators.required, Validators.pattern(this.data.configData.isPictureRegEx)]],
+    });
   }
 
   ngOnInit(): void { }
 
   submit() {
     let returnval = this.pictureForm.value;
-    returnval['id'] = this.data.id;
+    returnval['id'] = this.data.initData.id;
     this.editDialogRef.close(returnval);
   }
 

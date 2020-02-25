@@ -4,14 +4,19 @@
   <mat-form-field color="primary" class="form-element">
     <input matInput placeholder="Poet" formControlName="name">
     <mat-error *ngIf="!quoteForm.controls['name'].valid && quoteForm.controls['name'].touched">
-      Name ist nötig und muss unter 25 Zeichen sein.
+      Name ist nötig und muss muss zwischen {{data.configData.minLengthName}} und {{data.configData.maxLengthName}}
+      Zeichen sein.
     </mat-error>
   </mat-form-field>
 
   <mat-form-field color="primary" class="form-element">
     <textarea matInput placeholder="Zitat" formControlName="quote"></textarea>
+    <mat-hint align="end">{{this.quoteForm.get('quote').value.length}} /
+      {{data.configData.maxLengthQuote}}
+    </mat-hint>
     <mat-error *ngIf="!quoteForm.controls['quote'].valid && quoteForm.controls['quote'].touched">
-      Zitat ist nötig und muss zwischen 3 und 120 Zeichen sein.
+      Zitat ist nötig und muss zwischen {{data.configData.minLengthName}} und {{data.configData.maxLengthQuote}} Zeichen
+      sein.
     </mat-error>
   </mat-form-field>
 

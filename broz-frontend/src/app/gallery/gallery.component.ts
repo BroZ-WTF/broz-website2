@@ -33,7 +33,11 @@ export interface PictureData {
   styleUrls: ['./gallery.component.css']
 })
 export class GalleryComponent implements OnInit {
+  minLengthName = 3;
+  maxLengthName = 25;
+  maxLengthDescription = 128;
   snackbarDuration = 3 * 1000; // ms
+  isPictureRegEx = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+\/+[-_a-zA-Z0-9]+((\.jpg)|(\.jpeg)|(\.png)|(\.gif))$/);
   baseUrl = environment.baseUrl + '/gallery';
 
   numer_render_columns: number;
@@ -56,6 +60,14 @@ export class GalleryComponent implements OnInit {
   addPicture() {
     const addDialogRef = this.dialog.open(GalleryAddPictureDialogComponent, {
       width: '500px',
+      data: {
+        configData: {
+          minLengthName: this.minLengthName,
+          maxLengthName: this.maxLengthName,
+          maxLengthDescription: this.maxLengthDescription,
+          isPictureRegEx: this.isPictureRegEx
+        }
+      }
     });
     addDialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -68,7 +80,17 @@ export class GalleryComponent implements OnInit {
   editPicture(element) {
     const editDialogRef = this.dialog.open(GalleryEditPictureDialogComponent, {
       width: '500px',
-      data: { id: element.id, name: element.name, file: element.file, description: element.description }
+      data: {
+        configData: {
+          minLengthName: this.minLengthName,
+          maxLengthName: this.maxLengthName,
+          maxLengthDescription: this.maxLengthDescription,
+          isPictureRegEx: this.isPictureRegEx
+        },
+        initData: {
+          id: element.id, name: element.name, file: element.file, description: element.description
+        }
+      }
     });
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {

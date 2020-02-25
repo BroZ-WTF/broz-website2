@@ -9,26 +9,25 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
   styleUrls: ['./quotes-edit-quote-dialog.component.css']
 })
 export class QuotesEditQuoteDialogComponent implements OnInit {
-  quoteForm = this.formBuilder.group({
-    'name': [null, [Validators.required, Validators.maxLength(25)]],
-    'quote': [null, [Validators.required, Validators.minLength(3), Validators.maxLength(120)]],
-    'date': [null, Validators.required],
-  });
+  quoteForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     public editDialogRef: MatDialogRef<QuotesEditQuoteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    // Preset dialog fields on old values
-    this.quoteForm.setValue({ name: this.data.name, quote: this.data.quote, date: this.data.date });
+    this.quoteForm = this.formBuilder.group({
+      'name': [this.data.initData.name, [Validators.required, Validators.minLength(this.data.configData.minLengthName), Validators.maxLength(this.data.configData.maxLengthName)]],
+      'quote': [this.data.initData.quote, [Validators.required, Validators.minLength(this.data.configData.minLengthName), Validators.maxLength(this.data.configData.maxLengthQuote)]],
+      'date': [this.data.initData.date, Validators.required],
+    });
   }
 
   ngOnInit(): void { }
 
   submit() {
     let returnval = this.quoteForm.value;
-    returnval['id'] = this.data.id;
+    returnval['id'] = this.data.initData.id;
     this.editDialogRef.close(returnval);
   }
 

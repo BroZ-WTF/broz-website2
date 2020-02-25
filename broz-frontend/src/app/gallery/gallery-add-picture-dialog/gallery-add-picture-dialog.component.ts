@@ -9,19 +9,19 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
   styleUrls: ['./gallery-add-picture-dialog.component.css']
 })
 export class GalleryAddPictureDialogComponent implements OnInit {
-  pictureForm = this.formBuilder.group({
-    'name': [null, [Validators.required, Validators.maxLength(25)]],
-    'description': [null, [Validators.required, Validators.minLength(3), Validators.maxLength(120)]],
-    'file': [null, [Validators.required, Validators.pattern(
-      /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+\/+[-_a-zA-Z0-9]+((\.jpg)|(\.png)|(\.gif))$/
-    )]],
-  });
+  pictureForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     public addDialogRef: MatDialogRef<GalleryAddPictureDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {
+    this.pictureForm = this.formBuilder.group({
+      'name': ['', [Validators.required, Validators.minLength(this.data.configData.minLengthName), , Validators.maxLength(this.data.configData.maxLengthName)]],
+      'description': ['', [Validators.required, Validators.maxLength(this.data.configData.maxLengthDescription)]],
+      'file': ['', [Validators.required, Validators.pattern(this.data.configData.isPictureRegEx)]],
+    });
+  }
 
   ngOnInit(): void { }
 

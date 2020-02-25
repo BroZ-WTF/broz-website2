@@ -36,6 +36,9 @@ export interface QuoteData {
   styleUrls: ['./quotes.component.css']
 })
 export class QuotesComponent implements OnInit {
+  minLengthName = 3;
+  maxLengthName = 25;
+  maxLengthQuote = 128;
   snackbarDuration = 3 * 1000; // ms
   baseUrl = environment.baseUrl + '/quotes';
   maxall: number = 20;
@@ -73,6 +76,13 @@ export class QuotesComponent implements OnInit {
   addQuote() {
     const addDialogRef = this.dialog.open(QuotesAddQuoteDialogComponent, {
       width: '500px',
+      data: {
+        configData: {
+          minLengthName: this.minLengthName,
+          maxLengthName: this.maxLengthName,
+          maxLengthQuote: this.maxLengthQuote
+        }
+      }
     });
     addDialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -85,7 +95,16 @@ export class QuotesComponent implements OnInit {
   editQuote(element) {
     const editDialogRef = this.dialog.open(QuotesEditQuoteDialogComponent, {
       width: '500px',
-      data: { id: element.id, name: element.name, quote: element.quote, date: element.date }
+      data: {
+        configData: {
+          minLengthName: this.minLengthName,
+          maxLengthName: this.maxLengthName,
+          maxLengthQuote: this.maxLengthQuote
+        },
+        initData: {
+          id: element.id, name: element.name, quote: element.quote, date: element.date
+        }
+      }
     });
     editDialogRef.afterClosed().subscribe(result => {
       if (result) {

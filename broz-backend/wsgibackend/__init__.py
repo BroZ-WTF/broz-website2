@@ -10,9 +10,7 @@ cors = CORS()
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__, instance_relative_config=True)
-
   cors.init_app(app, resources={r"*": {"origins": "*"}}, expose_headers='Authorization')
-
   app.config.from_mapping(SECRET_KEY='dev',)
 
   if test_config is None:
@@ -28,6 +26,7 @@ def create_app(test_config=None):
   except OSError:
     pass
 
+  # import modules
   from wsgibackend.quotes import quotes_component
   from wsgibackend.gallery import gallery_component
 
