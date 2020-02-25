@@ -1,8 +1,8 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='flaskr',
-    version='1.1.0',
+    name='wsgibackend',
+    version='1.2.6',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,

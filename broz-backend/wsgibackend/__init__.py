@@ -11,8 +11,7 @@ def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__, instance_relative_config=True)
 
-  # CORS(app)
-  cors.init_app(app, resources={r"*": {"origins": "*"}})
+  cors.init_app(app, resources={r"*": {"origins": "*"}}, expose_headers='Authorization')
 
   app.config.from_mapping(SECRET_KEY='dev',)
 
@@ -29,8 +28,8 @@ def create_app(test_config=None):
   except OSError:
     pass
 
-  from flaskr.quotes import quotes_component
-  from flaskr.gallery import gallery_component
+  from wsgibackend.quotes import quotes_component
+  from wsgibackend.gallery import gallery_component
 
   # register components
   app.register_blueprint(quotes_component, url_prefix='/api/quotes')
@@ -38,7 +37,8 @@ def create_app(test_config=None):
 
   @app.route('/api/auth', methods=['GET'])
   def single_pw_auth():
-    if request.authorization.username == 'test' and check_password_hash(app.config['PASSWORD_HASHED'], request.authorization.password):
+    #print('Debug auth header:\n%s' % request.headers)
+    if request.authorization['username'] == 'test' and check_password_hash(app.config['PASSWORD_HASHED'], request.authorization['password']):
       return {'accepted': True}, 200
     else:
       return {'accepted': False}, 200
