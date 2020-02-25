@@ -1,7 +1,8 @@
 import os
 
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
+from werkzeug.security import check_password_hash, generate_password_hash
 
 cors = CORS()
 
@@ -33,5 +34,12 @@ def create_app(test_config=None):
   # register components
   app.register_blueprint(quotes_component, url_prefix='/api/quotes')
   app.register_blueprint(gallery_component, url_prefix='/api/gallery')
+
+  @app.route('/api/auth', methods=['GET'])
+  def single_pw_auth():
+    if check_password_hash(app.config['PASSWORD_HASHED'], request.authorization.password):
+      return "True", 200
+    else:
+      return "False", 401
 
   return app

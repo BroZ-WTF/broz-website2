@@ -9,26 +9,26 @@ CORS(quotes_component)
 # GET quotes
 @quotes_component.route('')
 def get_quotes():
-  quotes_file = os.path.join(current_app.instance_path, current_app.config["DATA_QUOTES_PATH"])
+  quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
   try:
     with open(quotes_file) as json_quotes:
       quotes = json.load(json_quotes)
       return jsonify(quotes), 200
   except IOError:
-    print("Count not read file, not doing anything")
-    return 500
+    print('Count not read file, not doing anything')
+    return 'No quotes saved', 500
 
 
 # DELETE quote
 @quotes_component.route('/<int:quote_id>', methods=['DELETE'])
 def del_quote(quote_id):
-  quotes_file = os.path.join(current_app.instance_path, current_app.config["DATA_QUOTES_PATH"])
+  quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
   try:
     with open(quotes_file, 'rt') as json_quotes:
       quotes = json.load(json_quotes)
   except IOError:
     print('Could not read file, not doing anything')
-    return 500
+    return 'No quotes saved', 500
   try:
     del quotes['quotes_list'][quote_id]
     with open(quotes_file, 'wt') as json_quotes:
@@ -42,7 +42,7 @@ def del_quote(quote_id):
 # POST quote
 @quotes_component.route('', methods=['POST'])
 def add_quote():
-  quotes_file = os.path.join(current_app.instance_path, current_app.config["DATA_QUOTES_PATH"])
+  quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
   posted_quote = request.get_json()
   try:
     with open(quotes_file, 'rt') as json_quotes:
@@ -63,14 +63,14 @@ def add_quote():
 # PUT quote
 @quotes_component.route('', methods=['PUT'])
 def edit_quote():
-  quotes_file = os.path.join(current_app.instance_path, current_app.config["DATA_QUOTES_PATH"])
+  quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
   posted_quote = request.get_json()
   try:
     with open(quotes_file, 'rt') as json_quotes:
       quotes = json.load(json_quotes)
   except IOError:
     print('Could not read file, not doing anything')
-    return 500
+    return 'No quotes saved', 500
   if not all(key in posted_quote for key in ('id', 'date', 'name', 'quote')):
     # raise value error if any key is not set
     raise ValueError

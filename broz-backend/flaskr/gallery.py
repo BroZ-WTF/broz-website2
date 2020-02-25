@@ -9,26 +9,26 @@ CORS(gallery_component)
 # GET gallery metadata
 @gallery_component.route('/metadata')
 def get_gallery_metadata():
-  gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
+  gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
   try:
     with open(gallery_metadata_file) as json_metadata:
       metadata = json.load(json_metadata)
       return jsonify(metadata)
   except IOError:
     print('Count not read file, not doing anything')
-    return 500
+    return 'No metadata saved', 500
 
 
 # DELETE gallery metadata
 @gallery_component.route('/metadata/<int:picture_id>', methods=['DELETE'])
 def del_gallery_metadata(picture_id):
-  gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
+  gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
   try:
     with open(gallery_metadata_file, 'rt') as json_metadata:
       metadata = json.load(json_metadata)
   except IOError:
     print('Could not read file, not doing anything')
-    return 500
+    return 'No metadata saved', 500
   try:
     del metadata['pictures'][picture_id]
     with open(gallery_metadata_file, 'wt') as json_metadata:
@@ -36,13 +36,13 @@ def del_gallery_metadata(picture_id):
       return jsonify(metadata), 200
   except IndexError:
     print('Given id is not present, not doing anything')
-    return 416
+    return jsonify(metadata), 416
 
 
 # POST gallery metadata
 @gallery_component.route('/metadata', methods=['POST'])
 def add_gallery_metadata():
-  gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
+  gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
   posted_picture_metadata = request.get_json()
   try:
     with open(gallery_metadata_file, 'rt') as json_metadata:
@@ -64,14 +64,14 @@ def add_gallery_metadata():
 # PUT gallery metadata
 @gallery_component.route('/metadata', methods=['PUT'])
 def edit_gallery_metadata():
-  gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config["DATA_PIC_METADATA_PATH"])
+  gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
   posted_picture_metadata = request.get_json()
   try:
     with open(gallery_metadata_file, 'rt') as json_metadata:
       metadata = json.load(json_metadata)
   except IOError:
     print('Could not read file, not doing anything')
-    return 500
+    return 'No metadata saved', 500
   if not all(key in posted_picture_metadata for key in ('id', 'name', 'description', 'file')):
     # raise value error if any key is not set
     raise ValueError
@@ -91,5 +91,5 @@ def edit_gallery_metadata():
 # GET picture
 @gallery_component.route('/picture/<path:filename>')
 def get_picture(filename):
-  picture_path = os.path.join(current_app.instance_path, current_app.config["DATA_GALLERY_PATH"])
+  picture_path = os.path.join(current_app.instance_path, current_app.config['DATA_GALLERY_PATH'])
   return send_from_directory(picture_path, filename)
