@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>Neues Bild</h2>
+<h2 mat-dialog-title>{{data.configData.actionType}} Bild</h2>
 
 <form [formGroup]="pictureForm" class="form">
   <mat-form-field color="primary" class="form-element">
     <input matInput placeholder="Überschrift" formControlName="name">
-    <mat-error *ngIf="!pictureForm.controls['name'].valid">
+    <mat-error *ngIf="!pictureForm.controls['name'].valid && pictureForm.controls['name'].touched">
       Name ist nötig und muss muss zwischen {{data.configData.minLengthName}} und {{data.configData.maxLengthName}}
       Zeichen sein.
     </mat-error>
@@ -14,15 +14,15 @@
     <mat-hint align="end">{{this.pictureForm.get('description').value.length}} /
       {{data.configData.maxLengthDescription}}
     </mat-hint>
-    <mat-error *ngIf="!pictureForm.controls['description'].valid">
+    <mat-error *ngIf="!pictureForm.controls['description'].valid && pictureForm.controls['description'].touched">
       Beschreibung muss unter {{data.configData.maxLengthDescription}} Zeichen sein.
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-element">
     <input matInput placeholder="Dateiname" formControlName="file">
-    <mat-error *ngIf="!pictureForm.controls['file'].valid">
-      Dateinname ist nötig.
+    <mat-error *ngIf="!pictureForm.controls['file'].valid && pictureForm.controls['file'].touched">
+      Bitte gültiger Bildlink.
     </mat-error>
   </mat-form-field>
 

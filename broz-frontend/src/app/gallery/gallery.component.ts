@@ -65,7 +65,11 @@ export class GalleryComponent implements OnInit {
           minLengthName: this.minLengthName,
           maxLengthName: this.maxLengthName,
           maxLengthDescription: this.maxLengthDescription,
-          isPictureRegEx: this.isPictureRegEx
+          isPictureRegEx: this.isPictureRegEx,
+          actionType: 'Neues'
+        },
+        initData: {
+          id: null, name: '', file: '', description: ''
         }
       }
     });
@@ -85,7 +89,8 @@ export class GalleryComponent implements OnInit {
           minLengthName: this.minLengthName,
           maxLengthName: this.maxLengthName,
           maxLengthDescription: this.maxLengthDescription,
-          isPictureRegEx: this.isPictureRegEx
+          isPictureRegEx: this.isPictureRegEx,
+          actionType: 'Editiere'
         },
         initData: {
           id: element.id, name: element.name, file: element.file, description: element.description
