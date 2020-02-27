@@ -9,7 +9,6 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
-import { QuotesAddQuoteDialogComponent } from '../quotes/quotes-add-quote-dialog/quotes-add-quote-dialog.component';
 import { QuotesEditQuoteDialogComponent } from '../quotes/quotes-edit-quote-dialog/quotes-edit-quote-dialog.component';
 import { QuotesDeleteQuoteDialogComponent } from '../quotes/quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
 
@@ -76,18 +75,23 @@ export class QuotesComponent implements OnInit {
   }
 
   addQuote() {
-    const addDialogRef = this.dialog.open(QuotesAddQuoteDialogComponent, {
+    const addDialogRef = this.dialog.open(QuotesEditQuoteDialogComponent, {
       width: '500px',
       data: {
         configData: {
           minLengthName: this.minLengthName,
           maxLengthName: this.maxLengthName,
-          maxLengthQuote: this.maxLengthQuote
+          maxLengthQuote: this.maxLengthQuote,
+          actionType: 'Neues'
+        },
+        initData: {
+          id: null, name: '', quote: '', date: ''
         }
       }
     });
     addDialogRef.afterClosed().subscribe(result => {
       if (result) {
+        delete result.id;
         this._logger.debug('quotes.component: add form result:', result);
         this.postQuoteAPI(result);
       }
@@ -101,7 +105,8 @@ export class QuotesComponent implements OnInit {
         configData: {
           minLengthName: this.minLengthName,
           maxLengthName: this.maxLengthName,
-          maxLengthQuote: this.maxLengthQuote
+          maxLengthQuote: this.maxLengthQuote,
+          actionType: 'Editiere'
         },
         initData: {
           id: element.id, name: element.name, quote: element.quote, date: element.date
