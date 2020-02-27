@@ -6,7 +6,6 @@ import { NGXLogger } from 'ngx-logger';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
-import { GalleryAddPictureDialogComponent } from '../gallery/gallery-add-picture-dialog/gallery-add-picture-dialog.component';
 import { GalleryDeletePictureDialogComponent } from '../gallery/gallery-delete-picture-dialog/gallery-delete-picture-dialog.component';
 import { GalleryEditPictureDialogComponent } from '../gallery/gallery-edit-picture-dialog/gallery-edit-picture-dialog.component';
 
@@ -58,7 +57,7 @@ export class GalleryComponent implements OnInit {
   }
 
   addPicture() {
-    const addDialogRef = this.dialog.open(GalleryAddPictureDialogComponent, {
+    const addDialogRef = this.dialog.open(GalleryEditPictureDialogComponent, {
       width: '500px',
       data: {
         configData: {
@@ -75,6 +74,7 @@ export class GalleryComponent implements OnInit {
     });
     addDialogRef.afterClosed().subscribe(result => {
       if (result) {
+        delete result.id;
         this._logger.debug('gallery.component: add form result:', result);
         this.postPictureAPI(result);
       }
