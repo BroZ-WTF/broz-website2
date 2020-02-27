@@ -1,19 +1,21 @@
 <head></head>
 
 <body class="content-page">
-  <mat-toolbar color="primary">
-    <span style="margin: 15px;">BroZ Website</span>
-    <span class="spacer"></span>
-    <div *ngIf="getLoginState()">
-      <mat-form-field style="width: 4em; margin-right: 15px;">
-        <input matInput type="password" [formControl]="password" (keydown.enter)="login()">
-      </mat-form-field>
-      <button mat-raised-button color="accent" (click)="login()">
-        Login
-      </button>
-    </div>
-    <div *ngIf="!getLoginState()">
-      <button mat-raised-button color="accent" (click)="logout()">
+  <mat-toolbar class="toolbar" color="primary">
+    <div class="banner_left_wo"> </div>
+    <img class="banner_center" src="../assets/banner_center_logo.png">
+    <div class="banner_right_wlogin">
+      <div class="spacer"></div>
+      <mat-card class="login_card" *ngIf="getLoginState()">
+        <mat-form-field class="login_field">
+          <input matInput type="password" [formControl]="password" (keydown.enter)="login()">
+        </mat-form-field>
+        <button mat-raised-button style="width: 3em;" color="accent" (click)="login()">
+          Login
+        </button>
+      </mat-card>
+      <button mat-raised-button class="logout_button" style="width: 3em;" color="accent" (click)="logout()"
+        *ngIf="!getLoginState()">
         Logout
       </button>
     </div>
