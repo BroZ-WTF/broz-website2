@@ -1,6 +1,7 @@
 import json, os
 from flask import Blueprint, current_app, jsonify, request, send_from_directory
 from flask_cors import CORS
+from wsgibackend.auth import auth
 
 gallery_component = Blueprint('gallery_component', __name__)
 CORS(gallery_component)
@@ -21,6 +22,7 @@ def get_gallery_metadata():
 
 # DELETE gallery metadata
 @gallery_component.route('/metadata/<int:picture_id>', methods=['DELETE'])
+@auth.login_required
 def del_gallery_metadata(picture_id):
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
   try:
@@ -41,6 +43,7 @@ def del_gallery_metadata(picture_id):
 
 # POST gallery metadata
 @gallery_component.route('/metadata', methods=['POST'])
+@auth.login_required
 def add_gallery_metadata():
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
   posted_picture_metadata = request.get_json()
@@ -63,6 +66,7 @@ def add_gallery_metadata():
 
 # PUT gallery metadata
 @gallery_component.route('/metadata', methods=['PUT'])
+@auth.login_required
 def edit_gallery_metadata():
   gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
   posted_picture_metadata = request.get_json()

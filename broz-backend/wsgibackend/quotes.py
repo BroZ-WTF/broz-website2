@@ -1,6 +1,7 @@
 import json, os
 from flask import Blueprint, current_app, jsonify, request, send_from_directory
 from flask_cors import CORS
+from wsgibackend.auth import auth
 
 quotes_component = Blueprint('quotes_component', __name__)
 CORS(quotes_component)
@@ -21,6 +22,7 @@ def get_quotes():
 
 # DELETE quote
 @quotes_component.route('/<int:quote_id>', methods=['DELETE'])
+@auth.login_required
 def del_quote(quote_id):
   quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
   try:
@@ -41,6 +43,7 @@ def del_quote(quote_id):
 
 # POST quote
 @quotes_component.route('', methods=['POST'])
+@auth.login_required
 def add_quote():
   quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
   posted_quote = request.get_json()
@@ -62,6 +65,7 @@ def add_quote():
 
 # PUT quote
 @quotes_component.route('', methods=['PUT'])
+@auth.login_required
 def edit_quote():
   quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
   posted_quote = request.get_json()
