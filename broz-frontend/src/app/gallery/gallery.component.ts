@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { NGXLogger } from 'ngx-logger';
+import { CookieService } from 'ngx-cookie-service';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -44,7 +45,7 @@ export class GalleryComponent implements OnInit {
   picturesMetadata;
 
 
-  constructor(private _logger: NGXLogger, public dialog: MatDialog, private _http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private cookieService: CookieService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.numer_render_columns = Math.ceil(window.innerWidth / 500);

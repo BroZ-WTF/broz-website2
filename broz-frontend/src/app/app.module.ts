@@ -10,6 +10,7 @@ import localeDe from '@angular/common/locales/de';
 registerLocaleData(localeDe, 'de-DE');
 
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { CookieService } from 'ngx-cookie-service';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -89,6 +90,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
   providers: [
     { provide: LOCALE_ID, useValue: 'de_DE' },
     { provide: MAT_DATE_LOCALE, useValue: 'de_DE' },
+    CookieService
   ],
   bootstrap: [AppComponent]
 })
