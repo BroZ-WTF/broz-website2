@@ -4,19 +4,12 @@
   <mat-toolbar color="primary">
     <span style="margin: 15px;">BroZ Website</span>
     <span class="spacer"></span>
-    <div *ngIf="getLoginState()">
-      <mat-form-field style="width: 4em; margin-right: 15px;">
-        <input matInput type="password" [formControl]="password" (keydown.enter)="login()">
-      </mat-form-field>
-      <button mat-raised-button color="accent" (click)="login()">
-        Login
-      </button>
-    </div>
-    <div *ngIf="!getLoginState()">
-      <button mat-raised-button color="accent" (click)="logout()">
-        Logout
-      </button>
-    </div>
+    <button mat-raised-button color="accent" (click)="loginDialog()" *ngIf="getLoginState()">
+      Login
+    </button>
+    <button mat-raised-button color="accent" (click)="logout()" *ngIf="!getLoginState()">
+      Logout
+    </button>
   </mat-toolbar>
 
   <mat-tab-group color="primary" backgroundColor="accent" dynamicHeight="false">

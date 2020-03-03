@@ -34,5 +34,4 @@ export class QuotesEditQuoteDialogComponent implements OnInit {
   close() {
     this.editDialogRef.close(null);
   }
-
 }

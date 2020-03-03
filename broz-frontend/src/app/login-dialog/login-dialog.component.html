@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Login</h2>
+
+<form [formGroup]="loginForm" class="form">
+  <mat-form-field color="primary" class="form-element">
+    <input matInput placeholder="Nutzer" formControlName="name">
+    <mat-error *ngIf="!loginForm.controls['name'].valid && loginForm.controls['name'].touched">
+      Name ist nötig.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field color="primary" class="form-element">
+    <input matInput placeholder="Passwort" type="password" formControlName="password">
+    <mat-error *ngIf="!loginForm.controls['name'].valid && loginForm.controls['name'].touched">
+      Passwort ist nötig.
+    </mat-error>
+  </mat-form-field>
+
+  <div class="form-element">
+    <button mat-stroked-button color="primary" (click)="submit()" class="button"
+      [disabled]="!loginForm.valid">Login</button>
+    <button mat-flat-button color="primary" (click)="close()" class="button">Abbrechen</button>
+  </div>
+</form>
