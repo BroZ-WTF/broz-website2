@@ -1,15 +1,19 @@
 <head></head>
 
 <body class="content-page">
-  <mat-toolbar color="primary">
-    <span style="margin: 15px;">BroZ Website</span>
-    <span class="spacer"></span>
-    <button mat-raised-button color="accent" (click)="loginDialog()" *ngIf="getLoginState()">
-      Login
-    </button>
-    <button mat-raised-button color="accent" (click)="logout()" *ngIf="!getLoginState()">
-      Logout
-    </button>
+  <mat-toolbar class="toolbar" color="primary">
+    <div class="banner_left_wo"> </div>
+    <img class="banner_center" src="../assets/banner_center_logo.png">
+    <div class="banner_right_wlogin">
+      <div class="spacer"></div>
+      <button mat-raised-button class="login-logout_button" color="accent" (click)="loginDialog()"
+        *ngIf="getLoginState()">
+        Login
+      </button>
+      <button mat-raised-button class="login-logout_button" color="accent" (click)="logout()" *ngIf="!getLoginState()">
+        Logout
+      </button>
+    </div>
   </mat-toolbar>
 
   <mat-tab-group color="primary" backgroundColor="accent" dynamicHeight="false">
