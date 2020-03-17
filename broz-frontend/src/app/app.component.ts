@@ -23,21 +23,16 @@ export class AppComponent implements OnInit {
   snackbarDuration = 3 * 1000; // ms
   baseUrl = environment.baseUrl;
 
-  constructor(private _logger: NGXLogger, private _snackBar: MatSnackBar, private _http: HttpClient, private cookieService: CookieService, public dialog: MatDialog) { }
+  constructor(private _logger: NGXLogger, private _snackBar: MatSnackBar, private _http: HttpClient, private _cookieService: CookieService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    if (this.cookieService.check('login-token')) {
+    if (this._cookieService.check('login-token')) {
       this.checkTokenStillValidAPI();
-      noLogin = false;
+      noLogin = true;
     }
   }
 
   getLoginState() {
-    if (this.cookieService.check('login-token')) {
-      noLogin = false;
-    } else {
-      noLogin = true;
-    }
     return noLogin;
   }
 
@@ -54,7 +49,7 @@ export class AppComponent implements OnInit {
 
   logout() {
     noLogin = true;
-    this.cookieService.delete('login-token');
+    this._cookieService.delete('login-token');
     this._snackBar.open('Erfolgreich ausgeloggt', 'OK', { duration: this.snackbarDuration });
   }
 
@@ -68,19 +63,22 @@ export class AppComponent implements OnInit {
         this._logger.debug('app.component: GET auth token request: val:', loginResponse);
         if (loginResponse.token) {
           noLogin = false;
-          this.cookieService.set('login-token', loginResponse.token, 1);
+          this._cookieService.set('login-token', loginResponse.token, 1);
+          this._logger.debug('app.component: auth token cookie:', this._cookieService.get('login-token'));
           this._snackBar.open('Erfolgreich eingeloggt', 'OK', { duration: this.snackbarDuration });
         } else {
           noLogin = true;
-          this.cookieService.delete('login-token');
+          this._cookieService.delete('login-token');
           this._snackBar.open('Passwort fehlerhaft', 'OK', { duration: this.snackbarDuration });
+          this.loginDialog();
         }
       },
       response => {
         noLogin = true;
-        this.cookieService.delete('login-token');
+        this._cookieService.delete('login-token');
         this._logger.debug('app.component: GET auth request error: response:', response);
         this._snackBar.open('Passwort fehlerhaft', 'OK', { duration: this.snackbarDuration });
+        this.loginDialog();
       },
       () => {
         this._logger.debug('app.component: GET observable completed.');
@@ -88,5 +86,30 @@ export class AppComponent implements OnInit {
     );
   }
 
-  checkTokenStillValidAPI() { }
+  checkTokenStillValidAPI() {
+    const headers = new HttpHeaders({ 'Authorization': `Basic ${btoa(this._cookieService.get('login-token'))}` });
+    var checkResponse;
+    this._http.get(this.baseUrl + '/auth/check', { headers }).subscribe(
+      (val) => {
+        checkResponse = val;
+        this._logger.debug('app.component: GET auth token request: val:', checkResponse);
+        if (checkResponse === 'success') {
+          this._logger.debug('app.component: auth token check successful:');
+          noLogin = false;
+        } else {
+          this._logger.debug('app.component: auth token check failed:');
+          this._cookieService.delete('login-token');
+          noLogin = true;
+        }
+      },
+      response => {
+        this._logger.debug('app.component: auth token check failed:');
+        this._cookieService.delete('login-token');
+        noLogin = true;
+      },
+      () => {
+        this._logger.debug('app.component: GET observable completed.');
+      }
+    );
+  }
 }

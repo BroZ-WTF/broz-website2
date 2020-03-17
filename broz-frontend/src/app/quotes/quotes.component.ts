@@ -57,7 +57,7 @@ export class QuotesComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private cookieService: CookieService, public dialog: MatDialog) { }
+  constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private _cookieService: CookieService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.onResize(null);
@@ -167,7 +167,10 @@ export class QuotesComponent implements OnInit {
   }
 
   postQuoteAPI(quote: QuoteData) {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let token = this._cookieService.get('login-token')
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+    headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
     const body = quote;
     this._http.post(this.baseUrl, body, { headers }).subscribe(
       (val) => {
@@ -186,7 +189,10 @@ export class QuotesComponent implements OnInit {
   }
 
   putQuoteAPI(quote: Quote) {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let token = this._cookieService.get('login-token')
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+    headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
     const body = quote;
     this._http.put(this.baseUrl, body, { headers }).subscribe(
       (val) => {
@@ -205,8 +211,11 @@ export class QuotesComponent implements OnInit {
   }
 
   deleteQuoteAPI(quote: Quote) {
+    let token = this._cookieService.get('login-token')
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
     const delUrl = this.baseUrl + `/${quote.id}`;
-    this._http.delete(delUrl).subscribe(
+    this._http.delete(delUrl, { headers }).subscribe(
       (val) => {
         this._logger.log('quotes.component: DELETE request: all quotes val:', val);
         this.refreshTable(val);

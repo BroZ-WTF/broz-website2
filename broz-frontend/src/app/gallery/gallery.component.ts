@@ -45,7 +45,7 @@ export class GalleryComponent implements OnInit {
   picturesMetadata;
 
 
-  constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private cookieService: CookieService, public dialog: MatDialog) { }
+  constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private _cookieService: CookieService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.numer_render_columns = Math.ceil(window.innerWidth / 500);
@@ -138,7 +138,10 @@ export class GalleryComponent implements OnInit {
   }
 
   postPictureAPI(picture: PictureData) {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let token = this._cookieService.get('login-token')
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+    headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
     const body = picture;
     this._http.post(this.baseUrl + '/metadata', body, { headers }).subscribe(
       (val) => {
@@ -157,7 +160,10 @@ export class GalleryComponent implements OnInit {
   }
 
   putPictureAPI(picture: Picture) {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let token = this._cookieService.get('login-token')
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+    headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
     const body = picture;
     this._http.put(this.baseUrl + '/metadata', body, { headers }).subscribe(
       (val) => {
@@ -176,8 +182,11 @@ export class GalleryComponent implements OnInit {
   }
 
   deletePictureAPI(picture: Picture) {
+    let token = this._cookieService.get('login-token')
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
     const delUrl = this.baseUrl + `/metadata/${picture.id}`;
-    this._http.delete(delUrl).subscribe(
+    this._http.delete(delUrl, { headers }).subscribe(
       (val) => {
         this._logger.log('gallery.component: DELETE request: all gallery metadata val:', val);
         this.refreshPictureGrid(val);

@@ -19,6 +19,13 @@ def get_auth_token():
   return jsonify({'token': token.decode('ascii')})
 
 
+@auth_component.route('/check', methods=['GET'])
+@auth.login_required
+def get_token_valid():
+  pass
+  return 'success', 200
+
+
 @auth.verify_password
 def verify_password(username_or_token, password):
   # first try to authenticate by token
@@ -44,7 +51,7 @@ def verify_password(username_or_token, password):
   return True  # user authorized
 
 
-def generate_auth_token(user_name, expiration=600):
+def generate_auth_token(user_name, expiration=(24 * 60 * 60)):
   s = Serializer(current_app.config['SECRET_KEY'], expires_in=expiration)
   return s.dumps({'name': user_name})
 
