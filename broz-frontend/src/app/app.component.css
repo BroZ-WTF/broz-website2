@@ -18,6 +18,16 @@
   padding: 0 0 0 0;
 }
 
+.content-page {
+  width: 100%;
+  height: fit-content;
+  min-height: 100%;
+  background-image: url("../assets/background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .banner_left_wo {
   background-image: url("../assets/banner_left_bw.png");
   background-position: center;
