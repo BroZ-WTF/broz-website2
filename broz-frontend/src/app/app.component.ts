@@ -87,13 +87,14 @@ export class AppComponent implements OnInit {
   }
 
   checkTokenStillValidAPI() {
-    const headers = new HttpHeaders({ 'Authorization': `Basic ${btoa(this._cookieService.get('login-token'))}` });
+    const headers = new HttpHeaders({ 'Authorization': `Basic ${btoa(this._cookieService.get('login-token') + ':')}` });
     var checkResponse;
+    this._logger.debug('app.component: Try old token with header:', headers);
     this._http.get(this.baseUrl + '/auth/check', { headers }).subscribe(
       (val) => {
         checkResponse = val;
         this._logger.debug('app.component: GET auth token request: val:', checkResponse);
-        if (checkResponse === 'success') {
+        if (checkResponse.check === 'success') {
           this._logger.debug('app.component: auth token check successful:');
           noLogin = false;
         } else {
@@ -103,7 +104,7 @@ export class AppComponent implements OnInit {
         }
       },
       response => {
-        this._logger.debug('app.component: auth token check failed:');
+        this._logger.debug('app.component: auth token check failed:', response);
         this._cookieService.delete('login-token');
         noLogin = true;
       },

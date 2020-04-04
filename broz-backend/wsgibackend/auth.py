@@ -23,7 +23,7 @@ def get_auth_token():
 @auth.login_required
 def get_token_valid():
   pass
-  return 'success', 200
+  return jsonify({'check': 'success'}), 200
 
 
 @auth.verify_password
