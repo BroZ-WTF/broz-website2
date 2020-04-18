@@ -28,8 +28,8 @@
   background-size: cover;
 }
 
-.banner_left_wo {
-  background-image: url("../assets/banner_left_bw.png");
+.topbar_left_wo {
+  background-image: url("../assets/topbar_left_bw.png");
   background-position: center;
   z-index: 1;
   height: 64px;
@@ -37,15 +37,15 @@
   flex: 1 1 auto;
 }
 
-.banner_center {
+.topbar_center {
   z-index: 2;
   height: 64px;
   margin-left: -20px;
   margin-right: -20px;
 }
 
-.banner_right_wlogin {
-  background-image: url("../assets/banner_right_fr.png");
+.topbar_right_wlogin {
+  background-image: url("../assets/topbar_right_fr.png");
   background-position: center;
   z-index: 1;
   height: 64px;
@@ -54,7 +54,7 @@
   display: flex;
 }
 
-.banner_right {
+.topbar_right {
   height: 64px;
   width: 100%;
 }
