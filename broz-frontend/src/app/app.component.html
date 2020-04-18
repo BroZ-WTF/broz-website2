@@ -1,7 +1,7 @@
 <head></head>
 
 <body class="content-page">
-  <mat-toolbar class="toolbar" color="primary">
+  <mat-toolbar class="topbar" color="primary">
     <div class="topbar_left_wo"> </div>
     <img class="topbar_center" src="../assets/topbar_logo.png">
     <div class="topbar_right_wlogin">
@@ -16,7 +16,7 @@
     </div>
   </mat-toolbar>
 
-  <mat-tab-group color="primary" backgroundColor="accent" dynamicHeight="false">
+  <mat-tab-group class="tab-group" color="primary" backgroundColor="accent" dynamicHeight="false">
     <mat-tab class="tab-content">
       <ng-template mat-tab-label>
         <div class="tab-label">
@@ -29,20 +29,20 @@
     <mat-tab class="tab-content">
       <ng-template mat-tab-label>
         <div class="tab-label">
-          <mat-icon class="tab-icon">collections</mat-icon>
-          Galerie
-        </div>
-      </ng-template>
-      <app-gallery></app-gallery>
-    </mat-tab>
-    <mat-tab class="tab-content">
-      <ng-template mat-tab-label>
-        <div class="tab-label">
           <mat-icon class="tab-icon">sms</mat-icon>
           Zitate
         </div>
       </ng-template>
       <app-quotes></app-quotes>
+    </mat-tab>
+    <mat-tab class="tab-content">
+      <ng-template mat-tab-label>
+        <div class="tab-label">
+          <mat-icon class="tab-icon">collections</mat-icon>
+          Galerie
+        </div>
+      </ng-template>
+      <app-gallery></app-gallery>
     </mat-tab>
   </mat-tab-group>
 </body>

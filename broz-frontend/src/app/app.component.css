@@ -11,21 +11,50 @@
   flex: 1 1 auto;
 }
 
-.toolbar {
+.topbar {
   display: flex;
   align-items: center;
   align-content: center;
-  padding: 0 0 0 0;
+  padding: 0;
+  margin: 0;
+  position: fixed;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0;
+  height: 64px;
+  z-index: 100;
 }
 
-.content-page {
+:host ::ng-deep .mat-tab-group {
+  position: absolute;
+  top: 64px;
   width: 100%;
-  height: fit-content;
-  min-height: 100%;
+  height: calc(100%-64px);
+}
+
+:host ::ng-deep .mat-tab-header {
+  position: fixed;
+  width: 100%;
+  z-index: 90;
+  height: 48px;
+}
+
+:host ::ng-deep .mat-tab-body-wrapper {
+  position: absolute;
+  top: 48px;
+  width: 100%;
+  min-height: calc(100vh - 112px);
+}
+
+:host ::ng-deep .mat-tab-body {
   background-image: url("../assets/background.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  min-height: 100%;
+}
+
+.tab-content {
+  min-height: 100%;
 }
 
 .topbar_left_wo {
