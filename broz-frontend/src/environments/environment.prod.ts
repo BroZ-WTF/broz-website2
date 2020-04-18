@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'http://broz.wtf:8080/api',
+  baseUrl: 'https://broz.wtf:8080/api',
 };
