@@ -12,6 +12,15 @@
   flex-direction: column;
 }
 
+.picture {
+  background-image: url("../../assets/gallery_frame_wtexture.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin: 14px -16px;
+  width: calc(100% - 58px);
+  padding: 45px 45px;
+}
+
 .spacer {
   flex: 1 1 auto;
 }
