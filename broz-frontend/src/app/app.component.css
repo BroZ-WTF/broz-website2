@@ -46,7 +46,7 @@
 }
 
 :host ::ng-deep .mat-tab-body {
-  background-image: url("../assets/background.png");
+  background-image: url("../assets/background.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
