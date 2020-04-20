@@ -26,6 +26,7 @@ $mat-tab-height: 48px;
   top: 0;
   height: $topbar-height;
   z-index: 100;
+  outline: 2px solid black;
 }
 
 :host ::ng-deep .mat-tab-group {

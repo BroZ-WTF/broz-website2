@@ -6,6 +6,41 @@
 }
 
 .card {
+  max-width: 300px;
   text-align: center;
   margin-top: 5px;
+}
+
+.github-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+
+  width: fit-content;
+  height: 20px;
+  margin: 5px auto;
+  padding: 0;
+
+  border: 5px solid rgb(100, 100, 100);
+  border-radius: 10px;
+  background-color: rgb(100, 100, 100);
+}
+
+.github-card-icon {
+  height: 25px;
+  padding: 0 0.5em;
+  margin-left: -5px;
+}
+
+.github-card-link {
+  flex: 1 1 auto;
+  height: 20px;
+  width: 100%;
+  text-align: right;
+  margin: -5px -5px auto auto;
+
+  border: 5px solid rgb(120, 120, 120);
+  border-radius: 10px;
+  background-color: rgb(120, 120, 120);
 }
