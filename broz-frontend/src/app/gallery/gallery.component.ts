@@ -151,7 +151,11 @@ export class GalleryComponent implements OnInit {
       },
       response => {
         this._logger.error('gallery.component: POST request error: response:', response);
-        this._snackBar.open('ERROR - POST call in error', 'OK', { duration: this.snackbarDuration });
+        if (response.status === 401) {
+          this._snackBar.open('ERROR - User unauthorized', 'OK', { duration: this.snackbarDuration });
+        } else {
+          this._snackBar.open('ERROR - POST call in error', 'OK', { duration: this.snackbarDuration });
+        }
       },
       () => {
         this._logger.debug('gallery.component: POST observable completed.');
@@ -173,7 +177,11 @@ export class GalleryComponent implements OnInit {
       },
       response => {
         this._logger.error('gallery.component: PUT request error: response:', response);
-        this._snackBar.open('ERROR - PUT call in error', 'OK', { duration: this.snackbarDuration });
+        if (response.status === 401) {
+          this._snackBar.open('ERROR - User unauthorized', 'OK', { duration: this.snackbarDuration });
+        } else {
+          this._snackBar.open('ERROR - PUT call in error', 'OK', { duration: this.snackbarDuration });
+        }
       },
       () => {
         this._logger.debug('gallery.component: PUT observable completed.');
@@ -194,7 +202,11 @@ export class GalleryComponent implements OnInit {
       },
       response => {
         this._logger.error('gallery.component: DELETE request error: response:', response);
-        this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
+        if (response.status === 401) {
+          this._snackBar.open('ERROR - User unauthorized', 'OK', { duration: this.snackbarDuration });
+        } else {
+          this._snackBar.open('ERROR - DELETE call in error', 'OK', { duration: this.snackbarDuration });
+        }
       },
       () => {
         this._logger.debug('gallery.component: DELETE observable completed.');
