@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   snackbarDuration = 3 * 1000; // ms
   baseUrl = environment.baseUrl;
 
+  new_quotes_cnt: number;
+
   constructor(private _logger: NGXLogger, private _snackBar: MatSnackBar, private _http: HttpClient, private _cookieService: CookieService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -30,6 +32,14 @@ export class AppComponent implements OnInit {
       this.checkTokenStillValidAPI();
       noLogin = true;
     }
+    /*
+    if (this._cookieService.check('most-current-viewd-quote')) {
+      this.new_quotes_cnt = this.dataSourceQuotes.data.length - parseInt(this._cookieService.get('most-current-viewd-quote'));
+    } else {
+      this._cookieService.set('most-current-viewd-quote', '0');
+      this.new_quotes_cnt = this.dataSourceQuotes.data.length;
+    }
+    */
   }
 
   getLoginState() {
