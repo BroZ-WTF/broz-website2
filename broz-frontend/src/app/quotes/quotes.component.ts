@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { NGXLogger } from 'ngx-logger';
@@ -53,6 +53,7 @@ export class QuotesComponent implements OnInit {
   dataSourceQuotes = new MatTableDataSource<Quote>();
 
   @Input() LoginState: boolean;
+  @Output() eventCurrentQuotesCntChanged = new EventEmitter<number>();
 
   @ViewChild(MatTable) table: MatTable<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -271,6 +272,7 @@ export class QuotesComponent implements OnInit {
     this._logger.debug('quotes.component: sorted top scorer:', this.topScorerArray);
 
     this.dataSourceQuotes.paginator = this.paginator;
+    this.eventCurrentQuotesCntChanged.emit(this.dataSourceQuotes.data.length);
   }
 
   monster() {

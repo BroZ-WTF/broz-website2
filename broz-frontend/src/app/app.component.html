@@ -16,7 +16,8 @@
     </div>
   </mat-toolbar>
 
-  <mat-tab-group class="tab-group" color="primary" backgroundColor="accent" dynamicHeight="false">
+  <mat-tab-group class="tab-group" (selectedTabChange)="onTabChanged($event);" color="primary" backgroundColor="accent"
+    dynamicHeight="false">
     <mat-tab class="tab-content">
       <ng-template mat-tab-label>
         <div class="tab-label">
@@ -29,20 +30,28 @@
     <mat-tab class="tab-content">
       <ng-template mat-tab-label>
         <div class="tab-label">
-          <mat-icon class="tab-icon">sms</mat-icon>
+          <mat-icon class="tab-icon" [matBadge]="current_quotes_cnt - viewed_quotes_cnt"
+            [matBadgeHidden]="!((current_quotes_cnt - viewed_quotes_cnt) > 0)" matBadgeColor="warn"
+            matBadgePosition="above before">
+            sms
+          </mat-icon>
           Zitate
         </div>
       </ng-template>
-      <app-quotes></app-quotes>
+      <app-quotes (eventCurrentQuotesCntChanged)="recieveCurrentQuotesCnt($event)"></app-quotes>
     </mat-tab>
     <mat-tab class="tab-content">
       <ng-template mat-tab-label>
-        <div class="tab-label">
-          <mat-icon class="tab-icon">collections</mat-icon>
+        <div class=" tab-label">
+          <mat-icon class="tab-icon" [matBadge]="current_pictures_cnt - viewed_pictures_cnt"
+            [matBadgeHidden]="!((current_pictures_cnt - viewed_pictures_cnt) > 0)" matBadgeColor="warn"
+            matBadgePosition="above before">
+            collections
+          </mat-icon>
           Galerie
         </div>
       </ng-template>
-      <app-gallery></app-gallery>
+      <app-gallery (eventCurrentPicturesCntChanged)="recieveCurrentPicturesCnt($event)"></app-gallery>
     </mat-tab>
   </mat-tab-group>
 </body>

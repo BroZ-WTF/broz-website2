@@ -21,7 +21,10 @@ export class AppComponent implements OnInit {
   snackbarDuration = 3 * 1000; // ms
   baseUrl = environment.baseUrl;
 
-  new_quotes_cnt: number;
+  viewed_quotes_cnt: number;
+  viewed_pictures_cnt: number;
+  current_quotes_cnt: number;
+  current_pictures_cnt: number;
 
   LoginState: boolean;
 
@@ -32,14 +35,49 @@ export class AppComponent implements OnInit {
       this.checkTokenStillValidAPI();
       this.LoginState = true;
     }
-    /*
-    if (this._cookieService.check('most-current-viewd-quote')) {
-      this.new_quotes_cnt = this.dataSourceQuotes.data.length - parseInt(this._cookieService.get('most-current-viewd-quote'));
+
+    if (this._cookieService.check('most-current-viewed-quote')) {
+      this.viewed_quotes_cnt = parseInt(this._cookieService.get('most-current-viewed-quote'));
     } else {
-      this._cookieService.set('most-current-viewd-quote', '0');
-      this.new_quotes_cnt = this.dataSourceQuotes.data.length;
+      this._cookieService.set('most-current-viewed-quote', '0');
+      this.viewed_quotes_cnt = 0;
     }
-    */
+
+    if (this._cookieService.check('most-current-viewed-picture')) {
+      this.viewed_pictures_cnt = parseInt(this._cookieService.get('most-current-viewed-picture'));
+    } else {
+      this._cookieService.set('most-current-viewed-picture', '0');
+      this.viewed_pictures_cnt = 0;
+    }
+  }
+
+  recieveCurrentQuotesCnt($event) {
+    this.current_quotes_cnt = $event;
+  }
+
+  recieveCurrentPicturesCnt($event) {
+    this.current_pictures_cnt = $event;
+  }
+
+  onTabChanged($event) {
+    this._logger.debug('app.component: current active view:', $event.index);
+    if ($event.index === 1) {
+      this.setViewedQuotesCnt();
+    } else if ($event.index === 2) {
+      this.setViewedPicturesCnt();
+    }
+  }
+
+  setViewedQuotesCnt() {
+    this._logger.debug('app.component: viewed quotes:', this.current_quotes_cnt);
+    this.viewed_quotes_cnt = this.current_quotes_cnt;
+    this._cookieService.set('most-current-viewed-quote', this.current_quotes_cnt.toString());
+  }
+
+  setViewedPicturesCnt() {
+    this._logger.debug('app.component: viewed pictures:', this.current_pictures_cnt);
+    this.viewed_pictures_cnt = this.current_pictures_cnt;
+    this._cookieService.set('most-current-viewed-picture', this.current_pictures_cnt.toString());
   }
 
   getLoginState() {
