@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { NGXLogger } from 'ngx-logger';
 import { CookieService } from 'ngx-cookie-service';
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from '@kolkov/ngx-gallery';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -46,12 +47,39 @@ export class GalleryComponent implements OnInit {
   @Input() LoginState: boolean;
   @Output() eventCurrentPicturesCntChanged = new EventEmitter<number>();
 
+  galleryOptions: NgxGalleryOptions[];
+  galleryImages: NgxGalleryImage[];
+
   constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private _cookieService: CookieService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.numer_render_columns = Math.ceil(window.innerWidth / 500);
     this._logger.debug('gallery.component: query gallery metadata.');
     this.getGalleryMetadataAPI();
+
+    this.galleryOptions = [
+      { "imageSize": "contain", "previewCloseOnClick": true, "previewCloseOnEsc": true },
+      { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
+      { "breakpoint": 300, "width": "100%", "height": "200px", "thumbnailsColumns": 2 },
+    ];
+
+    this.galleryImages = [
+      {
+        small: '../../assets/background.jpg',
+        medium: '../../assets/background.jpg',
+        big: '../../assets/background.jpg',
+      },
+      {
+        small: 'https://broz.wtf:8080/api/gallery/picture/Robin.png',
+        medium: 'https://broz.wtf:8080/api/gallery/picture/Robin.png',
+        big: 'https://broz.wtf:8080/api/gallery/picture/Robin.png'
+      },
+      {
+        small: 'https://broz.wtf:8080/api/gallery/picture/Tim.png',
+        medium: 'https://broz.wtf:8080/api/gallery/picture/Tim.png',
+        big: 'https://broz.wtf:8080/api/gallery/picture/Tim.png'
+      }
+    ];
   }
 
   getLoginState() {

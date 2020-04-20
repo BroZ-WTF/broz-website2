@@ -11,6 +11,7 @@ registerLocaleData(localeDe, 'de-DE');
 
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { CookieService } from 'ngx-cookie-service';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import 'hammerjs';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
@@ -85,6 +86,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
     MatSnackBarModule,
     MatExpansionModule,
     MatBadgeModule,
+    NgxGalleryModule,
     LoggerModule.forRoot({
       level: !environment.production ? NgxLoggerLevel.DEBUG : NgxLoggerLevel.ERROR,// serverLogLevel
       serverLogLevel: NgxLoggerLevel.OFF
