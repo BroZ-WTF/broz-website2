@@ -11,6 +11,10 @@
   flex: 1 1 auto;
 }
 
+$topbar-height: 64px;
+$topbar-center-logo-width: 40px;
+$mat-tab-height: 48px;
+
 .topbar {
   display: flex;
   align-items: center;
@@ -20,29 +24,28 @@
   position: fixed;
   position: -webkit-sticky; /* For macOS/iOS Safari */
   top: 0;
-  height: 64px;
+  height: $topbar-height;
   z-index: 100;
 }
 
 :host ::ng-deep .mat-tab-group {
   position: absolute;
-  top: 64px;
+  top: $topbar-height;
   width: 100%;
-  height: calc(100%-64px);
 }
 
 :host ::ng-deep .mat-tab-header {
   position: fixed;
   width: 100%;
   z-index: 90;
-  height: 48px;
+  height: $mat-tab-height;
 }
 
 :host ::ng-deep .mat-tab-body-wrapper {
   position: absolute;
-  top: 48px;
+  top: $mat-tab-height;
   width: 100%;
-  min-height: calc(100vh - 112px);
+  min-height: calc(100vh - #{$topbar-height + $mat-tab-height});
 }
 
 :host ::ng-deep .mat-tab-body {
@@ -62,30 +65,30 @@
   background-image: url("../assets/topbar_left_bw.png");
   background-position: center;
   z-index: 1;
-  height: 64px;
-  width: calc(50% - 40px);
+  height: $topbar-height;
+  width: 50%;
   flex: 1 1 auto;
 }
 
 .topbar_center {
   z-index: 2;
-  height: 64px;
-  margin-left: -20px;
-  margin-right: -20px;
+  height: $topbar-height;
+  margin-right: (-$topbar-center-logo-width / 2);
+  margin-left: (-$topbar-center-logo-width / 2);
 }
 
 .topbar_right_wlogin {
   background-image: url("../assets/topbar_right_fr.png");
   background-position: center;
   z-index: 1;
-  height: 64px;
-  width: calc(50% - 40px);
+  height: $topbar-height;
+  width: 50%;
   flex: 1 1 auto;
   display: flex;
 }
 
 .topbar_right {
-  height: 64px;
+  height: $topbar-height;
   width: 100%;
 }
 
