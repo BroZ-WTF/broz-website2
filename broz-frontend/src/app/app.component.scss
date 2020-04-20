@@ -32,7 +32,7 @@ $mat-tab-height: 48px;
   position: absolute;
   top: $topbar-height;
   width: 100%;
-  min-height: calc(100vh - #{$topbar-height});
+  height: calc(100vh - #{$topbar-height});
 }
 
 :host ::ng-deep .mat-tab-header {
@@ -46,7 +46,7 @@ $mat-tab-height: 48px;
   position: absolute;
   top: $mat-tab-height;
   width: 100%;
-  min-height: calc(100vh - #{$topbar-height + $mat-tab-height});
+  height: calc(100vh - #{$topbar-height + $mat-tab-height});
 }
 
 :host ::ng-deep .mat-tab-body {
@@ -55,11 +55,6 @@ $mat-tab-height: 48px;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
-  min-height: 100%;
-}
-
-.tab-content {
-  min-height: 100%;
 }
 
 .topbar_left_wo {
