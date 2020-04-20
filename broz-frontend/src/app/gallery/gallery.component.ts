@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { NGXLogger } from 'ngx-logger';
@@ -44,6 +44,7 @@ export class GalleryComponent implements OnInit {
   fullPicturesMetadata;
   picturesMetadata;
 
+  @Input() LoginState: boolean;
 
   constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private _cookieService: CookieService, public dialog: MatDialog) { }
 
@@ -54,7 +55,7 @@ export class GalleryComponent implements OnInit {
   }
 
   getLoginState() {
-    return noLogin;
+    return this.LoginState;
   }
 
   addPicture() {

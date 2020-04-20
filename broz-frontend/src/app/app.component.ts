@@ -11,8 +11,6 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 
 import { environment } from 'src/environments/environment'
 
-export var noLogin = true;
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -25,12 +23,14 @@ export class AppComponent implements OnInit {
 
   new_quotes_cnt: number;
 
+  LoginState: boolean;
+
   constructor(private _logger: NGXLogger, private _snackBar: MatSnackBar, private _http: HttpClient, private _cookieService: CookieService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     if (this._cookieService.check('login-token')) {
       this.checkTokenStillValidAPI();
-      noLogin = true;
+      this.LoginState = true;
     }
     /*
     if (this._cookieService.check('most-current-viewd-quote')) {
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
   }
 
   getLoginState() {
-    return noLogin;
+    return this.LoginState;
   }
 
   loginDialog() {
@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    noLogin = true;
+    this.LoginState = true;
     this._cookieService.delete('login-token');
     this._snackBar.open('Erfolgreich ausgeloggt', 'OK', { duration: this.snackbarDuration });
   }
@@ -72,19 +72,19 @@ export class AppComponent implements OnInit {
         loginResponse = val;
         this._logger.debug('app.component: GET auth token request: val:', loginResponse);
         if (loginResponse.token) {
-          noLogin = false;
+          this.LoginState = false;
           this._cookieService.set('login-token', loginResponse.token, 1);
           this._logger.debug('app.component: auth token cookie:', this._cookieService.get('login-token'));
           this._snackBar.open('Erfolgreich eingeloggt', 'OK', { duration: this.snackbarDuration });
         } else {
-          noLogin = true;
+          this.LoginState = true;
           this._cookieService.delete('login-token');
           this._snackBar.open('Passwort fehlerhaft', 'OK', { duration: this.snackbarDuration });
           this.loginDialog();
         }
       },
       response => {
-        noLogin = true;
+        this.LoginState = true;
         this._cookieService.delete('login-token');
         this._logger.debug('app.component: GET auth request error: response:', response);
         this._snackBar.open('Passwort fehlerhaft', 'OK', { duration: this.snackbarDuration });
@@ -106,17 +106,17 @@ export class AppComponent implements OnInit {
         this._logger.debug('app.component: GET auth token request: val:', checkResponse);
         if (checkResponse.check === 'success') {
           this._logger.debug('app.component: auth token check successful:');
-          noLogin = false;
+          this.LoginState = false;
         } else {
           this._logger.debug('app.component: auth token check failed:');
           this._cookieService.delete('login-token');
-          noLogin = true;
+          this.LoginState = true;
         }
       },
       response => {
         this._logger.debug('app.component: auth token check failed:', response);
         this._cookieService.delete('login-token');
-        noLogin = true;
+        this.LoginState = true;
       },
       () => {
         this._logger.debug('app.component: GET observable completed.');

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { NGXLogger } from 'ngx-logger';
@@ -14,7 +14,6 @@ import { QuotesEditQuoteDialogComponent } from '../quotes/quotes-edit-quote-dial
 import { QuotesDeleteQuoteDialogComponent } from '../quotes/quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
 
 import { environment } from 'src/environments/environment'
-import { noLogin } from '../app.component'
 
 
 export interface Quote {
@@ -53,6 +52,8 @@ export class QuotesComponent implements OnInit {
   fullQuotes: any;
   dataSourceQuotes = new MatTableDataSource<Quote>();
 
+  @Input() LoginState: boolean;
+
   @ViewChild(MatTable) table: MatTable<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -67,7 +68,7 @@ export class QuotesComponent implements OnInit {
   }
 
   getLoginState() {
-    return noLogin;
+    return this.LoginState;
   }
 
   applyFilter(event: Event) {
