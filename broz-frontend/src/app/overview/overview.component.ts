@@ -18,7 +18,7 @@ export interface MCServerStatus {
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.css']
+  styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
   fullMCServerStatus: MCServerStatus = { status: "unknown", online: false, players: { max: 0, now: 0, names: "" } };

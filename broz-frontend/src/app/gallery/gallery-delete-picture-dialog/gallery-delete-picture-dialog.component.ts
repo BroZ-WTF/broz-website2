@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 @Component({
   selector: 'app-gallery-delete-picture-dialog',
   templateUrl: './gallery-delete-picture-dialog.component.html',
-  styleUrls: ['./gallery-delete-picture-dialog.component.css']
+  styleUrls: ['./gallery-delete-picture-dialog.component.scss']
 })
 export class GalleryDeletePictureDialogComponent implements OnInit {
 

@@ -6,7 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-quotes-edit-quote-dialog',
   templateUrl: './quotes-edit-quote-dialog.component.html',
-  styleUrls: ['./quotes-edit-quote-dialog.component.css']
+  styleUrls: ['./quotes-edit-quote-dialog.component.scss']
 })
 export class QuotesEditQuoteDialogComponent implements OnInit {
   quoteForm: FormGroup;

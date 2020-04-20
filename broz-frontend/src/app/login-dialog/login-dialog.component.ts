@@ -6,7 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-login',
   templateUrl: './login-dialog.component.html',
-  styleUrls: ['./login-dialog.component.css']
+  styleUrls: ['./login-dialog.component.scss']
 })
 export class LoginDialogComponent implements OnInit {
   loginForm: FormGroup;

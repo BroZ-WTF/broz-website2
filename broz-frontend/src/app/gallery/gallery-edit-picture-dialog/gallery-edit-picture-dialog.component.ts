@@ -6,7 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-gallery-edit-picture-dialog',
   templateUrl: './gallery-edit-picture-dialog.component.html',
-  styleUrls: ['./gallery-edit-picture-dialog.component.css']
+  styleUrls: ['./gallery-edit-picture-dialog.component.scss']
 })
 export class GalleryEditPictureDialogComponent implements OnInit {
   pictureForm: FormGroup;

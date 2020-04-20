@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 @Component({
   selector: 'app-quotes-delete-quote-dialog',
   templateUrl: './quotes-delete-quote-dialog.component.html',
-  styleUrls: ['./quotes-delete-quote-dialog.component.css']
+  styleUrls: ['./quotes-delete-quote-dialog.component.scss']
 })
 export class QuotesDeleteQuoteDialogComponent implements OnInit {
 
