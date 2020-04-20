@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
 
   loginAPI(user) {
     this._logger.debug('app.component.component: user:', user);
-    const headers = new HttpHeaders({ 'Authorization': `Basic ${btoa(user.name + ':' + user.password)}` });
+    const headers = new HttpHeaders({ 'Authorization': `Basic ${btoa(user.login_name + ':' + user.password)}` });
     var loginResponse;
     this._http.get(this.baseUrl + '/auth/token', { headers }).subscribe(
       (val) => {

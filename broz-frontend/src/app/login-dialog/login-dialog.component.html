@@ -2,15 +2,15 @@
 
 <form [formGroup]="loginForm" class="form">
   <mat-form-field color="primary" class="form-element">
-    <input matInput placeholder="Nutzer" formControlName="name">
-    <mat-error *ngIf="!loginForm.controls['name'].valid && loginForm.controls['name'].touched">
+    <input matInput placeholder="Nutzer" formControlName="login_name">
+    <mat-error *ngIf="!loginForm.controls['login_name'].valid && loginForm.controls['login_name'].touched">
       Name ist nötig.
     </mat-error>
   </mat-form-field>
 
   <mat-form-field color="primary" class="form-element">
     <input matInput placeholder="Passwort" type="password" formControlName="password">
-    <mat-error *ngIf="!loginForm.controls['name'].valid && loginForm.controls['name'].touched">
+    <mat-error *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched">
       Passwort ist nötig.
     </mat-error>
   </mat-form-field>

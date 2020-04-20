@@ -17,7 +17,7 @@ export class LoginDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.loginForm = this.formBuilder.group({
-      'name': [null, Validators.required],
+      'login_name': [null, Validators.required],
       'password': [null, Validators.required]
     });
   }
