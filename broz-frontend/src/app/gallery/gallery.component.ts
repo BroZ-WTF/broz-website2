@@ -11,7 +11,6 @@ import { GalleryDeletePictureDialogComponent } from '../gallery/gallery-delete-p
 import { GalleryEditPictureDialogComponent } from '../gallery/gallery-edit-picture-dialog/gallery-edit-picture-dialog.component';
 
 import { environment } from 'src/environments/environment';
-import { noLogin } from '../app.component';
 
 
 export interface Picture {
