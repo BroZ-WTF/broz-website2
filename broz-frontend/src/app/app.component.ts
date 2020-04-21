@@ -39,14 +39,14 @@ export class AppComponent implements OnInit {
     if (this._cookieService.check('most-current-viewed-quote')) {
       this.viewed_quotes_cnt = parseInt(this._cookieService.get('most-current-viewed-quote'));
     } else {
-      this._cookieService.set('most-current-viewed-quote', '0');
+      this._cookieService.set('most-current-viewed-quote', '0', 365);
       this.viewed_quotes_cnt = 0;
     }
 
     if (this._cookieService.check('most-current-viewed-picture')) {
       this.viewed_pictures_cnt = parseInt(this._cookieService.get('most-current-viewed-picture'));
     } else {
-      this._cookieService.set('most-current-viewed-picture', '0');
+      this._cookieService.set('most-current-viewed-picture', '0', 365);
       this.viewed_pictures_cnt = 0;
     }
   }
@@ -71,13 +71,13 @@ export class AppComponent implements OnInit {
   setViewedQuotesCnt() {
     this._logger.debug('app.component: viewed quotes:', this.current_quotes_cnt);
     this.viewed_quotes_cnt = this.current_quotes_cnt;
-    this._cookieService.set('most-current-viewed-quote', this.current_quotes_cnt.toString());
+    this._cookieService.set('most-current-viewed-quote', this.current_quotes_cnt.toString(), 365);
   }
 
   setViewedPicturesCnt() {
     this._logger.debug('app.component: viewed pictures:', this.current_pictures_cnt);
     this.viewed_pictures_cnt = this.current_pictures_cnt;
-    this._cookieService.set('most-current-viewed-picture', this.current_pictures_cnt.toString());
+    this._cookieService.set('most-current-viewed-picture', this.current_pictures_cnt.toString(), 365);
   }
 
   getLoginState() {
