@@ -10,7 +10,7 @@
     </button>
     <span class="spacer"></span>
     <!-- Score Display -->
-    <mat-expansion-panel>
+    <mat-expansion-panel class="top-scorer-exp-panel">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Top Score:
@@ -40,7 +40,8 @@
 
   <!-- Table -->
   <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSourceQuotes" matSort matSortActive="date" matSortDirection="desc">
+    <table class="quotes-table" mat-table [dataSource]="dataSourceQuotes" matSort matSortActive="date"
+      matSortDirection="desc">
       <!-- (matSortChange)="sortData($event)"> -->
 
       <!-- ID Column -->

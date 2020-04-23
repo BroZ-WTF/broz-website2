@@ -1,16 +1,21 @@
 $picture-card-width: 400px;
 $picture-card-height: 725px;
-$picture-to-frame-padding: 45px;
+$picture-to-frame-padding: 5px;
 $picture-to-card-margin: -16px;
 
 .page-div {
   margin-top: 5px;
 }
 
+.container-header {
+  background-color: rgb(0, 0, 0, 0.6);
+}
+
 .picture-card {
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 5px;
+  background-color: rgb(0, 0, 0, 0.6);
   width: $picture-card-width;
   height: $picture-card-height;
   display: flex;
@@ -18,6 +23,8 @@ $picture-to-card-margin: -16px;
 }
 
 .picture {
+  border: -5px solid black;
+  border-radius: 10px;
   background-image: url("../../assets/gallery_frame_wtexture.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -31,8 +38,9 @@ $picture-to-card-margin: -16px;
 }
 
 .description-card {
+  background-color: rgb(0, 0, 0, 0.7);
   align-self: center;
-  width: calc(100% - 5px);
+  width: calc(100% + 2 * $picture-to-card-margin);
 }
 
 .buttons-card {

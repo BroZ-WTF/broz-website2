@@ -1,6 +1,6 @@
 <div class="page-div">
   <!-- Header -->
-  <mat-card>
+  <mat-card class="container-header">
     <mat-card-title>
       Lustige Bildchen
     </mat-card-title>
@@ -21,8 +21,8 @@
         </mat-card-title>
         <img class="picture" [src]="picture.file" style="height: 500px;">
         <!-- Content -->
-        <mat-card-content class="description-card">
-          <mat-card>
+        <mat-card-content>
+          <mat-card class="description-card">
             {{ picture.description }}
           </mat-card>
         </mat-card-content>
