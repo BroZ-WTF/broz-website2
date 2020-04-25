@@ -5,6 +5,7 @@
 
 .tab-icon {
   margin-right: 10px;
+  margin-top: 10px;
 }
 
 .spacer {
@@ -27,6 +28,34 @@ $mat-tab-height: 48px;
   height: $topbar-height;
   z-index: 100;
   outline: 2px solid black;
+}
+
+:host ::ng-deep .mat-tab-group {
+  position: absolute;
+  top: $topbar-height;
+  width: 100%;
+  height: calc(100vh - #{$topbar-height});
+  background-image: url("../assets/background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+:host ::ng-deep .mat-tab-header {
+  position: fixed;
+  width: 100%;
+  z-index: 90;
+  height: $mat-tab-height;
+
+  background-color: rgb(0, 0, 0, 0.5);
+}
+
+:host ::ng-deep .mat-tab-body-wrapper {
+  position: absolute;
+  top: $mat-tab-height;
+  width: 100%;
+  height: calc(100vh - #{$topbar-height + $mat-tab-height});
 }
 
 .topbar_left_wo {
@@ -67,33 +96,4 @@ $mat-tab-height: 48px;
   align-self: center;
   max-height: 35px;
   z-index: 3;
-}
-
-:host ::ng-deep .mat-tab-nav-bar {
-  position: fixed;
-  height: $mat-tab-height;
-  width: 100%;
-  z-index: 90;
-  background-color: rgb(0, 0, 0, 0.5);
-}
-
-.main-container {
-  position: fixed;
-  height: calc(100vh - #{$topbar-height});
-  width: 100%;
-  top: $topbar-height;
-
-  background-image: url("../assets/background.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-.content-container {
-  position: fixed;
-  overflow: auto;
-  height: calc(100vh - #{$mat-tab-height + $topbar-height});
-  width: 100%;
-  top: $mat-tab-height + $topbar-height;
 }

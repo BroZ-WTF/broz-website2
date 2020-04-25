@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+import appRoutes from './routerConfig';
 
 import { NGXLogger } from 'ngx-logger';
 import { CookieService } from 'ngx-cookie-service';
@@ -9,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 
-import { environment } from 'src/environments/environment'
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -21,14 +24,16 @@ export class AppComponent implements OnInit {
   snackbarDuration = 3 * 1000; // ms
   baseUrl = environment.baseUrl;
 
-  viewed_quotes_cnt: number;
-  viewed_pictures_cnt: number;
-  current_quotes_cnt: number;
-  current_pictures_cnt: number;
+  new_entries_for_badges = {
+    'gallery': { 'seen': 0, 'current': 0 },
+    'quotes': { 'seen': 0, 'current': 0 }
+  };
 
   LoginState: boolean;
 
-  constructor(private _logger: NGXLogger, private _snackBar: MatSnackBar, private _http: HttpClient, private _cookieService: CookieService, public dialog: MatDialog) { }
+  navEntries = appRoutes.filter(route => route.redirectTo == null);
+
+  constructor(private _logger: NGXLogger, private _snackBar: MatSnackBar, private _http: HttpClient, private _cookieService: CookieService, private _router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     if (this._cookieService.check('login-token')) {
@@ -37,47 +42,37 @@ export class AppComponent implements OnInit {
     }
 
     if (this._cookieService.check('most-current-viewed-quote')) {
-      this.viewed_quotes_cnt = parseInt(this._cookieService.get('most-current-viewed-quote'));
+      this.new_entries_for_badges.quotes.seen = parseInt(this._cookieService.get('most-current-viewed-quote'));
     } else {
       this._cookieService.set('most-current-viewed-quote', '0', 365);
-      this.viewed_quotes_cnt = 0;
+      this.new_entries_for_badges.quotes.seen = 0;
     }
 
     if (this._cookieService.check('most-current-viewed-picture')) {
-      this.viewed_pictures_cnt = parseInt(this._cookieService.get('most-current-viewed-picture'));
+      this.new_entries_for_badges.gallery.seen = parseInt(this._cookieService.get('most-current-viewed-picture'));
     } else {
       this._cookieService.set('most-current-viewed-picture', '0', 365);
-      this.viewed_pictures_cnt = 0;
+      this.new_entries_for_badges.gallery.seen = 0;
     }
+
+    this.getGalleryMetadataCountsAPI();
+    this.getAllQuotesCountsAPI();
   }
 
-  recieveCurrentQuotesCnt($event) {
-    this.current_quotes_cnt = $event;
-  }
-
-  recieveCurrentPicturesCnt($event) {
-    this.current_pictures_cnt = $event;
-  }
-
-  onTabChanged($event) {
-    this._logger.debug('app.component: current active view:', $event.index);
-    if ($event.index === 1) {
-      this.setViewedQuotesCnt();
-    } else if ($event.index === 2) {
-      this.setViewedPicturesCnt();
+  getBadgeCnt(tab) {
+    if (this.new_entries_for_badges[this._router.url.slice(1)]?.current) {
+      this.new_entries_for_badges[this._router.url.slice(1)].seen = this.new_entries_for_badges[this._router.url.slice(1)].current;
+      if (this._router.url.slice(1) === 'quotes') {
+        this._cookieService.set('most-current-viewed-quote', this.new_entries_for_badges.quotes.seen.toString(), 365);
+      } else if (this._router.url.slice(1) === 'gallery') {
+        this._cookieService.set('most-current-viewed-picture', this.new_entries_for_badges.gallery.seen.toString(), 365);
+      }
     }
+    return this.new_entries_for_badges[tab.path]?.current - this.new_entries_for_badges[tab.path]?.seen;
   }
 
-  setViewedQuotesCnt() {
-    this._logger.debug('app.component: viewed quotes:', this.current_quotes_cnt);
-    this.viewed_quotes_cnt = this.current_quotes_cnt;
-    this._cookieService.set('most-current-viewed-quote', this.current_quotes_cnt.toString(), 365);
-  }
-
-  setViewedPicturesCnt() {
-    this._logger.debug('app.component: viewed pictures:', this.current_pictures_cnt);
-    this.viewed_pictures_cnt = this.current_pictures_cnt;
-    this._cookieService.set('most-current-viewed-picture', this.current_pictures_cnt.toString(), 365);
+  getBadgeHidden(tab) {
+    return !(this.getBadgeCnt(tab) > 0);
   }
 
   getLoginState() {
@@ -155,6 +150,40 @@ export class AppComponent implements OnInit {
         this._logger.debug('app.component: auth token check failed:', response);
         this._cookieService.delete('login-token');
         this.LoginState = true;
+      },
+      () => {
+        this._logger.debug('app.component: GET observable completed.');
+      }
+    );
+  }
+
+  getGalleryMetadataCountsAPI() {
+    var metadata;
+    this._http.get(this.baseUrl + '/gallery/metadata').subscribe(
+      (val) => {
+        this._logger.log('app.component: GET request: all gallery metadata val:', val);
+        metadata = val;
+        this.new_entries_for_badges.gallery.current = metadata.pictures.length;
+      },
+      response => {
+        this._logger.error('app.component: GET request error: response:', response);
+      },
+      () => {
+        this._logger.debug('app.component: GET observable completed.');
+      }
+    );
+  }
+
+  getAllQuotesCountsAPI() {
+    var quotes;
+    this._http.get(this.baseUrl + '/quotes').subscribe(
+      (val) => {
+        this._logger.log('app.component: GET request: all quotes val:', val);
+        quotes = val;
+        this.new_entries_for_badges.quotes.current = quotes.quotes_list.length;
+      },
+      response => {
+        this._logger.error('app.component: GET request error: response:', response);
       },
       () => {
         this._logger.debug('app.component: GET observable completed.');

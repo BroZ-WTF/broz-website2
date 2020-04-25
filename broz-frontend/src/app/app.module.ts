@@ -3,6 +3,7 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { environment } from '../environments/environment';
 
@@ -35,6 +36,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatBadgeModule } from '@angular/material/badge';
 
+import appRoutes from './routerConfig';
+
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverviewComponent } from './overview/overview.component';
@@ -63,6 +66,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
     BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,
+    RouterModule.forRoot(appRoutes),
     MatTabsModule,
     MatToolbarModule,
     MatGridListModule,

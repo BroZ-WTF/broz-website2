@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { NGXLogger } from 'ngx-logger';
@@ -13,7 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { QuotesEditQuoteDialogComponent } from '../quotes/quotes-edit-quote-dialog/quotes-edit-quote-dialog.component';
 import { QuotesDeleteQuoteDialogComponent } from '../quotes/quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
 
-import { environment } from 'src/environments/environment'
+import { environment } from 'src/environments/environment';
 
 
 export interface Quote {
@@ -53,7 +53,6 @@ export class QuotesComponent implements OnInit {
   dataSourceQuotes = new MatTableDataSource<Quote>();
 
   @Input() LoginState: boolean;
-  @Output() eventCurrentQuotesCntChanged = new EventEmitter<number>();
 
   @ViewChild(MatTable) table: MatTable<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -169,7 +168,7 @@ export class QuotesComponent implements OnInit {
   }
 
   postQuoteAPI(quote: QuoteData) {
-    let token = this._cookieService.get('login-token')
+    let token = this._cookieService.get('login-token');
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
     headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
@@ -195,7 +194,7 @@ export class QuotesComponent implements OnInit {
   }
 
   putQuoteAPI(quote: Quote) {
-    let token = this._cookieService.get('login-token')
+    let token = this._cookieService.get('login-token');
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
     headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
@@ -221,7 +220,7 @@ export class QuotesComponent implements OnInit {
   }
 
   deleteQuoteAPI(quote: Quote) {
-    let token = this._cookieService.get('login-token')
+    let token = this._cookieService.get('login-token');
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
     const delUrl = this.baseUrl + `/${quote.id}`;
@@ -272,7 +271,6 @@ export class QuotesComponent implements OnInit {
     this._logger.debug('quotes.component: sorted top scorer:', this.topScorerArray);
 
     this.dataSourceQuotes.paginator = this.paginator;
-    this.eventCurrentQuotesCntChanged.emit(this.dataSourceQuotes.data.length);
   }
 
   monster() {

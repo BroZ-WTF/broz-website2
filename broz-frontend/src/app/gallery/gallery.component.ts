@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { NGXLogger } from 'ngx-logger';
@@ -44,7 +44,6 @@ export class GalleryComponent implements OnInit {
   picturesMetadata;
 
   @Input() LoginState: boolean;
-  @Output() eventCurrentPicturesCntChanged = new EventEmitter<number>();
 
   constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private _cookieService: CookieService, public dialog: MatDialog) { }
 
@@ -139,7 +138,7 @@ export class GalleryComponent implements OnInit {
   }
 
   postPictureAPI(picture: PictureData) {
-    let token = this._cookieService.get('login-token')
+    let token = this._cookieService.get('login-token');
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
     headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
@@ -165,7 +164,7 @@ export class GalleryComponent implements OnInit {
   }
 
   putPictureAPI(picture: Picture) {
-    let token = this._cookieService.get('login-token')
+    let token = this._cookieService.get('login-token');
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
     headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
@@ -191,7 +190,7 @@ export class GalleryComponent implements OnInit {
   }
 
   deletePictureAPI(picture: Picture) {
-    let token = this._cookieService.get('login-token')
+    let token = this._cookieService.get('login-token');
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
     const delUrl = this.baseUrl + `/metadata/${picture.id}`;
@@ -221,6 +220,5 @@ export class GalleryComponent implements OnInit {
     for (let ii = 0; ii < this.picturesMetadata.length; ii++) {
       this.picturesMetadata[ii].id = ii;
     }
-    this.eventCurrentPicturesCntChanged.emit(this.picturesMetadata.length);
   }
 }
