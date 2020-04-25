@@ -66,7 +66,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
     BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { useHash: true }),
     MatTabsModule,
     MatToolbarModule,
     MatGridListModule,
