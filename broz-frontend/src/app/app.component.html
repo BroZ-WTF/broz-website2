@@ -2,14 +2,18 @@
 
 <body>
   <mat-toolbar class="topbar">
-    <div class="topbar_left_wo"> </div>
-    <img class="topbar_center" src="../assets/topbar_logo.png">
-    <div class="topbar_right_wlogin">
+    <div class="topbar-left-wo"> </div>
+    <img class="topbar-center" src="../assets/topbar_logo.png">
+    <div class="topbar-right-wlogin">
       <div class="spacer"></div>
-      <button mat-raised-button class="login-logout_button" color="accent" (click)="loginDialog()" *ngIf="!login_state">
+      <button mat-raised-button class="login-logout-button" color="primary" style="width: fit-content;"
+        (click)="openSnackBar(login_state === 3 ? 'Rechte: Alle' : login_state === 2 ? 'Rechte: Nur Editieren' : 'error', 'OK')" *ngIf="login_state">
+        {{login_state === 3 ? 'Admin' : login_state === 2 ? 'Bro' : 'error'}}
+      </button>
+      <button mat-raised-button class="login-logout-button" color="accent" (click)="loginDialog()" *ngIf="!login_state">
         Login
       </button>
-      <button mat-raised-button class=" login-logout_button" color="accent" (click)="logout()" *ngIf="login_state">
+      <button mat-raised-button class="login-logout-button" color="accent" (click)="logout()" *ngIf="login_state">
         Logout
       </button>
     </div>

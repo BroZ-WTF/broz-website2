@@ -78,6 +78,10 @@ export class AppComponent implements OnInit {
     return !(this.getBadgeCnt(tab) > 0);
   }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, { duration: this.snackbarDuration });
+  }
+
   loginDialog() {
     const loginDialogRef = this.dialog.open(LoginDialogComponent, {
       width: '300px',
@@ -104,7 +108,7 @@ export class AppComponent implements OnInit {
         loginResponse = val;
         this._logger.debug('app.component: GET auth token request: val:', loginResponse);
         if (loginResponse.token) {
-          this._loginState.setLoginState(1);
+          this._loginState.setLoginState(loginResponse.rights);
           this._cookieService.set('login-token', loginResponse.token, 1);
           this._logger.debug('app.component: auth token cookie:', this._cookieService.get('login-token'));
           this._snackBar.open('Erfolgreich eingeloggt', 'OK', { duration: this.snackbarDuration });
@@ -138,7 +142,7 @@ export class AppComponent implements OnInit {
         this._logger.debug('app.component: GET auth token request: val:', checkResponse);
         if (checkResponse.check === 'success') {
           this._logger.debug('app.component: auth token check successful:');
-          this._loginState.setLoginState(1);
+          this._loginState.setLoginState(checkResponse.rights);
         } else {
           this._logger.debug('app.component: auth token check failed:');
           this._cookieService.delete('login-token');

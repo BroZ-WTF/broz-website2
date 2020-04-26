@@ -1,6 +1,7 @@
 $picture-card-width: 400px;
 $picture-to-frame-padding: 10px;
 $picture-to-card-margin: -16px;
+$picture-card-height: 750px;
 
 .page-div {
   margin: 5px;
@@ -16,7 +17,7 @@ $picture-to-card-margin: -16px;
   margin-bottom: 5px;
   background-color: rgb(0, 0, 0, 0.6);
   width: $picture-card-width;
-  height: $picture-card-width * 1.7;
+  height: $picture-card-height - 50px;
   display: flex;
   flex-direction: column;
 }
