@@ -13,6 +13,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 
 import { environment } from 'src/environments/environment';
+import { ServiceLoginState } from './app.service.login-state';
+
 
 @Component({
   selector: 'app-root',
@@ -24,21 +26,20 @@ export class AppComponent implements OnInit {
   snackbarDuration = 3 * 1000; // ms
   baseUrl = environment.baseUrl;
 
+  login_state: number = 0;
+
   new_entries_for_badges = {
     'gallery': { 'seen': 0, 'current': 0 },
     'quotes': { 'seen': 0, 'current': 0 }
   };
 
-  LoginState: boolean;
-
   navEntries = appRoutes.filter(route => route.redirectTo == null);
 
-  constructor(private _logger: NGXLogger, private _snackBar: MatSnackBar, private _http: HttpClient, private _cookieService: CookieService, private _router: Router, public dialog: MatDialog) { }
+  constructor(private _logger: NGXLogger, private _snackBar: MatSnackBar, private _http: HttpClient, private _cookieService: CookieService, private _router: Router, private _loginState: ServiceLoginState, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     if (this._cookieService.check('login-token')) {
       this.checkTokenStillValidAPI();
-      this.LoginState = true;
     }
 
     if (this._cookieService.check('most-current-viewed-quote')) {
@@ -57,6 +58,8 @@ export class AppComponent implements OnInit {
 
     this.getGalleryMetadataCountsAPI();
     this.getAllQuotesCountsAPI();
+
+    this._loginState.loginState.subscribe(login_state => this.login_state = login_state);
   }
 
   getBadgeCnt(tab) {
@@ -75,10 +78,6 @@ export class AppComponent implements OnInit {
     return !(this.getBadgeCnt(tab) > 0);
   }
 
-  getLoginState() {
-    return this.LoginState;
-  }
-
   loginDialog() {
     const loginDialogRef = this.dialog.open(LoginDialogComponent, {
       width: '300px',
@@ -91,7 +90,7 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    this.LoginState = true;
+    this._loginState.setLoginState(0);
     this._cookieService.delete('login-token');
     this._snackBar.open('Erfolgreich ausgeloggt', 'OK', { duration: this.snackbarDuration });
   }
@@ -105,19 +104,19 @@ export class AppComponent implements OnInit {
         loginResponse = val;
         this._logger.debug('app.component: GET auth token request: val:', loginResponse);
         if (loginResponse.token) {
-          this.LoginState = false;
+          this._loginState.setLoginState(1);
           this._cookieService.set('login-token', loginResponse.token, 1);
           this._logger.debug('app.component: auth token cookie:', this._cookieService.get('login-token'));
           this._snackBar.open('Erfolgreich eingeloggt', 'OK', { duration: this.snackbarDuration });
         } else {
-          this.LoginState = true;
+          this._loginState.setLoginState(0);
           this._cookieService.delete('login-token');
           this._snackBar.open('Passwort fehlerhaft', 'OK', { duration: this.snackbarDuration });
           this.loginDialog();
         }
       },
       response => {
-        this.LoginState = true;
+        this._loginState.setLoginState(0);
         this._cookieService.delete('login-token');
         this._logger.debug('app.component: GET auth request error: response:', response);
         this._snackBar.open('Passwort fehlerhaft', 'OK', { duration: this.snackbarDuration });
@@ -139,17 +138,17 @@ export class AppComponent implements OnInit {
         this._logger.debug('app.component: GET auth token request: val:', checkResponse);
         if (checkResponse.check === 'success') {
           this._logger.debug('app.component: auth token check successful:');
-          this.LoginState = false;
+          this._loginState.setLoginState(1);
         } else {
           this._logger.debug('app.component: auth token check failed:');
           this._cookieService.delete('login-token');
-          this.LoginState = true;
+          this._loginState.setLoginState(0);
         }
       },
       response => {
         this._logger.debug('app.component: auth token check failed:', response);
         this._cookieService.delete('login-token');
-        this.LoginState = true;
+        this._loginState.setLoginState(0);
       },
       () => {
         this._logger.debug('app.component: GET observable completed.');

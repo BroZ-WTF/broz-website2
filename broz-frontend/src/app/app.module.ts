@@ -38,6 +38,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 
 import appRoutes from './routerConfig';
 
+import { ServiceLoginState } from './app.service.login-state';
+
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverviewComponent } from './overview/overview.component';
@@ -97,7 +99,8 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
   providers: [
     { provide: LOCALE_ID, useValue: 'de_DE' },
     { provide: MAT_DATE_LOCALE, useValue: 'de_DE' },
-    CookieService
+    CookieService,
+    ServiceLoginState
   ],
   bootstrap: [AppComponent]
 })

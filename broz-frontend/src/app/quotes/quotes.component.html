@@ -5,7 +5,7 @@
   </mat-card-title>
   <mat-divider [inset]="true"></mat-divider>
   <div class="container-button-scores">
-    <button mat-icon-button color="primary" (click)="addQuote()" [disabled]="getLoginState()">
+    <button mat-icon-button color="primary" (click)="addQuote()" [disabled]="!login_state">
       <mat-icon style="font-size: 3em;">add_comment</mat-icon>
     </button>
     <span class="spacer"></span>
@@ -31,8 +31,7 @@
   <mat-form-field>
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" [(ngModel)]="filterString">
-    <button mat-button *ngIf="filterString" matSuffix mat-icon-button aria-label="Clear"
-      (click)="filterString=''; this.dataSourceQuotes.filter=''">
+    <button mat-button *ngIf="filterString" matSuffix mat-icon-button aria-label="Clear" (click)="filterString=''; this.dataSourceQuotes.filter=''">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
@@ -40,8 +39,7 @@
 
   <!-- Table -->
   <div class="mat-elevation-z8">
-    <table class="quotes-table" mat-table [dataSource]="dataSourceQuotes" matSort matSortActive="date"
-      matSortDirection="desc">
+    <table class="quotes-table" mat-table [dataSource]="dataSourceQuotes" matSort matSortActive="date" matSortDirection="desc">
       <!-- (matSortChange)="sortData($event)"> -->
 
       <!-- ID Column -->
@@ -72,12 +70,10 @@
       <ng-container matColumnDef="editActions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-          <button mat-mini-fab style="margin-right: 5px; margin-top: 1px;" color="accent" (click)="editQuote(element)"
-            [disabled]="getLoginState()">
+          <button mat-mini-fab style="margin-right: 5px; margin-top: 1px;" color="accent" (click)="editQuote(element)" [disabled]="!login_state">
             <mat-icon> edit </mat-icon>
           </button>
-          <button mat-mini-fab style="margin-right: 5px; margin-top: 1px; margin-bottom: 1px;" color="warn"
-            (click)="deleteQuote(element)" [disabled]="getLoginState()">
+          <button mat-mini-fab style="margin-right: 5px; margin-top: 1px; margin-bottom: 1px;" color="warn" (click)="deleteQuote(element)" [disabled]="!login_state">
             <mat-icon> delete </mat-icon>
           </button>
         </td>

@@ -2,11 +2,10 @@
   <!-- Header -->
   <mat-card class="container-header">
     <mat-card-title>
-      Lustige Bildchen
+      Lustige Bildchen - {{login_state}}
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
-    <button mat-icon-button style="align-self: center;" color="primary" (click)="addPicture()"
-      [disabled]="getLoginState()">
+    <button mat-icon-button style="align-self: center;" color="primary" (click)="addPicture()" [disabled]="!login_state">
       <mat-icon style="font-size: 3em;">add_photo_alternate</mat-icon>
     </button>
   </mat-card>
@@ -30,12 +29,10 @@
 
         <!-- Action Buttons -->
         <mat-card-actions class="buttons-card">
-          <button mat-mini-fab style="margin-right: 5px;" color="accent" (click)="editPicture(picture)"
-            [disabled]="getLoginState()">
+          <button mat-mini-fab style="margin-right: 5px;" color="accent" (click)="editPicture(picture)" [disabled]="!login_state">
             <mat-icon> edit </mat-icon>
           </button>
-          <button mat-mini-fab style="margin-right: 5px;" color="warn" (click)="deletePicture(picture)"
-            [disabled]="getLoginState()">
+          <button mat-mini-fab style="margin-right: 5px;" color="warn" (click)="deletePicture(picture)" [disabled]="!login_state">
             <mat-icon> delete </mat-icon>
           </button>
         </mat-card-actions>

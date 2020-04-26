@@ -6,10 +6,10 @@
     <img class="topbar_center" src="../assets/topbar_logo.png">
     <div class="topbar_right_wlogin">
       <div class="spacer"></div>
-      <button mat-raised-button class="login-logout_button" color="accent" (click)="loginDialog()" *ngIf="getLoginState()">
+      <button mat-raised-button class="login-logout_button" color="accent" (click)="loginDialog()" *ngIf="!login_state">
         Login
       </button>
-      <button mat-raised-button class="login-logout_button" color="accent" (click)="logout()" *ngIf="!getLoginState()">
+      <button mat-raised-button class=" login-logout_button" color="accent" (click)="logout()" *ngIf="login_state">
         Logout
       </button>
     </div>

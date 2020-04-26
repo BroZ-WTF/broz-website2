@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { NGXLogger } from 'ngx-logger';
@@ -14,6 +14,7 @@ import { QuotesEditQuoteDialogComponent } from '../quotes/quotes-edit-quote-dial
 import { QuotesDeleteQuoteDialogComponent } from '../quotes/quotes-delete-quote-dialog/quotes-delete-quote-dialog.component';
 
 import { environment } from 'src/environments/environment';
+import { ServiceLoginState } from '../app.service.login-state';
 
 
 export interface Quote {
@@ -49,26 +50,23 @@ export class QuotesComponent implements OnInit {
   topScorerArray = [];
   numer_shown_scorer: number;
 
+  login_state: number = 0;
+
   fullQuotes: any;
   dataSourceQuotes = new MatTableDataSource<Quote>();
-
-  @Input() LoginState: boolean;
 
   @ViewChild(MatTable) table: MatTable<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private _cookieService: CookieService, public dialog: MatDialog) { }
+  constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private _cookieService: CookieService, private _loginState: ServiceLoginState, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.onResize(null);
     this._logger.debug('quotes.component: query quotes.');
     this.getAllQuotesAPI();
     this.dataSourceQuotes.sort = this.sort;
-  }
-
-  getLoginState() {
-    return this.LoginState;
+    this._loginState.loginState.subscribe(login_state => this.login_state = login_state);
   }
 
   applyFilter(event: Event) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { NGXLogger } from 'ngx-logger';
@@ -11,6 +11,7 @@ import { GalleryDeletePictureDialogComponent } from '../gallery/gallery-delete-p
 import { GalleryEditPictureDialogComponent } from '../gallery/gallery-edit-picture-dialog/gallery-edit-picture-dialog.component';
 
 import { environment } from 'src/environments/environment';
+import { ServiceLoginState } from '../app.service.login-state';
 
 
 export interface Picture {
@@ -39,22 +40,19 @@ export class GalleryComponent implements OnInit {
   isPictureRegEx = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+\/+[-_a-zA-Z0-9]+((\.jpg)|(\.jpeg)|(\.png)|(\.gif))$/);
   baseUrl = environment.baseUrl + '/gallery';
 
+  login_state: number = 0;
+
   numer_render_columns: number;
   fullPicturesMetadata;
   picturesMetadata;
 
-  @Input() LoginState: boolean;
-
-  constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private _cookieService: CookieService, public dialog: MatDialog) { }
+  constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private _cookieService: CookieService, private _loginState: ServiceLoginState, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.numer_render_columns = Math.ceil(window.innerWidth / 500);
     this._logger.debug('gallery.component: query gallery metadata.');
     this.getGalleryMetadataAPI();
-  }
-
-  getLoginState() {
-    return this.LoginState;
+    this._loginState.loginState.subscribe(login_state => this.login_state = login_state);
   }
 
   addPicture() {
