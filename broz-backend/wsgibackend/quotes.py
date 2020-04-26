@@ -24,7 +24,7 @@ def get_quotes():
 @quotes_component.route('/<int:quote_id>', methods=['DELETE'])
 @auth.login_required
 def del_quote(quote_id):
-  if g.rights > 2:
+  if g.rights >= current_app.config['RIGHTS_DELETE_MIN']:
     quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
     try:
       with open(quotes_file, 'rt') as json_quotes:
@@ -48,7 +48,7 @@ def del_quote(quote_id):
 @quotes_component.route('', methods=['POST'])
 @auth.login_required
 def add_quote():
-  if g.rights > 1:
+  if g.rights >= current_app.config['RIGHTS_EDIT_MIN']:
     quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
     posted_quote = request.get_json()
     try:
@@ -73,7 +73,7 @@ def add_quote():
 @quotes_component.route('', methods=['PUT'])
 @auth.login_required
 def edit_quote():
-  if g.rights > 1:
+  if g.rights >= current_app.config['RIGHTS_EDIT_MIN']:
     quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
     posted_quote = request.get_json()
     try:

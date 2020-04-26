@@ -24,7 +24,7 @@ def get_gallery_metadata():
 @gallery_component.route('/metadata/<int:picture_id>', methods=['DELETE'])
 @auth.login_required
 def del_gallery_metadata(picture_id):
-  if g.rights > 2:
+  if g.rights >= current_app.config['RIGHTS_DELETE_MIN']:
     gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
     try:
       with open(gallery_metadata_file, 'rt') as json_metadata:
@@ -48,7 +48,7 @@ def del_gallery_metadata(picture_id):
 @gallery_component.route('/metadata', methods=['POST'])
 @auth.login_required
 def add_gallery_metadata():
-  if g.rights > 1:
+  if g.rights >= current_app.config['RIGHTS_EDIT_MIN']:
     gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
     posted_picture_metadata = request.get_json()
     try:
@@ -74,7 +74,7 @@ def add_gallery_metadata():
 @gallery_component.route('/metadata', methods=['PUT'])
 @auth.login_required
 def edit_gallery_metadata():
-  if g.rights > 1:
+  if g.rights >= current_app.config['RIGHTS_EDIT_MIN']:
     gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
     posted_picture_metadata = request.get_json()
     try:

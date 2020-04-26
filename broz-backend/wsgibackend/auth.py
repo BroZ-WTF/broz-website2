@@ -16,14 +16,14 @@ CORS(auth_component)
 @auth.login_required
 def get_auth_token():
   token = generate_auth_token(request.authorization['username'])
-  return jsonify({'token': token.decode('ascii')})
+  return jsonify({'token': token.decode('ascii'), 'rights': g.rights}), 200
 
 
 @auth_component.route('/check', methods=['GET'])
 @auth.login_required
 def get_token_valid():
   pass
-  return jsonify({'check': 'success'}), 200
+  return jsonify({'check': 'success', 'rights': g.rights}), 200
 
 
 @auth.verify_password
