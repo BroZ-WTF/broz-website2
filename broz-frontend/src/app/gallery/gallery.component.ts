@@ -17,13 +17,13 @@ import { ServiceLoginState } from '../app.service.login-state';
 export interface Picture {
   id: number,
   name: string,
-  description: string,
+  tags: string,
   file: string,
 }
 
 export interface PictureData {
   name: string,
-  description: string,
+  tags: string,
   file: string,
 }
 
@@ -35,7 +35,7 @@ export interface PictureData {
 export class GalleryComponent implements OnInit {
   minLengthName = 3;
   maxLengthName = 25;
-  maxLengthDescription = 128;
+  maxLengthTags = 128;
   snackbarDuration = 3 * 1000; // ms
   isPictureRegEx = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+\/+[-_a-zA-Z0-9]+((\.jpg)|(\.jpeg)|(\.png)|(\.gif))$/);
   baseUrl = environment.baseUrl + '/gallery';
@@ -62,12 +62,12 @@ export class GalleryComponent implements OnInit {
         configData: {
           minLengthName: this.minLengthName,
           maxLengthName: this.maxLengthName,
-          maxLengthDescription: this.maxLengthDescription,
+          maxLengthTags: this.maxLengthTags,
           isPictureRegEx: this.isPictureRegEx,
           actionType: 'Neues'
         },
         initData: {
-          id: null, name: '', file: '', description: ''
+          id: null, name: '', file: '', tags: ''
         }
       }
     });
@@ -87,12 +87,12 @@ export class GalleryComponent implements OnInit {
         configData: {
           minLengthName: this.minLengthName,
           maxLengthName: this.maxLengthName,
-          maxLengthDescription: this.maxLengthDescription,
+          maxLengthTags: this.maxLengthTags,
           isPictureRegEx: this.isPictureRegEx,
           actionType: 'Editiere'
         },
         initData: {
-          id: element.id, name: element.name, file: element.file, description: element.description
+          id: element.id, name: element.name, file: element.file, tags: element.tags
         }
       }
     });
@@ -106,7 +106,7 @@ export class GalleryComponent implements OnInit {
 
   deletePicture(element) {
     const deleteDialogRef = this.dialog.open(GalleryDeletePictureDialogComponent, {
-      data: { id: element.id, name: element.name, file: element.file, description: element.description }
+      data: { id: element.id, name: element.name, file: element.file, tags: element.tags }
     });
     deleteDialogRef.afterClosed().subscribe(result => {
       if (result) {

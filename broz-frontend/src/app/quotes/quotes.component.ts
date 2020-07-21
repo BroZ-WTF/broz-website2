@@ -21,12 +21,14 @@ export interface Quote {
   id: number,
   name: string,
   quote: string,
+  visibility: number,
   date: Date,
 }
 
 export interface QuoteData {
   name: string,
   quote: string,
+  visibility: number,
   date: Date,
 }
 
@@ -64,9 +66,17 @@ export class QuotesComponent implements OnInit {
   ngOnInit(): void {
     this.onResize(null);
     this._logger.debug('quotes.component: query quotes.');
-    this.getAllQuotesAPI();
+    this.getQuotesAPI();
     this.dataSourceQuotes.sort = this.sort;
-    this._loginState.loginState.subscribe(login_state => this.login_state = login_state);
+    this._loginState.loginState.subscribe(login_state => {
+      this.login_state = login_state;
+      if (this.login_state > 0) {
+        this.getAllQuotesAPI();
+      } else {
+        this.getQuotesAPI();
+      }
+    }
+    );
   }
 
   applyFilter(event: Event) {
@@ -85,7 +95,7 @@ export class QuotesComponent implements OnInit {
           actionType: 'Neues'
         },
         initData: {
-          id: null, name: '', quote: '', date: ''
+          id: null, name: '', quote: '', date: '', visibility: 0
         }
       }
     });
@@ -109,7 +119,7 @@ export class QuotesComponent implements OnInit {
           actionType: 'Editiere'
         },
         initData: {
-          id: element.id, name: element.name, quote: element.quote, date: element.date
+          id: element.id, name: element.name, quote: element.quote, date: element.date, visibility: element.visibility
         }
       }
     });
@@ -127,7 +137,7 @@ export class QuotesComponent implements OnInit {
 
   deleteQuote(element) {
     const deleteDialogRef = this.dialog.open(QuotesDeleteQuoteDialogComponent, {
-      data: { id: element.id, name: element.name, quote: element.quote, date: element.date }
+      data: { id: element.id, name: element.name, quote: element.quote, date: element.date, visibility: element.visibility }
     });
     deleteDialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -150,8 +160,27 @@ export class QuotesComponent implements OnInit {
     }
   }
 
+  getQuotesAPI() {
+    this._http.get(this.baseUrl).subscribe(
+      (val) => {
+        this._logger.log('quotes.component: GET request: all quotes val:', val);
+        this.refreshTable(val);
+      },
+      response => {
+        this._logger.error('quotes.component: GET request error: response:', response);
+      },
+      () => {
+        this._logger.debug('quotes.component: GET observable completed.');
+      }
+    );
+  }
+
   getAllQuotesAPI() {
-    return this._http.get(this.baseUrl).subscribe(
+    let token = this._cookieService.get('login-token');
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+    headers = headers.set('Authorization', `Basic ${btoa(token + ':')}`);
+    this._http.get(this.baseUrl + '/all', { headers }).subscribe(
       (val) => {
         this._logger.log('quotes.component: GET request: all quotes val:', val);
         this.refreshTable(val);

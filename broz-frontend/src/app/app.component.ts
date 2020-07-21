@@ -97,6 +97,7 @@ export class AppComponent implements OnInit {
     this._loginState.setLoginState(0);
     this._cookieService.delete('login-token');
     this._snackBar.open('Erfolgreich ausgeloggt', 'OK', { duration: this.snackbarDuration });
+    window.location.reload();
   }
 
   loginAPI(user) {
@@ -112,6 +113,7 @@ export class AppComponent implements OnInit {
           this._cookieService.set('login-token', loginResponse.token, 1);
           this._logger.debug('app.component: auth token cookie:', this._cookieService.get('login-token'));
           this._snackBar.open('Erfolgreich eingeloggt', 'OK', { duration: this.snackbarDuration });
+          window.location.reload();
         } else {
           this._loginState.setLoginState(0);
           this._cookieService.delete('login-token');
@@ -161,12 +163,12 @@ export class AppComponent implements OnInit {
   }
 
   getGalleryMetadataCountsAPI() {
-    var metadata;
-    this._http.get(this.baseUrl + '/gallery/metadata').subscribe(
+    var response;
+    this._http.get(this.baseUrl + '/gallery/metadata/count').subscribe(
       (val) => {
-        this._logger.log('app.component: GET request: all gallery metadata val:', val);
-        metadata = val;
-        this.new_entries_for_badges.gallery.current = metadata.pictures.length;
+        this._logger.log('app.component: GET request: all gallery metadata cnt:', val);
+        response = val;
+        this.new_entries_for_badges.gallery.current = response.count;
       },
       response => {
         this._logger.error('app.component: GET request error: response:', response);
@@ -178,12 +180,12 @@ export class AppComponent implements OnInit {
   }
 
   getAllQuotesCountsAPI() {
-    var quotes;
-    this._http.get(this.baseUrl + '/quotes').subscribe(
+    var response;
+    this._http.get(this.baseUrl + '/quotes/count').subscribe(
       (val) => {
-        this._logger.log('app.component: GET request: all quotes val:', val);
-        quotes = val;
-        this.new_entries_for_badges.quotes.current = quotes.quotes_list.length;
+        this._logger.log('app.component: GET request: all quotes cnt:', val);
+        response = val;
+        this.new_entries_for_badges.quotes.current = response.count;
       },
       response => {
         this._logger.error('app.component: GET request error: response:', response);

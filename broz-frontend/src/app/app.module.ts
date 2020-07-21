@@ -29,6 +29,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -82,6 +83,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
     MatButtonModule,
     MatIconModule,
     MatSelectModule,
+    MatRadioModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,

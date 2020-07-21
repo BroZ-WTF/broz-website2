@@ -7,6 +7,19 @@ quotes_component = Blueprint('quotes_component', __name__)
 CORS(quotes_component)
 
 
+# GET quotes count
+@quotes_component.route('/count')
+def get_quotes_count():
+  quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
+  try:
+    with open(quotes_file) as json_quotes:
+      quotes = json.load(json_quotes)
+      return jsonify({'count': len(quotes['quotes_list'])}), 200
+  except IOError:
+    print('Count not read file, not doing anything')
+    return 'No quotes saved', 500
+
+
 # GET quotes
 @quotes_component.route('')
 def get_quotes():
@@ -14,7 +27,29 @@ def get_quotes():
   try:
     with open(quotes_file) as json_quotes:
       quotes = json.load(json_quotes)
-      return jsonify(quotes), 200
+      return_quotes = {'id': 'broz-quotes', 'quotes_list': list()}
+      for quote in quotes.get('quotes_list'):
+        if quote['visibility'] == 0:
+          return_quotes['quotes_list'].append(quote)
+      return jsonify(return_quotes), 200
+  except IOError:
+    print('Count not read file, not doing anything')
+    return 'No quotes saved', 500
+
+
+# GET all quotes
+@quotes_component.route('/all')
+@auth.login_required
+def get_all_quotes():
+  quotes_file = os.path.join(current_app.instance_path, current_app.config['DATA_QUOTES_PATH'])
+  try:
+    with open(quotes_file) as json_quotes:
+      quotes = json.load(json_quotes)
+      return_quotes = {'id': 'broz-quotes', 'quotes_list': list()}
+      for quote in quotes.get('quotes_list'):
+        if g.rights >= quote['visibility']:
+          return_quotes['quotes_list'].append(quote)
+      return jsonify(return_quotes), 200
   except IOError:
     print('Count not read file, not doing anything')
     return 'No quotes saved', 500
@@ -57,7 +92,7 @@ def add_quote():
     except IOError:
       print('Could not read file, starting from scratch')
       quotes = {'id': 'broz-quotes', 'quotes_list': []}
-    if not all(key in posted_quote for key in ('date', 'name', 'quote')):
+    if not all(key in posted_quote for key in ('date', 'name', 'quote', 'visibility')):
       # raise value error if any key is not set
       raise ValueError
     else:
@@ -82,7 +117,7 @@ def edit_quote():
     except IOError:
       print('Could not read file, not doing anything')
       return 'No quotes saved', 500
-    if not all(key in posted_quote for key in ('id', 'date', 'name', 'quote')):
+    if not all(key in posted_quote for key in ('id', 'date', 'name', 'quote', 'visibility')):
       # raise value error if any key is not set
       raise ValueError
     else:

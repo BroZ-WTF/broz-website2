@@ -4,18 +4,19 @@
   <mat-form-field color="primary" class="form-element">
     <input matInput placeholder="Überschrift" formControlName="name">
     <mat-error *ngIf="!pictureForm.controls['name'].valid && pictureForm.controls['name'].touched">
-      Name ist nötig und muss muss zwischen {{data.configData.minLengthName}} und {{data.configData.maxLengthName}}
+      Name ist nötig und muss muss zwischen {{data.configData.minLengthName}} und
+      {{data.configData.maxLengthName}}
       Zeichen sein.
     </mat-error>
   </mat-form-field>
 
   <mat-form-field color="primary" class="form-element">
-    <textarea matInput placeholder="Beschreibung" formControlName="description"></textarea>
-    <mat-hint align="end">{{this.pictureForm.get('description').value.length}} /
-      {{data.configData.maxLengthDescription}}
+    <textarea matInput placeholder="Tags" formControlName="tags"></textarea>
+    <mat-hint align="end">{{this.pictureForm.get('tags').value.length}} /
+      {{data.configData.maxLengthTags}}
     </mat-hint>
-    <mat-error *ngIf="!pictureForm.controls['description'].valid && pictureForm.controls['description'].touched">
-      Beschreibung muss unter {{data.configData.maxLengthDescription}} Zeichen sein.
+    <mat-error *ngIf="!pictureForm.controls['tags'].valid && pictureForm.controls['tags'].touched">
+      Beschreibung muss unter {{data.configData.maxLengthTags}} Zeichen sein.
     </mat-error>
   </mat-form-field>
 

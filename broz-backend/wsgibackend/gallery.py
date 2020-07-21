@@ -7,10 +7,25 @@ gallery_component = Blueprint('gallery_component', __name__)
 CORS(gallery_component)
 
 
+# GET gallery metadata count
+@gallery_component.route('/metadata/count')
+def get_gallery_metadata_count():
+  gallery_metadata_file = os.path.join(current_app.instance_path,
+                                       current_app.config['DATA_PIC_METADATA_PATH'])
+  try:
+    with open(gallery_metadata_file) as json_metadata:
+      metadata = json.load(json_metadata)
+      return jsonify({'count': len(metadata['pictures'])}), 200
+  except IOError:
+    print('Count not read file, not doing anything')
+    return 'No metadata saved', 500
+
+
 # GET gallery metadata
 @gallery_component.route('/metadata')
 def get_gallery_metadata():
-  gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
+  gallery_metadata_file = os.path.join(current_app.instance_path,
+                                       current_app.config['DATA_PIC_METADATA_PATH'])
   try:
     with open(gallery_metadata_file) as json_metadata:
       metadata = json.load(json_metadata)
@@ -25,7 +40,8 @@ def get_gallery_metadata():
 @auth.login_required
 def del_gallery_metadata(picture_id):
   if g.rights >= current_app.config['RIGHTS_DELETE_MIN']:
-    gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
+    gallery_metadata_file = os.path.join(current_app.instance_path,
+                                         current_app.config['DATA_PIC_METADATA_PATH'])
     try:
       with open(gallery_metadata_file, 'rt') as json_metadata:
         metadata = json.load(json_metadata)
@@ -49,7 +65,8 @@ def del_gallery_metadata(picture_id):
 @auth.login_required
 def add_gallery_metadata():
   if g.rights >= current_app.config['RIGHTS_EDIT_MIN']:
-    gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
+    gallery_metadata_file = os.path.join(current_app.instance_path,
+                                         current_app.config['DATA_PIC_METADATA_PATH'])
     posted_picture_metadata = request.get_json()
     try:
       with open(gallery_metadata_file, 'rt') as json_metadata:
@@ -58,7 +75,7 @@ def add_gallery_metadata():
       print('Could not read file, starting from scratch')
       metadata = {'id': 'broz-gallery-metadata', 'pictures': []}
 
-    if not all(key in posted_picture_metadata for key in ('name', 'description', 'file')):
+    if not all(key in posted_picture_metadata for key in ('name', 'tags', 'file')):
       # raise value error if any key is not set
       raise ValueError
     else:
@@ -75,7 +92,8 @@ def add_gallery_metadata():
 @auth.login_required
 def edit_gallery_metadata():
   if g.rights >= current_app.config['RIGHTS_EDIT_MIN']:
-    gallery_metadata_file = os.path.join(current_app.instance_path, current_app.config['DATA_PIC_METADATA_PATH'])
+    gallery_metadata_file = os.path.join(current_app.instance_path,
+                                         current_app.config['DATA_PIC_METADATA_PATH'])
     posted_picture_metadata = request.get_json()
     try:
       with open(gallery_metadata_file, 'rt') as json_metadata:
@@ -83,7 +101,7 @@ def edit_gallery_metadata():
     except IOError:
       print('Could not read file, not doing anything')
       return 'No metadata saved', 500
-    if not all(key in posted_picture_metadata for key in ('id', 'name', 'description', 'file')):
+    if not all(key in posted_picture_metadata for key in ('id', 'name', 'tags', 'file')):
       # raise value error if any key is not set
       raise ValueError
     else:

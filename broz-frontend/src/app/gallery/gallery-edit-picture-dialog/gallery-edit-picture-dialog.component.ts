@@ -18,7 +18,7 @@ export class GalleryEditPictureDialogComponent implements OnInit {
   ) {
     this.pictureForm = this.formBuilder.group({
       'name': [this.data.initData.name, [Validators.required, Validators.minLength(this.data.configData.minLengthName), , Validators.maxLength(this.data.configData.maxLengthName)]],
-      'description': [this.data.initData.description, [Validators.required, Validators.maxLength(this.data.configData.maxLengthDescription)]],
+      'tags': [this.data.initData.tags, [Validators.required, Validators.maxLength(this.data.configData.maxLengthTags)]],
       'file': [this.data.initData.file, [Validators.required, Validators.pattern(this.data.configData.isPictureRegEx)]],
     });
   }

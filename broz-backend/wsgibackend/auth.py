@@ -4,7 +4,8 @@ from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature,
+                          SignatureExpired)
 
 auth = HTTPBasicAuth()
 
@@ -22,7 +23,6 @@ def get_auth_token():
 @auth_component.route('/check', methods=['GET'])
 @auth.login_required
 def get_token_valid():
-  pass
   return jsonify({'check': 'success', 'rights': g.rights}), 200
 
 

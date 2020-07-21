@@ -5,7 +5,8 @@
       Lustige Bildchen
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
-    <button mat-icon-button style="align-self: center;" color="primary" (click)="addPicture()" [disabled]="login_state < 2">
+    <button mat-icon-button style="align-self: center;" color="primary" (click)="addPicture()"
+      [disabled]="login_state < 2">
       <mat-icon style="font-size: 3em;">add_photo_alternate</mat-icon>
     </button>
   </mat-card>
@@ -22,17 +23,19 @@
         <!-- Content -->
         <mat-card-content>
           <mat-card class="description-card">
-            {{ picture.description }}
+            {{ picture.tags }}
           </mat-card>
         </mat-card-content>
         <span class="spacer"></span>
 
         <!-- Action Buttons -->
         <mat-card-actions class="buttons-card">
-          <button mat-mini-fab style="margin-right: 5px;" color="accent" (click)="editPicture(picture)" [disabled]="login_state < 2">
+          <button mat-mini-fab style="margin-right: 5px;" color="accent"
+            (click)="editPicture(picture)" [disabled]="login_state < 2">
             <mat-icon> edit </mat-icon>
           </button>
-          <button mat-mini-fab style="margin-right: 5px;" color="warn" (click)="deletePicture(picture)" [disabled]="login_state < 3">
+          <button mat-mini-fab style="margin-right: 5px;" color="warn"
+            (click)="deletePicture(picture)" [disabled]="login_state < 3">
             <mat-icon> delete </mat-icon>
           </button>
         </mat-card-actions>

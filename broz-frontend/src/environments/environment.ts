@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  //baseUrl: 'http://localhost:5000/api',
-  baseUrl: 'http://192.168.178.13:5000/api',
+  baseUrl: 'http://localhost:5000/api',
+  //baseUrl: 'http://192.168.178.13:5000/api',
   //baseUrl: 'https://broz.wtf:8080/api',
 };
 

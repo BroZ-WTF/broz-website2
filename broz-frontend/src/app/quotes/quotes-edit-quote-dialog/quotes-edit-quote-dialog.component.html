@@ -4,7 +4,8 @@
   <mat-form-field color="primary" class="form-element">
     <input matInput placeholder="Poet" formControlName="name">
     <mat-error *ngIf="!quoteForm.controls['name'].valid && quoteForm.controls['name'].touched">
-      Name ist nötig und muss muss zwischen {{data.configData.minLengthName}} und {{data.configData.maxLengthName}}
+      Name ist nötig und muss muss zwischen {{data.configData.minLengthName}} und
+      {{data.configData.maxLengthName}}
       Zeichen sein.
     </mat-error>
   </mat-form-field>
@@ -15,18 +16,28 @@
       {{data.configData.maxLengthQuote}}
     </mat-hint>
     <mat-error *ngIf="!quoteForm.controls['quote'].valid && quoteForm.controls['quote'].touched">
-      Zitat ist nötig und muss zwischen {{data.configData.minLengthName}} und {{data.configData.maxLengthQuote}} Zeichen
+      Zitat ist nötig und muss zwischen {{data.configData.minLengthName}} und
+      {{data.configData.maxLengthQuote}} Zeichen
       sein.
     </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-element">
-    <input matInput placeholder="Datum" formControlName="date" [matDatepicker]="picker" color="primary">
+    <input matInput placeholder="Datum" formControlName="date" [matDatepicker]="picker"
+      color="primary">
     <mat-error *ngIf="!quoteForm.controls['date'].valid && quoteForm.controls['date'].touched">
       Datum ist nötig.
     </mat-error>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="form-element">
+    <mat-select fromControlName="visibility" placeholder="Wähle Sichtbarkeit">
+      <mat-option *ngFor="let vis of visibilitySteps" [value]="vis">
+        {{vis.name}}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
 
   <div class="form-element">
