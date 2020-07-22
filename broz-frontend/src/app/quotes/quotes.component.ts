@@ -95,7 +95,7 @@ export class QuotesComponent implements OnInit {
           actionType: 'Neues'
         },
         initData: {
-          id: null, name: '', quote: '', date: '', visibility: 0
+          id: null, name: '', quote: '', date: '', visibility: null
         }
       }
     });
