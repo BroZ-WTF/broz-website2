@@ -36,6 +36,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import appRoutes from './routerConfig';
 
@@ -94,6 +95,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
     MatExpansionModule,
     MatBadgeModule,
     MatChipsModule,
+    MatAutocompleteModule,
     LoggerModule.forRoot({
       level: !environment.production ? NgxLoggerLevel.DEBUG : NgxLoggerLevel.ERROR,// serverLogLevel
       serverLogLevel: NgxLoggerLevel.OFF

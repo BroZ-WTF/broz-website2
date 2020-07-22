@@ -3,26 +3,39 @@
 <form [formGroup]="pictureForm" class="form">
   <mat-form-field color="primary" class="form-element">
     <input matInput placeholder="Überschrift" formControlName="name">
-    <mat-error *ngIf="!pictureForm.controls['name'].valid && pictureForm.controls['name'].touched">
-      Name ist nötig und muss muss zwischen {{data.configData.minLengthName}} und
+    <mat-error
+      *ngIf="!pictureForm.controls['name'].valid && pictureForm.controls['name'].touched">
+      Name ist nötig und muss muss zwischen {{data.configData.minLengthName}}
+      und
       {{data.configData.maxLengthName}}
       Zeichen sein.
     </mat-error>
   </mat-form-field>
 
   <mat-form-field color="primary" class="form-element">
-    <textarea matInput placeholder="Tags" formControlName="tags"></textarea>
-    <mat-hint align="end">{{this.pictureForm.get('tags').value.length}} /
-      {{data.configData.maxLengthTags}}
-    </mat-hint>
-    <mat-error *ngIf="!pictureForm.controls['tags'].valid && pictureForm.controls['tags'].touched">
-      Beschreibung muss unter {{data.configData.maxLengthTags}} Zeichen sein.
-    </mat-error>
+    <mat-chip-list #tagList>
+      <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+        [removable]="removable" (removed)="removeTag(tag)">
+        {{tag}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="Tags" #tagInput [formControl]="tagInputCtrl"
+        [matAutocomplete]="auto" [matChipInputFor]="tagList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="addTag($event)">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete"
+      (optionSelected)="selectedTag($event)">
+      <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+        {{tag}}
+      </mat-option>
+    </mat-autocomplete>
   </mat-form-field>
 
   <mat-form-field class="form-element">
     <input matInput placeholder="Dateiname" formControlName="file">
-    <mat-error *ngIf="!pictureForm.controls['file'].valid && pictureForm.controls['file'].touched">
+    <mat-error
+      *ngIf="!pictureForm.controls['file'].valid && pictureForm.controls['file'].touched">
       Bitte gültiger Bildlink.
     </mat-error>
   </mat-form-field>
@@ -30,6 +43,7 @@
   <div class="form-element">
     <button mat-stroked-button color="primary" (click)="submit()" class="button"
       [disabled]="!pictureForm.valid">Speichern</button>
-    <button mat-flat-button color="primary" (click)="close()" class="button">Abbrechen</button>
+    <button mat-flat-button color="primary" (click)="close()"
+      class="button">Abbrechen</button>
   </div>
 </form>

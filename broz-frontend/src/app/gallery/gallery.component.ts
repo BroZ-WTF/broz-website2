@@ -17,13 +17,13 @@ import { ServiceLoginState } from '../app.service.login-state';
 export interface Picture {
   id: number,
   name: string,
-  tags: string,
+  tags: string[],
   file: string,
 }
 
 export interface PictureData {
   name: string,
-  tags: string,
+  tags: string[],
   file: string,
 }
 
@@ -43,6 +43,7 @@ export class GalleryComponent implements OnInit {
   login_state: number = 0;
 
   numer_render_columns: number;
+  allKnownTags: string[] = [];
   fullPicturesMetadata;
   picturesMetadata;
 
@@ -64,10 +65,11 @@ export class GalleryComponent implements OnInit {
           maxLengthName: this.maxLengthName,
           maxLengthTags: this.maxLengthTags,
           isPictureRegEx: this.isPictureRegEx,
+          allKnownTags: this.allKnownTags,
           actionType: 'Neues'
         },
         initData: {
-          id: null, name: '', file: '', tags: ''
+          id: null, name: '', file: '', tags: []
         }
       }
     });
@@ -89,6 +91,7 @@ export class GalleryComponent implements OnInit {
           maxLengthName: this.maxLengthName,
           maxLengthTags: this.maxLengthTags,
           isPictureRegEx: this.isPictureRegEx,
+          allKnownTags: this.allKnownTags,
           actionType: 'Editiere'
         },
         initData: {
@@ -217,6 +220,12 @@ export class GalleryComponent implements OnInit {
     this.picturesMetadata = this.fullPicturesMetadata.pictures;
     for (let ii = 0; ii < this.picturesMetadata.length; ii++) {
       this.picturesMetadata[ii].id = ii;
+      for (const tag of this.picturesMetadata[ii].tags) {
+        if (this.allKnownTags.indexOf(tag) === -1) {
+          this.allKnownTags.push(tag);
+        }
+      }
     }
+    this._logger.debug('gallery.component: All known tags:', this.allKnownTags);
   }
 }
