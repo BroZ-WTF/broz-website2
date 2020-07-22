@@ -128,7 +128,7 @@
   "defaultProject": "broz-website2",
   "schematics": {
     "@schematics/angular:component": {
-      "styleext": "scss"
+      "style": "scss"
     }
   }
 }
