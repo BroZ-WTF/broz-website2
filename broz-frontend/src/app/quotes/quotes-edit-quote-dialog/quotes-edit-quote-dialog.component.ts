@@ -13,7 +13,6 @@ export class QuotesEditQuoteDialogComponent implements OnInit {
 
   visibilitySteps = [
     { value: 0, name: 'Alle' },
-    { value: 1, name: 'Gast' },
     { value: 2, name: 'Bro' },
     { value: 3, name: 'Admin' }
   ];
@@ -27,7 +26,7 @@ export class QuotesEditQuoteDialogComponent implements OnInit {
       'name': [this.data.initData.name, [Validators.required, Validators.minLength(this.data.configData.minLengthName), Validators.maxLength(this.data.configData.maxLengthName)]],
       'quote': [this.data.initData.quote, [Validators.required, Validators.minLength(this.data.configData.minLengthName), Validators.maxLength(this.data.configData.maxLengthQuote)]],
       'date': [this.data.initData.date, Validators.required],
-      'visibility': [this.data.initData.visibility]
+      'visibility': [this.data.initData.visibility, Validators.required]
     });
   }
 
