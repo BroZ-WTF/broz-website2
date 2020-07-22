@@ -22,9 +22,11 @@
         <img class="picture" [src]="picture.file">
         <!-- Content -->
         <mat-card-content>
-          <mat-card class="description-card">
-            {{ picture.tags }}
-          </mat-card>
+          <mat-chip-list>
+            <mat-chip class="tag-chip" *ngFor="let tag of picture.tags">
+              {{ tag }}
+            </mat-chip>
+          </mat-chip-list>
         </mat-card-content>
         <span class="spacer"></span>
 
