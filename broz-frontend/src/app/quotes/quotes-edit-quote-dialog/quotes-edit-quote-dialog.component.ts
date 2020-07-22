@@ -18,8 +18,6 @@ export class QuotesEditQuoteDialogComponent implements OnInit {
     { value: 3, name: 'Admin' }
   ];
 
-  visibilityForm = 0;
-
   constructor(
     private formBuilder: FormBuilder,
     public editDialogRef: MatDialogRef<QuotesEditQuoteDialogComponent>,
@@ -29,15 +27,15 @@ export class QuotesEditQuoteDialogComponent implements OnInit {
       'name': [this.data.initData.name, [Validators.required, Validators.minLength(this.data.configData.minLengthName), Validators.maxLength(this.data.configData.maxLengthName)]],
       'quote': [this.data.initData.quote, [Validators.required, Validators.minLength(this.data.configData.minLengthName), Validators.maxLength(this.data.configData.maxLengthQuote)]],
       'date': [this.data.initData.date, Validators.required],
+      'visibility': [this.data.initData.visibility]
     });
-    this.visibilityForm = this.data.initData.visibility;
   }
 
   ngOnInit(): void { };
 
   submit() {
     let returnval = this.quoteForm.value;
-    console.log(this.visibilityForm);
+    console.log(this.quoteForm.value);
     returnval['id'] = this.data.initData.id;
     this.editDialogRef.close(returnval);
   }

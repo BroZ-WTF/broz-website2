@@ -33,14 +33,14 @@
   </mat-form-field>
 
   <mat-form-field class="form-element">
-    <mat-select placeholder="Wähle Sichtbarkeit" [(value)]="visibilityForm">
+    <mat-select placeholder="Wähle Sichtbarkeit" formControlName="visibility">
       <mat-option *ngFor="let vis of visibilitySteps" [value]="vis.value">
         {{vis.name}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <p>You selected: {{visibilityForm}}</p>
+  <p>You selected: {{quoteForm.value.visibility}}</p>
 
   <div class="form-element">
     <button mat-stroked-button color="primary" (click)="submit()" class="button"
