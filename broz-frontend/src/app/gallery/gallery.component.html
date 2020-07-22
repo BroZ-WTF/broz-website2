@@ -5,15 +5,34 @@
       Lustige Bildchen
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
-    <button mat-icon-button style="align-self: center;" color="primary" (click)="addPicture()"
-      [disabled]="login_state < 2">
-      <mat-icon style="font-size: 3em;">add_photo_alternate</mat-icon>
-    </button>
+    <div class="container-utility">
+      <button mat-icon-button color="primary" (click)="addPicture()"
+        [disabled]="login_state < 2">
+        <mat-icon style="font-size: 3em;">add_photo_alternate</mat-icon>
+      </button>
+      <mat-divider [vertical]="true"></mat-divider>
+      <h4 style="margin-left: 15px;">
+        Filter:
+      </h4>
+      <mat-chip-list #filterTagList style="margin-left: 5px;">
+        <mat-chip class="tag-chip" *ngIf="filterTags.size === 0">
+          None
+        </mat-chip>
+        <mat-chip class="tag-chip" *ngFor="let tag of filterTags"
+          [selectable]="selectable" [removable]="removable"
+          (removed)="removeFilterTag(tag)">
+          {{ tag }}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
   </mat-card>
 
   <!-- Picture Grid -->
-  <mat-grid-list [cols]="numer_render_columns" rowHeight="750px" (window:resize)="onResize($event)">
-    <mat-grid-tile class="tile" *ngFor="let picture of picturesMetadata">
+  <mat-grid-list [cols]="numer_render_columns" rowHeight="750px"
+    (window:resize)="onResize($event)">
+    <mat-grid-tile class="tile"
+      *ngFor="let picture of filteredPicturesMetadata">
       <mat-card class="picture-card">
         <!-- Title -->
         <mat-card-title>
@@ -23,7 +42,8 @@
         <!-- Content -->
         <mat-card-content>
           <mat-chip-list>
-            <mat-chip class="tag-chip" *ngFor="let tag of picture.tags">
+            <mat-chip class="tag-chip" *ngFor="let tag of picture.tags"
+              (click)="addFilterTag(tag)">
               {{ tag }}
             </mat-chip>
           </mat-chip-list>

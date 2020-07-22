@@ -1,3 +1,4 @@
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -12,6 +13,7 @@ import { GalleryEditPictureDialogComponent } from '../gallery/gallery-edit-pictu
 
 import { environment } from 'src/environments/environment';
 import { ServiceLoginState } from '../app.service.login-state';
+
 
 
 export interface Picture {
@@ -39,13 +41,19 @@ export class GalleryComponent implements OnInit {
   snackbarDuration = 3 * 1000; // ms
   isPictureRegEx = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+\/+[-_a-zA-Z0-9]+((\.jpg)|(\.jpeg)|(\.png)|(\.gif))$/);
   baseUrl = environment.baseUrl + '/gallery';
+  visible = true;
+  selectable = true;
+  removable = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   login_state: number = 0;
 
   numer_render_columns: number;
-  allKnownTags: string[] = [];
+  allKnownTags: Set<string> = new Set();
+  filterTags: Set<string> = new Set();
   fullPicturesMetadata;
-  picturesMetadata;
+  picturesMetadata: Picture[];
+  filteredPicturesMetadata: Picture[];
 
   constructor(private _logger: NGXLogger, private _http: HttpClient, private _snackBar: MatSnackBar, private _cookieService: CookieService, private _loginState: ServiceLoginState, public dialog: MatDialog) { }
 
@@ -65,7 +73,7 @@ export class GalleryComponent implements OnInit {
           maxLengthName: this.maxLengthName,
           maxLengthTags: this.maxLengthTags,
           isPictureRegEx: this.isPictureRegEx,
-          allKnownTags: this.allKnownTags,
+          allKnownTags: Array.from(this.allKnownTags),
           actionType: 'Neues'
         },
         initData: {
@@ -91,7 +99,7 @@ export class GalleryComponent implements OnInit {
           maxLengthName: this.maxLengthName,
           maxLengthTags: this.maxLengthTags,
           isPictureRegEx: this.isPictureRegEx,
-          allKnownTags: this.allKnownTags,
+          allKnownTags: Array.from(this.allKnownTags),
           actionType: 'Editiere'
         },
         initData: {
@@ -221,11 +229,24 @@ export class GalleryComponent implements OnInit {
     for (let ii = 0; ii < this.picturesMetadata.length; ii++) {
       this.picturesMetadata[ii].id = ii;
       for (const tag of this.picturesMetadata[ii].tags) {
-        if (this.allKnownTags.indexOf(tag) === -1) {
-          this.allKnownTags.push(tag);
-        }
+        this.allKnownTags.add(tag);
       }
     }
     this._logger.debug('gallery.component: All known tags:', this.allKnownTags);
+    this.filterPictures();
+  }
+
+  addFilterTag(tag: string) {
+    this.filterTags.add(tag);
+    this.filterPictures();
+  }
+
+  removeFilterTag(tag: string) {
+    this.filterTags.delete(tag);
+    this.filterPictures();
+  }
+
+  filterPictures() {
+    this.filteredPicturesMetadata = this.picturesMetadata.filter(picture => picture.tags.filter(tag => this.filterTags.has(tag)).length === this.filterTags.size);
   }
 }

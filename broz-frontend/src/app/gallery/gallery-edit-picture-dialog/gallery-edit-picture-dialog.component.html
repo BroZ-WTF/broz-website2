@@ -5,9 +5,9 @@
     <input matInput placeholder="Überschrift" formControlName="name">
     <mat-error
       *ngIf="!pictureForm.controls['name'].valid && pictureForm.controls['name'].touched">
-      Name ist nötig und muss muss zwischen {{data.configData.minLengthName}}
+      Name ist nötig und muss muss zwischen {{ data.configData.minLengthName }}
       und
-      {{data.configData.maxLengthName}}
+      {{ data.configData.maxLengthName }}
       Zeichen sein.
     </mat-error>
   </mat-form-field>
@@ -16,7 +16,7 @@
     <mat-chip-list #tagList>
       <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
         [removable]="removable" (removed)="removeTag(tag)">
-        {{tag}}
+        {{ tag }}
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
       <input placeholder="Tags" #tagInput [formControl]="tagInputCtrl"
@@ -27,7 +27,7 @@
     <mat-autocomplete #auto="matAutocomplete"
       (optionSelected)="selectedTag($event)">
       <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
-        {{tag}}
+        {{ tag }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
