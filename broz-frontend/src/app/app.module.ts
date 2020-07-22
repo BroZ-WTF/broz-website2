@@ -12,7 +12,6 @@ registerLocaleData(localeDe, 'de-DE');
 
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { CookieService } from 'ngx-cookie-service';
-import 'hammerjs';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
