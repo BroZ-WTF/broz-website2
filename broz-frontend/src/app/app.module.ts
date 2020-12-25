@@ -70,7 +70,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
     BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes, { useHash: true }),
+    RouterModule.forRoot(appRoutes, { useHash: true, relativeLinkResolution: 'legacy' }),
     MatTabsModule,
     MatToolbarModule,
     MatGridListModule,
