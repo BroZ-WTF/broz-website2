@@ -4,12 +4,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 
 export interface MCServerStatus {
-  status: string;
   online?: boolean;
   description?: string;
   players?: {
     max?: number;
-    now?: number;
+    online?: number;
     names: string;
   };
   version?: number;
@@ -21,7 +20,7 @@ export interface MCServerStatus {
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-  fullMCServerStatus: MCServerStatus = { status: "unknown", online: false, players: { max: 0, now: 0, names: "" } };
+  fullMCServerStatus: MCServerStatus = { online: false, players: { max: 0, online: 0, names: "" } };
   mcapiAnswer: any;
 
   constructor(private _logger: NGXLogger, private http: HttpClient) { }
@@ -32,18 +31,17 @@ export class OverviewComponent implements OnInit {
   }
 
   getMCServerStatus() {
-    return this.http.get('https://mcapi.us/server/query?ip=broz.wtf').subscribe(
+    return this.http.get('https://api.mcsrvstat.us/2/mc.the-wagner.de').subscribe(
       (val) => {
         this._logger.log('overview.component: GET request: MCServerStatus val:', val);
         this.mcapiAnswer = val;
         // Parse data from API call into own datastructure
-        this.fullMCServerStatus.status = this.mcapiAnswer.status;
         this.fullMCServerStatus.online = this.mcapiAnswer.online;
-        this.fullMCServerStatus.description = this.mcapiAnswer.motd;
+        this.fullMCServerStatus.description = this.mcapiAnswer.motd.html;
         this.fullMCServerStatus.version = this.mcapiAnswer.version;
         // Create placeholder if player-list is empty
-        this.fullMCServerStatus.players = { max: this.mcapiAnswer.players.max, now: this.mcapiAnswer.players.now, names: "niemand hier :(" };
-        if (this.mcapiAnswer.players.list !== null) {
+        this.fullMCServerStatus.players = { max: this.mcapiAnswer.players.max, online: this.mcapiAnswer.players.online, names: "niemand hier :(" };
+        if ('list' in this.mcapiAnswer.players) {
           this.fullMCServerStatus.players.names = this.mcapiAnswer.players.list.join(', ');
         }
       },

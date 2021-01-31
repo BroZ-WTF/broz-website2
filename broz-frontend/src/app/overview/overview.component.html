@@ -6,9 +6,11 @@
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
     <mat-card-content>
-      <img class="topbar_center" src="../assets/logo_hq.png" style="max-width: 100%;">
+      <img class="topbar_center" src="../assets/logo_hq.png"
+        style="max-width: 100%;">
       <p>
-        ... weil auch im salzigsten Acker vielleicht irgendwo ein Blümchen erblüht.
+        ... weil auch im salzigsten Acker vielleicht irgendwo ein Blümchen
+        erblüht.
       </p>
     </mat-card-content>
   </mat-card>
@@ -20,8 +22,9 @@
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
     <p></p>
-    <a href="ts3server://ts3.the-wagner.de" target="_blank"><img src="https://ts3index.com/banner/s410_262829.png"
-        alt="TS3index.com" style="border-style: none;" /></a>
+    <a href="ts3server://ts3.the-wagner.de" target="_blank"><img
+        src="https://ts3index.com/banner/s410_262829.png" alt="TS3index.com"
+        style="border-style: none;" /></a>
   </mat-card>
 
   <!-- GitHub Links -->
@@ -31,43 +34,47 @@
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
     <div class="github-card">
-      <img class="github-card-icon" src="../../assets/GitHub-Mark-120px-plus.png">
+      <img class="github-card-icon"
+        src="../../assets/GitHub-Mark-120px-plus.png">
       <div class="github-card-link">
-        <a class="github-card-href" href="https://github.com/BroZ-WTF" target="_blank">
+        <a class="github-card-href" href="https://github.com/BroZ-WTF"
+          target="_blank">
           BroZ-Organization
         </a>
       </div>
     </div>
     <div class="github-card">
-      <img class="github-card-icon" src="../../assets/GitHub-Mark-120px-plus.png">
+      <img class="github-card-icon"
+        src="../../assets/GitHub-Mark-120px-plus.png">
       <div class="github-card-link">
-        <a class="github-card-href" href="https://github.com/Thomseeen" target="_blank">Thomseeen Profile</a>
+        <a class="github-card-href" href="https://github.com/Thomseeen"
+          target="_blank">Thomseeen Profile</a>
       </div>
     </div>
   </mat-card>
 
   <!-- MC-Sever Status -->
-  <!--
   <mat-card class="card">
     <mat-card-title>
       Minecraft Server
     </mat-card-title>
     <mat-divider [inset]="true"></mat-divider>
     <mat-list>
-      <h3 mat-subheader>BroZ.wtf</h3>
+      <h3 mat-subheader>mc.the-wagner.de</h3>
+      <mat-list-item class="server-info-item">
+        <mat-icon mat-list-icon>info</mat-icon>
+        {{ fullMCServerStatus.online ? "online" : "offline" }}
+      </mat-list-item>
       <mat-list-item class="server-info-item">
         <mat-icon mat-list-icon>description</mat-icon>
         {{ fullMCServerStatus.description }}
-      </mat-list-item>
-      <mat-list-item class="server-info-item">
-        <mat-icon mat-list-icon>info</mat-icon>
-        {{ (fullMCServerStatus.status == "success") ? (fullMCServerStatus.online ? "online" : "offline") : "unable to query" }}
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
       <h3 mat-subheader>Spieler</h3>
       <mat-list-item class="server-info-item">
         <mat-icon mat-list-icon>perm_identity</mat-icon>
-        {{ fullMCServerStatus.players.now }}/{{ fullMCServerStatus.players.max }}
+        {{ fullMCServerStatus.players.online }}/{{
+        fullMCServerStatus.players.max }}
       </mat-list-item>
       <mat-list-item class="server-info-item">
         <mat-icon mat-list-icon>toc</mat-icon>
@@ -75,5 +82,4 @@
       </mat-list-item>
     </mat-list>
   </mat-card>
-  -->
 </div>
